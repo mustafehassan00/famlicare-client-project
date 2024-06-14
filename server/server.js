@@ -9,6 +9,10 @@ const passport = require('./strategies/user.strategy');
 
 // Route Includes
 const userRouter = require('./routes/user.router');
+const careTeamRouter = require('./routes/careTeam.router');
+const careVaultRouter = require('./routes/careVault.router');
+const lovedOneRouter =require('./routes/lovedOne.router');
+const messagesRouter = require('./routes/messages.router');
 
 // Express Middleware
 app.use(express.json());
@@ -24,6 +28,14 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
+app.use('api/care-team', careTeamRouter);
+app.use('api/care-vault', careVaultRouter);
+app.use('api/loved-one', lovedOneRouter);
+app.use('api/messages', messagesRouter);
+
+
+
+
 
 // Listen Server & Port
 app.listen(PORT, () => {
