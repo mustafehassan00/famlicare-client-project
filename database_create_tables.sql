@@ -11,7 +11,7 @@
  
 -- to build the FamiliCare database locally, Open the Terminal and run this command:
 
-psql -U your_username -d familicare -f database.sql
+psql -U your_username -d famlicare -f database.sql
 
 -- Create Loved Ones table
 \ir ./database/LovedOnes.sql
