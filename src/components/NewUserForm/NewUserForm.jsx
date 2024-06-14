@@ -1,5 +1,8 @@
 import React from "react";
 
-function NewUserForm() {}
+function NewUserForm() {
+
+    //Add profile picture, First and Last name, phone number forms after registration
+}
 
 export default NewUserForm;
