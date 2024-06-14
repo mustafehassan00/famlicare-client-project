@@ -19,6 +19,16 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+//import components 
+import HomePage from '../HomePage/HomePage';
+import Profile from '../Profile/Profile';
+import CareTeam from '../CareTeam/CareTeam'
+import CareTeamForm from '../CareTeamForm/CareTeamForm'
+import CareVault from '../CareVault/CareVault'
+import LovedOneForm from '../LovedOneForm/LovedOneForm'
+import Messages from '../Messages/Messages'
+import NewUserForm from '../NewUserForm/NewUserForm'
+
 
 import './App.css';
 
@@ -61,11 +71,75 @@ function App() {
           </ProtectedRoute>
 
           <ProtectedRoute
+            // logged in shows HomePage
+            exact
+            path="/homepage"
+          >
+            <HomePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            // logged in shows HomePage
+            exact
+            path="/profile"
+          >
+            <Profile />
+          </ProtectedRoute>
+
+          {/* CareTeam component */}
+          <ProtectedRoute
+            // logged in shows HomePage
+            exact
+            path="/careteam"
+          >
+            <CareTeam />
+          </ProtectedRoute>
+
+          {/* CareVault component */}
+          <ProtectedRoute
+            // logged in shows HomePage
+            exact
+            path="/carevault"
+          >
+            <CareVault />
+          </ProtectedRoute>
+
+          {/* messages component */}
+          <ProtectedRoute
+            // logged in shows HomePage
+            exact
+            path="/messages"
+          >
+            <Messages />
+          </ProtectedRoute>
+
+          <ProtectedRoute
             // logged in shows InfoPage else shows LoginPage
             exact
             path="/info"
           >
             <InfoPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/careteamform"
+          >
+            <CareTeamForm />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/lovedoneform"
+          >
+            <LovedOneForm />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/newuserform"
+          >
+            <NewUserForm />
           </ProtectedRoute>
 
           <Route
@@ -109,7 +183,7 @@ function App() {
               <LandingPage />
             }
           </Route>
-
+          
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
             <h1>404</h1>
