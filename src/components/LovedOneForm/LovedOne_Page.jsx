@@ -4,7 +4,7 @@ import LovedOne_Name from "./LovedOne_Name.jsx";
 import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import {
   createLovedOneRequest,
   updateLovedOneRequest,
