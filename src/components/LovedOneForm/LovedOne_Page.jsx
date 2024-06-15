@@ -87,7 +87,7 @@ const CreateLovedOne = () => {
   return (
     <div>
       <Typography variant="h1">Add your loved one</Typography>
-      <Typography variant="h3">Step {step} of 4</Typography>
+      <Typography variant="h3" component='h2'>Step {step} of 4</Typography>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {renderStep()}
