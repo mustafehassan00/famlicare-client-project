@@ -6,7 +6,7 @@ const initialState = {
   first_name: "",
   last_name: "",
   age: "",
-  medical_condition: "",
+  main_condition: "",
   street_address: "",
   street_address2: "",
   city: "",
