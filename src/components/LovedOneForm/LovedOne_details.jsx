@@ -35,6 +35,7 @@ function LovedOne_Details({ onSubmit }) {
           margin="normal"
         />
         {/* Text field for main conditions */}
+        <Typography variant="h2" component="h3">What are their medical conditions?</Typography>
         <TextField
           label="Main Conditions"
           variant="outlined"
