@@ -8,15 +8,15 @@ import { Typography, useTheme } from "@mui/material";
 import {
   createLovedOneRequest,
   updateLovedOneRequest,
-  updateUserTableWithLovedOneIdRequest
-} from './lovedOneActions';
+  updateUserTableWithLovedOneIdRequest,
+} from "./lovedOneActions";
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const lovedOneId = useSelector(state => state.lovedOne.id);
-  const loading = useSelector(state => state.lovedOne.loading);
-  const error = useSelector(state => state.lovedOne.error);
+  const lovedOneId = useSelector((state) => state.lovedOne.id);
+  const loading = useSelector((state) => state.lovedOne.loading);
+  const error = useSelector((state) => state.lovedOne.error);
 
   useEffect(() => {
     if (error) {
@@ -69,9 +69,19 @@ const CreateLovedOne = () => {
       case 1:
         return <LovedOne_Name onSubmit={handleNextStep} />;
       case 2:
-        return <LovedOne_Details onSubmit={handleNextStep} />;
+        return (
+          <LovedOne_Details
+            onSubmit={handleNextStep}
+            onPrevStep={handlePrevStep}
+          />
+        );
       case 3:
-        return <LovedOne_Address onSubmit={handleNextStep} />;
+        return (
+          <LovedOne_Address
+            onSubmit={handleNextStep}
+            onPrevStep={handlePrevStep}
+          />
+        );
       case 4:
         return (
           <LovedOne_Review
@@ -87,7 +97,9 @@ const CreateLovedOne = () => {
   return (
     <div>
       <Typography variant="h1">Add your loved one</Typography>
-      <Typography variant="h3" component='h2'>Step {step} of 4</Typography>
+      <Typography variant="h3" component="h2">
+        Step {step} of 4
+      </Typography>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {renderStep()}

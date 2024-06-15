@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 // Importing necessary components from MUI
-import {
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 // Functional component LovedOne_Details to capture and submit age and medical condition
-function LovedOne_Details({ onSubmit }) {
+function LovedOne_Details({ onSubmit, onPrevStep }) {
   // State hooks for age and medical condition
   const [age, setAge] = useState("");
   const [main_condition, setMainCondition] = useState("");
@@ -22,7 +17,9 @@ function LovedOne_Details({ onSubmit }) {
   return (
     <Container>
       {/* Displaying a heading */}
-      <Typography variant="h2" component="h3">What is their age?</Typography>
+      <Typography variant="h2" component="h3">
+        What is their age?
+      </Typography>
       {/* Form for submitting age and medical condition */}
       <form onSubmit={handleSubmit}>
         {/* Text field for age */}
@@ -35,7 +32,9 @@ function LovedOne_Details({ onSubmit }) {
           margin="normal"
         />
         {/* Text field for main conditions */}
-        <Typography variant="h2" component="h3">What are their medical conditions?</Typography>
+        <Typography variant="h2" component="h3">
+          What are their medical conditions?
+        </Typography>
         <TextField
           label="Main Conditions"
           variant="outlined"
@@ -46,16 +45,25 @@ function LovedOne_Details({ onSubmit }) {
           multiline // enables multiline input
           rows={4} //sets minimum visible rows
         />
-        {/* Conditional rendering for the Next button */}
-        {age && main_condition ? (
-          <Button className="primary on" type="submit">
-            Next
-          </Button>
-        ) : (
-          <Button className="primary off" disabled>
-            Next
-          </Button>
-        )}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: theme.spacing(2),
+          }}
+        >
+        <Button variant="text" onClick={onPrevStep}>Previous Step</Button>
+          {/* Conditional rendering for the Next button */}
+          {age && main_condition ? (
+            <Button className="primary on" type="submit">
+              Next
+            </Button>
+          ) : (
+            <Button className="primary off" disabled>
+              Next
+            </Button>
+          )}
+        </Box>
       </form>
     </Container>
   );
