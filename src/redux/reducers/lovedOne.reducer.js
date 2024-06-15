@@ -1,48 +1,61 @@
-//Import the actions
-import {
-  CREATE_LOVED_ONE,
-  UPDATE_LOVED_ONE,
-  SUBMIT_LOVED_ONE,
-} from "./actions/lovedOne.actions";
+//Imports
+import { CREATE_LOVED_ONE_REQUEST, UPDATE_LOVED_ONE_REQUEST, UPDATE_USER_TABLE_REQUEST, CREATE_LOVED_ONE_SUCCESS, CREATE_LOVED_ONE_FAILURE, UPDATE_LOVED_ONE_SUCCESS, UPDATE_LOVED_ONE_FAILURE, UPDATE_USER_TABLE_SUCCESS, UPDATE_USER_TABLE_FAILURE } from './actions';
 
-// Define the initial state with default values for a loved one's information
-// This structure helps in maintaining a predictable state shape and easier state management
+// initialState to including possible error messages and a loading state
 const initialState = {
   first_name: "",
   last_name: "",
   age: "",
-  medical_condition: "", // Any medical conditions the loved one has
+  medical_condition: "",
   street_address: "",
   street_address2: "",
   city: "",
   state_province: "",
   country: "",
   postal_code: "",
+  loading: false,
+  error: null,
 };
 
 // The reducer function for lovedOne state updates
-// It listens for actions dispatched to the store and updates the state accordingly
 const lovedOne = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_LOVED_ONE:
+    case CREATE_LOVED_ONE_REQUEST:
+    case UPDATE_LOVED_ONE_REQUEST:
+    case UPDATE_USER_TABLE_REQUEST:
+      // Set loading to true at the start of these operations
       return {
         ...state,
-        ...action.payload,
+        loading: true,
+        error: null,
       };
 
-    case UPDATE_LOVED_ONE:
-      // Handles the UPDATE_LOVED_ONE action
-      // Merges the existing state with the new data provided in action.payload
-      // Ensures that updates are made immutably
+    case CREATE_LOVED_ONE_SUCCESS:
+    case UPDATE_LOVED_ONE_SUCCESS:
+      // On success, update the state with the new loved one's data and stop loading
       return {
         ...state,
         ...action.payload,
+        loading: false,
       };
 
-    case SUBMIT_LOVED_ONE:
+    case UPDATE_USER_TABLE_SUCCESS:
+      // Assuming updateUserTableApi might not change loved one's info directly
+      // Just stop loading and clear errors
       return {
         ...state,
-        ...action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case CREATE_LOVED_ONE_FAILURE:
+    case UPDATE_LOVED_ONE_FAILURE:
+    case UPDATE_USER_TABLE_FAILURE:
+      // On failure, stop loading and update the error message
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
       };
 
     default:
@@ -51,7 +64,5 @@ const lovedOne = (state = initialState, action) => {
   }
 };
 
-// Export the reducer as the default export of this module
-// This makes it available for import into the root reducer of the Redux store
-// The loved one's information will be accessible in the Redux state under state.lovedOne
+// Export the reducer
 export default lovedOne;

@@ -1,17 +1,11 @@
-export const CREATE_LOVED_ONE = "CREATE_LOVED_ONE";
-export const UPDATE_LOVED_ONE = "UPDATE_LOVED_ONE";
-export const SUBMIT_LOVED_ONE = "SUBMIT_LOVED_ONE";
+export const CREATE_LOVED_ONE_REQUEST = 'CREATE_LOVED_ONE_REQUEST';
+export const CREATE_LOVED_ONE_SUCCESS = 'CREATE_LOVED_ONE_SUCCESS';
+export const CREATE_LOVED_ONE_FAILURE = 'CREATE_LOVED_ONE_FAILURE';
 
-export const createLovedOne = (data) => ({
-  type: CREATE_LOVED_ONE,
-  payload: data,
-});
+export const UPDATE_LOVED_ONE_REQUEST = 'UPDATE_LOVED_ONE_REQUEST';
+export const UPDATE_LOVED_ONE_SUCCESS = 'UPDATE_LOVED_ONE_SUCCESS';
+export const UPDATE_LOVED_ONE_FAILURE = 'UPDATE_LOVED_ONE_FAILURE';
 
-export const updateLovedOne = (data) => ({
-  type: UPDATE_LOVED_ONE,
-  payload: data,
-});
-
-export const submitLovedOne = () => ({
-  type: SUBMIT_LOVED_ONE,
-});
+export const UPDATE_USER_TABLE_REQUEST = 'UPDATE_USER_TABLE_REQUEST';
+export const UPDATE_USER_TABLE_SUCCESS = 'UPDATE_USER_TABLE_SUCCESS';
+export const UPDATE_USER_TABLE_FAILURE = 'UPDATE_USER_TABLE_FAILURE';
