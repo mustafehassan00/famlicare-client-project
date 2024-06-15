@@ -1,31 +1,37 @@
 import axios from 'axios';
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 
-// worker Saga: will be fired on "FETCH_USER" actions
-function* lovedOne() {
-//   try {
-//     const config = {
-//       headers: { 'Content-Type': 'application/json' },
-//       withCredentials: true,
-//     };
+// Worker Saga: Triggered on "FETCH_LOVED_ONE" actions.
+// This saga handles fetching a loved one's information.
+function* fetchLovedOne() {
+  try {
+    // Configuration for the axios request.
+    // Includes credentials for session authentication and JSON content type.
+    const config = {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true, // Ensures session cookies are sent with the request.
+    };
 
-//     // the config includes credentials which
-//     // allow the server session to recognize the user
-//     // If a user is logged in, this will return their information
-//     // from the server session (req.user)
-//     const response = yield axios.get('/api/user', config);
+    // Attempt to fetch the loved one's information from the server.
+    // The server should recognize the user session and return the appropriate data.
+    const response = yield axios.get('/api/loved_one', config);
 
-//     // now that the session has given us a user object
-//     // with an id and username set the client-side user object to let
-//     // the client-side code know the user is logged in
-//     yield put({ type: 'SET_USER', payload: response.data });
-//   } catch (error) {
-//     console.log('User get request failed', error);
-//   }
+    // Dispatch an action to update the state with the fetched loved one's information.
+    // This lets the client-side code know which loved one is currently being viewed/managed.
+    yield put({ type: 'SET_LOVED_ONE', payload: response.data });
+  } catch (error) {
+    // Log any errors to the console for debugging.
+    // This is crucial for troubleshooting failed requests.
+    console.log('Loved one fetch request failed', error);
+  }
 }
 
+// The main saga that watches for "FETCH_LOVED_ONE" actions and delegates to the worker saga.
 function* lovedOneSaga() {
-//   yield takeLatest('', lovedOne);
+  // Listen for "FETCH_LOVED_ONE" actions and call fetchLovedOne when one comes in.
+  // This setup allows for easy addition of more actions and sagas as needed.
+  yield takeLatest('FETCH_LOVED_ONE', fetchLovedOne);
 }
 
+// Export the saga to be used in the store's saga middleware.
 export default lovedOneSaga;
