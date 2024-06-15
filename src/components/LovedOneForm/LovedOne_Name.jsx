@@ -1,23 +1,42 @@
-import React from "react";
-import { Container, TextField, Typography, Button, ThemeProvider } from "@mui/material";
+import React, { useState } from "react";
+import { Button, Container, TextField, Typography, ThemeProvider } from "@mui/material";
 import theme from '../Theme/FamiliCareTheme';
 
-function LovedOne_Name() {
-    const dspatchCreateLovedOne = ()=>{
-        //todo
-        console.log("dispatching create loved one action");
-        };
-  return
-  <>
+function LovedOne_Name({ onSubmit }) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ firstName, lastName });
+  };
+
+  return (
     <ThemeProvider theme={theme}>
-      <Typography variant="h2">What is their name?</Typography>
       <Container>
-        <TextField label="First Name" variant="outlined" />
-        <TextField label="Last Name" variant="outlined" />
+        <Typography variant="h2">What is their name?</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="First Name"
+            variant="outlined"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Last Name"
+            variant="outlined"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <Button type="submit">Next</Button>
+        </form>
       </Container>
-      <Button className="primary off" onClick=dispatchCreateLovedOne>Continue</Button>
     </ThemeProvider>
-  </>;
+  );
 }
 
 export default LovedOne_Name;

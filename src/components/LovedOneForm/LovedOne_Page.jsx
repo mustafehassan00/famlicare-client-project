@@ -1,4 +1,3 @@
-//imports
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LovedOne_Name from "./LovedOne_Name.jsx";
@@ -6,48 +5,43 @@ import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Typography } from "@mui/material";
-import { createLovedOne, updateLovedOne, updateUserTableWithLovedOneId } from './lovedOneActions'; // Import your action creators
+import {
+  createLovedOneRequest,
+  updateLovedOneRequest,
+  updateUserTableWithLovedOneIdRequest
+} from './lovedOneActions';
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const [lovedOneData, setLovedOneData] = useState({});
-  // Accessing the Redux store for lovedOneId, loading, and error states
   const lovedOneId = useSelector(state => state.lovedOne.id);
   const loading = useSelector(state => state.lovedOne.loading);
   const error = useSelector(state => state.lovedOne.error);
 
-  // Effect hook to listen for error changes and handle them appropriately
   useEffect(() => {
     if (error) {
-      // Log the error or display a notification to the user
       console.error("An error occurred:", error);
     }
   }, [error]);
 
   const handleNextStep = (data) => {
-    const newData = { ...lovedOneData, ...data };
-    setLovedOneData(newData);
-
-    // Handling the first step specifically
     if (step === 1) {
-      dispatch(createLovedOne(newData))
-        .then(() => {
-          // Proceed to the next step only if there's no error
+      // If it's the first step, create a new loved one
+      dispatch(createLovedOneRequest(data))
+        .then((response) => {
           if (!error) {
-            setStep((prevStep) => prevStep + 1);
+            setStep(2); // Move to the next step if there's no error
           }
         })
         .catch((err) => {
-          // Error handling could be more specific based on the error
           console.error("Failed to create loved one:", err);
         });
     } else if (step === 2 || step === 3) {
-      dispatch(updateLovedOne({ id: lovedOneId, ...newData }))
+      // If it's the second or third step, update the existing loved one
+      dispatch(updateLovedOneRequest({ id: lovedOneId, ...data }))
         .then(() => {
-          // Automatically proceed to the next step if there's no error
           if (!error) {
-            setStep((prevStep) => prevStep + 1);
+            setStep((prevStep) => prevStep + 1); // Move to the next step if there's no error
           }
         })
         .catch((err) => {
@@ -61,12 +55,11 @@ const CreateLovedOne = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(updateUserTableWithLovedOneId({ lovedOneId }))
+    dispatch(updateUserTableWithLovedOneIdRequest({ lovedOneId }))
       .then(() => {
         // Handle success, such as navigating to a new page or showing a success message
       })
       .catch((err) => {
-        // Handle submission error
         console.error("Failed to update user table with loved one ID:", err);
       });
   };
@@ -82,7 +75,6 @@ const CreateLovedOne = () => {
       case 4:
         return (
           <LovedOne_Review
-            lovedOneData={lovedOneData}
             onSubmit={handleSubmit}
             onPrevStep={handlePrevStep}
           />
