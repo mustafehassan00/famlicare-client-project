@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Button, Container, TextField, Typography, ThemeProvider } from "@mui/material";
-import theme from '../Theme/FamiliCareTheme';
+import {
+  Button,
+  Container,
+  TextField,
+  Typography,
+  ThemeProvider,
+} from "@mui/material";
+import theme from "../Theme/FamiliCareTheme";
 
 function LovedOne_Name({ onSubmit }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +38,15 @@ function LovedOne_Name({ onSubmit }) {
             fullWidth
             margin="normal"
           />
-          <Button type="submit">Next</Button>
+          {firstName && lastName ? (
+            <Button className="primary on" type="submit">
+              Next
+            </Button>
+          ) : (
+            <Button className="primary off" type="">
+              Next
+            </Button>
+          )}
         </form>
       </Container>
     </ThemeProvider>
