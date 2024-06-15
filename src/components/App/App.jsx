@@ -18,7 +18,7 @@ import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
+// import RegisterPage from '../RegisterPage/RegisterPage';
 //import components 
 import HomePage from '../HomePage/HomePage';
 import Profile from '../Profile/Profile';
@@ -28,6 +28,13 @@ import CareVault from '../CareVault/CareVault'
 import LovedOneForm from '../LovedOneForm/LovedOneForm'
 import Messages from '../Messages/Messages'
 import NewUserForm from '../NewUserForm/NewUserForm'
+
+// Step components for registration process
+import RegisterPage from '../RegisterPage/RegisterPage';
+import RegisterPage1 from '../RegisterPage/RegisterPage1';
+import RegisterPage2 from '../RegisterPage/RegisterPage2';
+import RegisterPage3 from '../RegisterPage/RegisterPage3';
+import RegisterPage4 from '../RegisterPage/RegisterPage4';
 
 
 import './App.css';
@@ -183,6 +190,27 @@ function App() {
               <LandingPage />
             }
           </Route>
+
+             {/* New registration steps */}
+
+
+             <Route exact path="/registerpage/registerpage1"> // pushed to get page1-phone
+            <RegisterPage1 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage2"> // push pg 2 to get pic
+            <RegisterPage2 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage3"> // names
+            <RegisterPage3 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage4"> // lastOne
+            <RegisterPage4 />
+          </Route>
+
+        
           
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>

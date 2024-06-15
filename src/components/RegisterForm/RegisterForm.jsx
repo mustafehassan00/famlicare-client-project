@@ -7,19 +7,23 @@ function RegisterForm() {
   const [emailAddress, setemailAddress] = useState('');
 
   const errors = useSelector((store) => store.errors);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  
 
   const registerUser = (event) => {
     event.preventDefault();
 
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        username: username,
-        password: password,
-        emailAddress: emailAddress,
-      },
-    });
+    // history.push('/registerpage/registerpage2');
+   
+    // dispatch({
+    //   type: 'REGISTER',
+    //   payload: {
+    //     username: username,
+    //     password: password,
+    //     emailAddress: emailAddress,
+    //   },
+    // });
+
   }; // end registerUser
 
   return (
@@ -64,9 +68,10 @@ function RegisterForm() {
           />
         </label>
       </div>
-      <div>
+      {/* <div>
         <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
+      </div> */} 
+      {/* 👆 uncomment for the final component to log a user in. */}
     </form>
   );
 }
