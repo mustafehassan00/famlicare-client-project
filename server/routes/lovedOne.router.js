@@ -1,4 +1,5 @@
 const express = require("express");
+const {body, validationResult} = require("express-validator")
 const pool = require("../modules/pool");
 const router = express.Router();
 // Middleware for checking if the user is authenticated
@@ -40,8 +41,27 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
 // POST route to add a new loved one
 // Requires user to be authenticated
 // Troubleshooting: Ensure that first_name and last_name are not null or empty
-router.post("/", rejectUnauthenticated, async (req, res) => {
-  const first_name = req.body.first_name; // Extract first name from request body
+router.post(
+  "/",
+  rejectUnauthenticated,
+  [
+    body('first_name')
+      .trim()
+      .isString().withMessage('First name must be a string')
+      .isLength({max:100}).withMessage('First name must be less than 100 characters')
+      .notEmpty().withMessage('First name is required'),
+    body('last_name')
+    .trim()
+    .isString().withMessage('Last name must be a string')
+    .isLength({ max: 100 }).withMessage('Last name must be less than 100 characters')
+    .notEmpty().withMessage('Last name is required'),    // Add more validators as needed
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }  
+    const first_name = req.body.first_name; // Extract first name from request body
   const last_name = req.body.last_name; // Extract last name from request body
   const userId = req.user.id; // Assuming req.user is populated from authentication middleware
 
@@ -84,23 +104,30 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
 // Troubleshooting: Ensure the provided ID matches an existing record
 router.put('/:id', rejectUnauthenticated, async (req, res) => {
   const { id } = req.params;
+  // Validate 'id' parameter (example: ensure it's a positive integer)
+  if (!id || isNaN(id) || id < 1) {
+    return res.status(400).json({ message: "Invalid ID provided" });
+  }
+
   const { age, main_condition, street_address, street_address2, city, state_province, country, postal_code } = req.body;
+
+  // Validate body parameters here (example: ensure 'age' is a positive number)
+  // This is a simplified example. You should implement comprehensive validation based on your requirements
 
   let fieldsToUpdate = [];
   let sqlValues = [id];
   let index = 2;
 
-  // Dynamically build the update query based on provided fields
-  // Maintenance: Regularly review and ensure all relevant fields are included
-  if (age !== undefined) {
+  if (age !== undefined && !isNaN(age) && age > 0) {
     fieldsToUpdate.push(`age = $${index++}`);
     sqlValues.push(age);
   }
-  if (main_condition !== undefined) {
+  if (main_condition !== undefined && main_condition.trim() !== '') {
     fieldsToUpdate.push(`main_condition = $${index++}`);
-    sqlValues.push(main_condition);
+    sqlValues.push(main_condition.trim());
   }
-  // Add more fields as needed
+  // Add more fields and validations as needed
+
   if (fieldsToUpdate.length === 0) {
     return res.status(400).json({ message: "No valid fields provided for update" });
   }
