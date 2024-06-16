@@ -10,11 +10,12 @@ function RegisterPage1() {
   return (
     <div>
      <h1>phone number?</h1>
-      <button  onClick={() => {
-            history.push('/registerpage/registerpage2');
-          }}> NEXT </button>
+    
 
 <RegisterForm1 />
+<button  onClick={() => {
+            history.push("/registerpage/registerpage2");
+          }}> Continue </button>
 
       <center>
         {/* <button

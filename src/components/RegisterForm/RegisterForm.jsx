@@ -27,13 +27,14 @@ function RegisterForm() {
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
+    // <form className="formPanel" onSubmit={registerUser}>
+    //   <h2>Register User</h2>
+    //   {errors.registrationMessage && (
+    //     <h3 className="alert" role="alert">
+    //       {errors.registrationMessage}
+    //     </h3>
+    //   )}
+<>
       <div>
         <label htmlFor="username">
           Username:
@@ -72,7 +73,7 @@ function RegisterForm() {
         <input className="btn" type="submit" name="submit" value="Register" />
       </div> */} 
       {/* 👆 uncomment for the final component to log a user in. */}
-    </form>
+    </>
   );
 }
 

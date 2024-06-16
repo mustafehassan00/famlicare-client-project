@@ -9,12 +9,12 @@ function RegisterPage() {
   return (
     <div>
       <h1>page1 email/pass</h1>
-       <button  onClick={() => {
-            history.push('/registerpage/registerpage1');
-          }}> NEXT </button>
-
-
+      
       <RegisterForm />
+
+      <button  onClick={() => {
+            history.push('/registerpage/registerpage1');
+          }}> Continue </button>
       
 
       <center>

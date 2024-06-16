@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-function RegisterForm3() {
+
+
+function RegisterForm3(username,password,emailAddress,phoneNumber) {
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
   
 
   const errors = useSelector((store) => store.errors);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   
 
-//   const registerUser = (event) => {
-//     event.preventDefault();
+  const registerUser = (event) => {
+    event.preventDefault();
 
-//     // history.push('/registerpage/registerpage2');
+    // history.push('/registerpage/registerpage2');
    
-//     // dispatch({
-//     //   type: 'REGISTER',
-//     //   payload: {
-//     //     username: username,
-//     //     password: password,
-//     //     emailAddress: emailAddress,
-//     //   },
-//     // });
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        password: password,
+        emailAddress: emailAddress,
+        phoneNumber: phoneNumber
+      },
+    });
 
-//   }; // end registerUser
+  }; // end registerUser
 
   return (
     <form className="formPanel" onSubmit={registerUser}>
@@ -34,6 +39,7 @@ function RegisterForm3() {
           {errors.registrationMessage}
         </h3>
       )}
+
       <div>
         <label htmlFor="firstName">
           First Name:
@@ -56,10 +62,10 @@ function RegisterForm3() {
           />
         </label>
       </div>
-     
-      {/* <div>
+
+      <div>
         <input className="btn" type="submit" name="submit" value="Register" />
-      </div> */} 
+      </div>
       {/* 👆 uncomment for the final component to log a user in. */}
     </form>
   );

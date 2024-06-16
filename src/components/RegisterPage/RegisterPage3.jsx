@@ -8,15 +8,16 @@ function RegisterPage3() {
 
   return (
     <div>
-        <h1> register Fn/Ln </h1>
 
- <button  onClick={() => {
-            history.push('/registerpage/registerpage4');
-          }}> NEXT </button>
+        
 
-      <RegisterForm3 />
-{/* 
-      <center>
+       <RegisterForm3 /> 
+
+       <button  onClick={() => {
+            history.push("/registerpage/registerpage4");
+          }}> Continue </button>
+
+      {/* <center>
         <button
           type="button"
           className="btn btn_asLink"
@@ -26,7 +27,7 @@ function RegisterPage3() {
         >
           Login
         </button>
-      </center> */}
+      </center>  */}
     </div>
   );
 }

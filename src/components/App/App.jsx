@@ -34,7 +34,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import RegisterPage1 from '../RegisterPage/RegisterPage1';
 import RegisterPage2 from '../RegisterPage/RegisterPage2';
 import RegisterPage3 from '../RegisterPage/RegisterPage3';
-import RegisterPage4 from '../RegisterPage/RegisterPage4';
+// import RegisterPage4 from '../RegisterPage/RegisterPage4';
 
 
 import './App.css';
@@ -194,21 +194,21 @@ function App() {
              {/* New registration steps */}
 
 
-             <Route exact path="/registerpage/registerpage1"> // pushed to get page1-phone
+             <Route exact path="/registerpage/registerpage1">
             <RegisterPage1 />
           </Route>
 
-          <Route exact path="/registerpage/registerpage2"> // push pg 2 to get pic
+          <Route exact path="/registerpage/registerpage2">
             <RegisterPage2 />
           </Route>
 
-          <Route exact path="/registerpage/registerpage3"> // names
+          <Route exact path="/registerpage/registerpage3">
             <RegisterPage3 />
           </Route>
 
-          <Route exact path="/registerpage/registerpage4"> // lastOne
+          {/* <Route exact path="/registerpage/registerpage4">
             <RegisterPage4 />
-          </Route>
+          </Route> */}
 
         
           

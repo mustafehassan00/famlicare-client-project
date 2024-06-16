@@ -9,11 +9,13 @@ function RegisterPage2() {
   return (
     <div>
 
-         <button  onClick={() => {
-            history.push("registerpage/registerpage3");
-          }}> NEXT </button>
+        
 
        <RegisterForm2 /> 
+
+       <button  onClick={() => {
+            history.push("/registerpage/registerpage3");
+          }}> Continue </button>
 
       {/* <center>
         <button
