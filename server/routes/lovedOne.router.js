@@ -53,7 +53,7 @@ router.post(
       const insertResult = await client.query(insertSQLText, [first_name, last_name]);
       const lovedOneId = insertResult.rows[0].id; // Retrieve the new loved one's ID
 
-      const updateSQL = `UPDATE "user" SET loved_one_id = $1 WHERE id = $2`; // SQL query to update the user with the new loved one's ID
+      const updateSQL = `UPDATE "user" SET loved_one_id = $1, is_admin=true WHERE id = $2`; // SQL query to update the user with the new loved one's ID, and toggle admin
       await client.query(updateSQL, [lovedOneId, userId]);
 
       await client.query("COMMIT"); // Commit the transaction
