@@ -9,7 +9,7 @@ import {
   createLovedOneRequest,
   updateLovedOneRequest,
   updateUserTableWithLovedOneIdRequest,
-} from "./lovedOneActions";
+} from "../../redux/reducers/actions/lovedOne.actions.js";
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
