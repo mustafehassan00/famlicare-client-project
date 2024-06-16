@@ -127,7 +127,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     await client.query('BEGIN'); // Begin the transaction
 
     // Fetch the user's 'is_admin' status within the transaction
-    const userQuery = `SELECT is_admin FROM users WHERE id = $1`;
+    const userQuery = `SELECT is_admin FROM "user" WHERE id = $1`;
     const userResult = await client.query(userQuery, [userId]);
 
     if (userResult.rows.length === 0) {

@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { lighten, darken } from "@mui/material/styles/colorManipulator";
+import { lighten, darken } from "@mui/system/colorManipulator";
 import { muiColors } from "@mui/material/colors";
 
 // Utility function to generate color variants for a base color.
