@@ -24,12 +24,14 @@ export default function LovedOne_Review({ onSubmit, onPrevStep }) {
       <Typography>
         <strong>Address:</strong>
       </Typography>
-      <Typography>{lovedOne.street_address}</Typography>
-      {lovedOne.street_address2 && (
-        <Typography>{lovedOne.street_address2}</Typography>
-      )}
-      <Typography>{`${lovedOne.city}, ${lovedOne.state_province} ${lovedOne.postal_code}`}</Typography>
-      <Typography>{lovedOne.country}</Typography>
+      <Box sx={{ marginLeft: theme.spacing(2) }}>
+        <Typography>{lovedOne.street_address}</Typography>
+        {lovedOne.street_address2 && (
+          <Typography>{lovedOne.street_address2}</Typography>
+        )}
+        <Typography>{`${lovedOne.city}, ${lovedOne.state_province} ${lovedOne.postal_code}`}</Typography>
+        <Typography>{lovedOne.country}</Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",
