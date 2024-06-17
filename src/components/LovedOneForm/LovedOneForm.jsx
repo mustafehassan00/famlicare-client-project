@@ -5,11 +5,6 @@ import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Typography, useTheme } from "@mui/material";
-import {
-  createLovedOneRequest,
-  updateLovedOneRequest,
-  updateUserTableWithLovedOneIdRequest,
-} from "../../redux/reducers/actions/lovedOne.actions.js";
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
