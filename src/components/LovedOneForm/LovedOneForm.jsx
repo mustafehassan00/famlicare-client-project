@@ -5,7 +5,7 @@ import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Box, Typography, useTheme } from "@mui/material";
-import { theme } from '../Theme/FamiliCareTheme.jsx'
+import theme from '../Theme/FamiliCareTheme.jsx'
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
