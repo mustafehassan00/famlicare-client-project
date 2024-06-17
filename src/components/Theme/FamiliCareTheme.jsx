@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 import { lighten, darken } from "@mui/system/colorManipulator";
-import "@mui/material/colors";
 
 // Utility function to generate color variants for a base color.
 // This includes the main color, a lighter variant, and a darker variant for hover states.
@@ -21,6 +20,7 @@ const colors = {
   light_text: generateColorVariants("#98A9AE"), // Used for lighter text.
   text: generateColorVariants("#889BA1"), // Used for general text.
   title_text: generateColorVariants("#69878E"), // Used for titles.
+  white: "#fff"
 };
 
 // Defines the theme with a custom color palette and typography settings.
@@ -34,6 +34,7 @@ const theme = createTheme({
     light_text: colors.light_text,
     text: colors.text,
     title_text: colors.title_text,
+    white: colors.white
   },
   typography: {
     fontFamily:
@@ -55,12 +56,12 @@ const theme = createTheme({
         contained: {
           borderRadius: 18,
           "&.primary": {
-            backgroundColor: colors.secondary.main, // Note: This applies the secondary color to primary variant buttons, in this case, orange
-            color: muiColors.common.white,
-            "&:hover": { backgroundColor: colors.secondary.dark },
+            backgroundColor: colors.orange.main, // Note: This applies the secondary color to primary variant buttons, in this case, orange
+            color: colors.white,
+            "&:hover": { backgroundColor: colors.orange.dark },
             "&.off": {
-              backgroundColor: colors.secondary.light,
-              color: muiColors.common.white,
+              backgroundColor: colors.orange.light,
+              color: colors.white,
             },
           },
           "&.small": {
@@ -68,42 +69,42 @@ const theme = createTheme({
             padding: "6px 16px",
             fontSize: "0.875rem",
             "&.on": {
-              backgroundColor: colors.secondary.main, // Orange background for on state, similar to primary button style
-              color: muiColors.common.white,
-              "&:hover": { backgroundColor: colors.secondary.dark },
+              backgroundColor: colors.orange.main, // Orange background for on state, similar to primary button style
+              color: colors.white,
+              "&:hover": { backgroundColor: colors.orange.dark },
             },
             "&.off": {
-              color: colors.secondary.dark, // Darker text when off/inactive, similar to off state of secondary button
-              borderColor: colors.secondary.dark, // Darker border when off/inactive
+              color: colors.orange.dark, // Darker text when off/inactive, similar to off state of secondary button
+              borderColor: colors.orange.dark, // Darker border when off/inactive
               backgroundColor: "transparent", // Ensures the background is transparent in off state
             },
           },
           "&.pop-up": {
             "&.on": {
-              backgroundColor: colors.primary.main, // Blue background for on state
-              color: muiColors.common.white,
-              "&:hover": { backgroundColor: colors.primary.dark },
+              backgroundColor: colors.darkTeal.main, // Blue background for on state
+              color: colors.white,
+              "&:hover": { backgroundColor: colors.darkTeal.dark },
             },
             "&.off": {
-              color: colors.primary.main, // Blue text for off state
-              borderColor: colors.primary.main, // Blue border for off state
+              color: colors.darkTeal.main, // Blue text for off state
+              borderColor: colors.darkTeal.main, // Blue border for off state
               backgroundColor: "transparent", // Transparent background for off state
-              "&:hover": { borderColor: colors.primary.dark }, // Darker border on hover for off state
+              "&:hover": { borderColor: colors.darkTeal.dark }, // Darker border on hover for off state
             },
           },
           "&.medium": {
             padding: "8px 20px",
             fontSize: "0.9375rem",
             "&.on": {
-              backgroundColor: colors.secondary.main, // Orange background for on state, similar to primary button's on state
-              color: muiColors.common.white,
-              "&:hover": { backgroundColor: colors.secondary.dark },
+              backgroundColor: colors.orange.main, // Orange background for on state, similar to primary button's on state
+              color: colors.white,
+              "&:hover": { backgroundColor: colors.orange.dark },
             },
             "&.off": {
-              color: colors.secondary.main, // Orange text for off state
-              borderColor: colors.secondary.main, // Orange border for off state
+              color: colors.orange.main, // Orange text for off state
+              borderColor: colors.orange.main, // Orange border for off state
               backgroundColor: "transparent", // Transparent background for off state
-              "&:hover": { borderColor: colors.secondary.dark }, // Darker border on hover for off state
+              "&:hover": { borderColor: colors.orange.dark }, // Darker border on hover for off state
             },
           },
         },

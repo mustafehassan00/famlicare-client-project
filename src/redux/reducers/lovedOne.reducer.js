@@ -29,7 +29,6 @@ const lovedOne = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_LOVED_ONE_REQUEST:
     case UPDATE_LOVED_ONE_REQUEST:
-    case UPDATE_USER_TABLE_REQUEST:
       // Set loading to true at the start of these operations
       return {
         ...state,
@@ -46,18 +45,8 @@ const lovedOne = (state = initialState, action) => {
         loading: false,
       };
 
-    case UPDATE_USER_TABLE_SUCCESS:
-      // Assuming updateUserTableApi might not change loved one's info directly
-      // Just stop loading and clear errors
-      return {
-        ...state,
-        loading: false,
-        error: null,
-      };
-
     case CREATE_LOVED_ONE_FAILURE:
     case UPDATE_LOVED_ONE_FAILURE:
-    case UPDATE_USER_TABLE_FAILURE:
       // On failure, stop loading and update the error message
       return {
         ...state,
