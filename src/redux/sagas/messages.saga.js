@@ -4,7 +4,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 function* fetchMessages() {
     try{
         const messageResponse = yield axios.get('/api/messages');
-        console.log('Message Response Data is:', messageResponse.data);
+        console.log('Message Response Data:', messageResponse.data);
 
         yield put ({
             type: 'SET_MESSAGES',

@@ -5,6 +5,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors")
 
+
 const server = http.createServer(router);
 const io = new Server(server, {
   cors: {
@@ -12,6 +13,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   },
 });
+
+
 
 /**
  * GET route template
@@ -50,5 +53,7 @@ router.post('/', (req, res) => {
 
 
 });
-
+server.listen(3000, () => {
+  console.log('Listening on port 3000');
+});
 module.exports = router;

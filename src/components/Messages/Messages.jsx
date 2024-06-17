@@ -6,28 +6,28 @@ import { useSelector } from "react-redux";
 
 
 function Messages() {
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
     const history = useHistory();
 
     useEffect(() => {
-        dispatch({ 
-            type: 'FETCH_MESSAGES' 
+        dispatch({
+            type: 'FETCH_MESSAGES'
         });
-    },[])
+    }, [])
 
     const messages = useSelector((store) => store.messages)
-    // console.log('Message Data is:', messages.message_text)
+    console.log('Message Data is:', messages)
 
     return (
         <div>
             <h1>Messages</h1>
-            {messages.map (messages => {
-                return(
-                    <div>
-                    <h2>{messages?.user_id}</h2>
-                    <p>
-                        {messages?.message_text}
-                    </p>   
+            {messages.map(messages => {
+                return (
+                    <div key = {messages?.id}>
+                        <h2>{messages?.user_id}</h2>
+                        <p>
+                            {messages?.message_text}
+                        </p>
                     </div>
                 )
             })}
