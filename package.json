@@ -6,12 +6,17 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.20",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "connect-pg-simple": "^9.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
