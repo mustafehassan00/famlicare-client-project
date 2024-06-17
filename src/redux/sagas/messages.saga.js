@@ -25,7 +25,7 @@ function* messages() {
 }
 
 function* messagesSaga() {
-//   yield takeLatest('', messages);
+  yield takeLatest('FETCH_MESSAGES', messages);
 }
 
 export default messagesSaga;
