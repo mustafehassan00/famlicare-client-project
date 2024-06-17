@@ -8,16 +8,16 @@ import {
   UPDATE_LOVED_ONE_SUCCESS,
   UPDATE_LOVED_ONE_FAILURE,
 
-  GET_LOVED_ONE_REQUEST, 
-  GET_LOVED_ONE_SUCCESS, 
-  GET_LOVED_ONE_FAILURE, 
-  
-  REMOVE_LOVED_ONE_REQUEST, 
-  REMOVE_LOVED_ONE_SUCCESS, 
-  REMOVE_LOVED_ONE_FAILURE, 
+  GET_LOVED_ONE_REQUEST,
+  GET_LOVED_ONE_SUCCESS,
+  GET_LOVED_ONE_FAILURE,
+
+  REMOVE_LOVED_ONE_REQUEST,
+  REMOVE_LOVED_ONE_SUCCESS,
+  REMOVE_LOVED_ONE_FAILURE,
   AUTHORIZATION_FAILURE,
 } from '../reducers/actions/lovedOne.actions.js';
-import { getLovedOneApi, createLovedOneApi, updateLovedOneApi, removeLovedOneApi} from './api/lovedOne.api';
+import { getLovedOneApi, createLovedOneApi, updateLovedOneApi, removeLovedOneApi } from './api/lovedOne.api';
 
 // Centralized error handling function for sagas
 // Logs error to console and dispatches appropriate failure action
@@ -37,29 +37,30 @@ function* handleError(error, failureAction) {
 // Dispatches success or failure actions based on API call result
 function* createLovedOneSaga(action) {
   try {
-    const response = yield call(createLovedOneApi, action.payload); // Attempt to call API
-    const lovedOneId = response.data.lovedOneId; //include the loved one ID from the response
-    const first_name = response. data.first_name;
-    const last_name = response.data.last_name;
-    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: {lovedOneId, first_name, last_name} }); // Dispatch success action if API call is successful
+    const response = yield call(createLovedOneApi, action.payload);
+    const lovedOneData = response.data; // Assuming the API response contains the loved one data
+
+    // Extract the necessary properties from the response
+    const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId; // Adjust property name as per the response
+    const first_name = lovedOneData.first_name;
+    const last_name = lovedOneData.last_name;
+
+    // Dispatch the success action with the extracted data
+    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: { lovedOneId, first_name, last_name } });
   } catch (error) {
-    yield* handleError(error, CREATE_LOVED_ONE_FAILURE); // Handle errors
+    yield* handleError(error, CREATE_LOVED_ONE_FAILURE);
   }
 }
 
 // Saga to handle updates to a loved one
 function* updateLovedOneSaga(action) {
   try {
-    const { loved_one_id, updates } = action.payload;
-
-    // Call the API with all updates at once 
+    const { loved_one_id, ...updates } = action.payload;
     const response = yield call(updateLovedOneApi, loved_one_id, updates);
 
-    // Dispatch a success action with the updated data to update the reducer
+    // Dispatch the success action with the updated loved one data
     yield put({ type: UPDATE_LOVED_ONE_SUCCESS, payload: response.data });
-
   } catch (error) {
-    // Handle the error more effectively, possibly by dispatching a failure action with error details
     yield put({ type: UPDATE_LOVED_ONE_FAILURE, payload: error.message });
   }
 }
@@ -69,7 +70,7 @@ function* updateLovedOneSaga(action) {
 function* getLovedOneSaga(action) {
   try {
     const response = yield call(getLovedOneApi, action.payload);
-    yield put({ type: GET_LOVED_ONE_SUCCESS, response });
+    yield put({ type: GET_LOVED_ONE_SUCCESS, payload: response.data });
   } catch (error) {
     yield* handleError(error, GET_LOVED_ONE_FAILURE);
   }
@@ -80,7 +81,8 @@ function* getLovedOneSaga(action) {
 function* removeLovedOneSaga(action) {
   try {
     const response = yield call(removeLovedOneApi, action.payload);
-    yield put({ type: REMOVE_LOVED_ONE_SUCCESS, response });
+    // The API response only includes a success message, so we don't need to pass any payload
+    yield put({ type: REMOVE_LOVED_ONE_SUCCESS });
   } catch (error) {
     yield* handleError(error, REMOVE_LOVED_ONE_FAILURE);
   }
