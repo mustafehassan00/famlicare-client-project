@@ -34,7 +34,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import RegisterPage1 from '../RegisterPage/RegisterPage1';
 import RegisterPage2 from '../RegisterPage/RegisterPage2';
 import RegisterPage3 from '../RegisterPage/RegisterPage3';
-// import RegisterPage4 from '../RegisterPage/RegisterPage4';
+import RegisterPage4 from '../RegisterPage/RegisterPage4';
 
 
 import './App.css';
@@ -206,9 +206,9 @@ function App() {
             <RegisterPage3 />
           </Route>
 
-          {/* <Route exact path="/registerpage/registerpage4">
+          <Route exact path="/registerpage/registerpage4">
             <RegisterPage4 />
-          </Route> */}
+          </Route>
 
         
           

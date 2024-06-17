@@ -10,30 +10,21 @@ function RegisterForm() {
   // const dispatch = useDispatch();
   
 
-  const registerUser = (event) => {
+  const signUp = (event) => {
     event.preventDefault();
 
-    // history.push('/registerpage/registerpage2');
-   
-    // dispatch({
-    //   type: 'REGISTER',
-    //   payload: {
-    //     username: username,
-    //     password: password,
-    //     emailAddress: emailAddress,
-    //   },
-    // });
+    dispatch({
+      type: 'PHONE_NUMBER',
+      payload: {
+        phoneNumber: phoneNumber,
+  
+      },
+    });
 
-  }; // end registerUser
+  }; // submit phone number
 
   return (
-    // <form className="formPanel" onSubmit={registerUser}>
-    //   <h2>Register User</h2>
-    //   {errors.registrationMessage && (
-    //     <h3 className="alert" role="alert">
-    //       {errors.registrationMessage}
-    //     </h3>
-    //   )}
+
 <>
       <div>
         <label htmlFor="username">
@@ -69,10 +60,7 @@ function RegisterForm() {
           />
         </label>
       </div>
-      {/* <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div> */} 
-      {/* 👆 uncomment for the final component to log a user in. */}
+      <button onSubmit={signUp}>Sign Up</button>
     </>
   );
 }

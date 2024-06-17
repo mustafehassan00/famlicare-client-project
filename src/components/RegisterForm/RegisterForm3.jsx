@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 
-function RegisterForm3(username,password,emailAddress,phoneNumber) {
+function RegisterForm3() {
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
   
@@ -12,33 +12,10 @@ function RegisterForm3(username,password,emailAddress,phoneNumber) {
   const dispatch = useDispatch();
   
 
-  const registerUser = (event) => {
-    event.preventDefault();
 
-    // history.push('/registerpage/registerpage2');
-   
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        password: password,
-        emailAddress: emailAddress,
-        phoneNumber: phoneNumber
-      },
-    });
-
-  }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
+  
 
       <div>
         <label htmlFor="firstName">
@@ -63,11 +40,6 @@ function RegisterForm3(username,password,emailAddress,phoneNumber) {
         </label>
       </div>
 
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-      {/* 👆 uncomment for the final component to log a user in. */}
-    </form>
   );
 }
 

@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useHistory } from 'react-router-dom';
-// import RegisterForm2 from '../RegisterForm/RegisterForm2';
+
 
 function RegisterPage4() {
-  const history = useHistory();
+
+  
+
+  const errors = useSelector((store) => store.errors);
+  const dispatch = useDispatch();
+  
+
+  const registerUser = (event) => {
+    event.preventDefault();
+
+    // history.push('/registerpage/registerpage2');
+   
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        password: password,
+        emailAddress: emailAddress,
+        phoneNumber: phoneNumber
+      },
+    });
+
+  }; // end registerUser
 
   return (
-    <div>
-<h1>in the last component</h1>
-         <button  onClick={() => {
-            history.push("registerpage/registerpage5");
-          }}> NEXT </button>
+    <form className="formPanel" onSubmit={registerUser}>
+      <h2>Register User</h2>
+      {errors.registrationMessage && (
+        <h3 className="alert" role="alert">
+          {errors.registrationMessage}
+        </h3>
+      )}
+{/* {firstName}
+{lastName}
+{username}
+{password}
+{emailAddress}
+{phoneNumber} */}
 
-       {/* <RegisterForm2 />  */}
 
-      {/* <center>
-        <button
-          type="button"
-          className="btn btn_asLink"
-          onClick={() => {
-            history.push('/login');
-          }}
-        >
-          Login
-        </button>
-      </center>  */}
-    </div>
+      <div>
+        <input className="btn" type="submit" name="submit" value="Register" />
+      </div>
+      {/* 👆 uncomment for the final component to log a user in. */}
+    </form>
   );
 }
 

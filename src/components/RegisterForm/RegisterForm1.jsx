@@ -8,21 +8,22 @@ function RegisterForm1() {
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
-  const registerUser = (event) => {
+  const CONTINUE = (event) => {
     event.preventDefault();
 
-    // dispatch({
-    //   type: 'REGISTER',
-    //   payload: {
-    //     username: username,
+    dispatch({
+      type: 'PHONE_NUMBER',
+      payload: {
+        phoneNumber: phoneNumber,
   
-    //   },
-    // });
+      },
+    });
 
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
+    <>
+    <form className="formPanel" >
       <h2>Register User</h2>
       <div>
         <label htmlFor="Phone Number">
@@ -33,11 +34,14 @@ function RegisterForm1() {
             value={phoneNumber}
             required
             onChange={(event) => setphoneNumber(event.target.value)}
+            
           />
         </label>
       </div>
     
     </form>
+            <button onSubmit={CONTINUE}>CONTINUE</button>
+</>
   );
 }
 
