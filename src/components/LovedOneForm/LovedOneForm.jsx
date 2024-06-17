@@ -5,6 +5,7 @@ import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Box, Typography, useTheme } from "@mui/material";
+import { CREATE_LOVED_ONE_REQUEST, UPDATE_LOVED_ONE_REQUEST } from "../../redux/reducers/actions/lovedOne.actions.js";
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
@@ -23,27 +24,10 @@ const CreateLovedOne = () => {
   const handleNextStep = (data) => {
     if (step === 1) {
       // If it's the first step, create a new loved one
-      dispatch(createLovedOneRequest(data))
-        .then((response) => {
-          if (!error) {
-            setStep(2); // Move to the next step if there's no error
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to create loved one:", err);
-        });
-    } else if (step === 2 || step === 3) {
-      // If it's the second or third step, update the existing loved one
-      dispatch(updateLovedOneRequest({ id: lovedOneId, ...data }))
-        .then(() => {
-          if (!error) {
-            setStep((prevStep) => prevStep + 1); // Move to the next step if there's no error
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to update loved one:", err);
-        });
-    }
+      dispatch({type: CREATE_LOVED_ONE_REQUEST, payload: data})}
+      else if (step===2 || step ===3){
+        dispatch({type: UPDATE_LOVED_ONE_REQUEST})
+      }
   };
 
   const handlePrevStep = () => {

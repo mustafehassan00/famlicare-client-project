@@ -27,10 +27,11 @@ export const getLovedOneApi = async (id) => {
  */
 export const createLovedOneApi = async (lovedOneData) => {
   try {
-    const response = await axios.post(baseURL, lovedOneData);
+    const requestUrl = `${baseURL}`;
+    console.log(`Request URL: ${requestUrl}`, `Data being sent:`, lovedOneData);
+    const response = await axios.post(requestUrl, lovedOneData);
     return response.data;
   } catch (error) {
-    // Consider logging the error or sending it to a monitoring service here
     throw error;
   }
 };
