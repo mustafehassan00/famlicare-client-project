@@ -30,9 +30,11 @@ function CareTeamForm() {
     return(
         <div>
             <h1>Create a CareTeam</h1>
-            <TextField 
+            <TextField
+                value={invitedUserEmailInput} 
                 onChange={(e) => setInvitedUserEmailInput(e.target.value)}
-                label='Email' 
+                label='Email'
+                placeholder='Member Email' 
                 variant="outlined"/>
             <Button onClick={sendEmail}>Send Email</Button>
         </div>
