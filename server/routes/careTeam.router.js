@@ -36,11 +36,17 @@ const lovedOneId = req.user.loved_one_id
         const invitationCode = dbRes.rows[0].invitation_code
           const email = {
             to: `${userEmail}`,
-            from: 'famlicareappclientproject@gmail.com',
-            subject: 'Test SendGrid Email',
-            text: `Welcome to FamliCare. Your Invitation Code is: ${invitationCode}`,
+            from: {
+              name: 'FamliCare App',
+              email:'famlicareappclientproject@gmail.com',
+              },
+            subject: "Your FamliCare App CareTeam Invitation Code!",
+            text: `Welcome to FamliCare. Your Invitation Code is: ${invitationCode}.`,
             html: `<h1>Welcome to FamliCare</h1>
-                    <h2>Your Invitation Code is: ${invitationCode}`,
+                    <h2>Your Invitation Code is: ${invitationCode}</h2>
+                    <p>You have been invited to join a FamliCare CareTeam. Please go to the FamliCare App
+                     to make a new account. Copy and paste this code when prompted to join the CareTeam</p>
+                     <h3>Thank you, FamliCare App</h3>`,
         }
 
         sgMail.send(email)
