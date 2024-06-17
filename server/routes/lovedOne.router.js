@@ -10,7 +10,7 @@ const { rejectUnauthenticated } = require("../modules/authentication-middleware"
 // Requires user to be authenticated
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const id = req.params.id; // Extracting the ID from the request parameters
-  const sqlText = `SELECT * FROM loved_ones WHERE id=$1`; // SQL query to select a loved one by ID
+  const sqlText = `SELECT * FROM loved_ones WHERE id=$1;`; // SQL query to select a loved one by ID
   const sqlValues = [id]; // Parameters for the SQL query
 
   try {
@@ -53,7 +53,7 @@ router.post(
       const insertResult = await client.query(insertSQLText, [first_name, last_name]);
       const lovedOneId = insertResult.rows[0].id; // Retrieve the new loved one's ID
 
-      const updateSQL = `UPDATE "user" SET loved_one_id = $1, is_admin=true WHERE id = $2`; // SQL query to update the user with the new loved one's ID, and toggle admin
+      const updateSQL = `UPDATE "user" SET loved_one_id = $1, is_admin=true WHERE id = $2;`; // SQL query to update the user with the new loved one's ID, and toggle admin
       await client.query(updateSQL, [lovedOneId, userId]);
 
       await client.query("COMMIT"); // Commit the transaction
@@ -127,7 +127,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     await client.query('BEGIN'); // Begin the transaction
 
     // Fetch the user's 'is_admin' status within the transaction
-    const userQuery = `SELECT is_admin FROM "user" WHERE id = $1`;
+    const userQuery = `SELECT is_admin FROM "user" WHERE id = $1;`;
     const userResult = await client.query(userQuery, [userId]);
 
     if (userResult.rows.length === 0) {
