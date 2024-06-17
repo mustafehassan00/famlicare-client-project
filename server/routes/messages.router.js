@@ -25,7 +25,8 @@ router.get('/', (req, res) => {
   pool
     .query(sqltext)
     .then((dbres) => {
-      res.send(dbres)
+      console.log(dbres.rows)
+      res.send(dbres.rows)
     })
     .catch((err) => {
       console.log('Error In GET ROUTE', err)

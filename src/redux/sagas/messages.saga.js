@@ -1,31 +1,24 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
-// worker Saga: will be fired on "FETCH_USER" actions
-function* messages() {
-//   try {
-//     const config = {
-//       headers: { 'Content-Type': 'application/json' },
-//       withCredentials: true,
-//     };
+function* fetchMessages() {
+    try{
+        const messageResponse = yield axios.get('/api/messages');
+        console.log('Message Response Data is:', messageResponse.data);
 
-//     // the config includes credentials which
-//     // allow the server session to recognize the user
-//     // If a user is logged in, this will return their information
-//     // from the server session (req.user)
-//     const response = yield axios.get('/api/user', config);
-
-//     // now that the session has given us a user object
-//     // with an id and username set the client-side user object to let
-//     // the client-side code know the user is logged in
-//     yield put({ type: 'SET_USER', payload: response.data });
-//   } catch (error) {
-//     console.log('User get request failed', error);
-//   }
+        yield put ({
+            type: 'SET_MESSAGES',
+            payload: messageResponse.data
+        })
+    }
+    catch (error) {
+        console.log('Error in fetchMessages', error);
+    }
+    
 }
 
 function* messagesSaga() {
-  yield takeLatest('FETCH_MESSAGES', messages);
+  yield takeLatest('FETCH_MESSAGES', fetchMessages);
 }
 
 export default messagesSaga;
