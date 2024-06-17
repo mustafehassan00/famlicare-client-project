@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 // Importing necessary components and theme from MUI and local files
-import {
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 
 // Functional component LovedOne_Name to capture and submit first and last name
 function LovedOne_Name({ onSubmit }) {
@@ -22,7 +17,9 @@ function LovedOne_Name({ onSubmit }) {
   return (
     <Container>
       {/* Displaying a heading */}
-      <Typography variant="h2" component="h3">What is their name?</Typography>
+      <Typography variant="h2" component="h3">
+        What is their name?
+      </Typography>
       {/* Form for submitting names */}
       <form onSubmit={handleSubmit}>
         {/* Text field for first name */}
@@ -43,16 +40,18 @@ function LovedOne_Name({ onSubmit }) {
           fullWidth
           margin="normal"
         />
-        {/* Conditional rendering for the Next button */}
-        {firstName && lastName ? (
-          <Button variant="contained" color="primary" type="submit" align='center' sx={{mx:'auto'}}>
-            Next
-          </Button>
-        ) : (
-          <Button variant="contained" color="primary"  align='center' sx={{mx:'auto'}} disabled>
-            Next
-          </Button>
-        )}
+        <Box display="flex" justifyContent="center" mt={2}>
+          {/**Conditionally render the button */}
+          {firstName && lastName ? (
+            <Button variant="contained" color="primary" type="submit">
+              Next
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" disabled>
+              Next
+            </Button>
+          )}
+        </Box>
       </form>
     </Container>
   );
