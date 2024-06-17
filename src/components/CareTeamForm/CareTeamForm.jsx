@@ -1,11 +1,10 @@
 import React from "react";
 import  { sgMail } from "@sendgrid/mail"
+import dotenv from "dotenv";
 
 
 
 function CareTeamForm() {
-
-   
     sgMail.setApiKey(process.env.SENDGRID_API_KEY) 
 
     const sendEmail = () =>  {
