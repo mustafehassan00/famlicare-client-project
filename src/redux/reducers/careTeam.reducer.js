@@ -5,9 +5,8 @@ const careTeam = (state = {}, action) => {
     //   case 'UNSET_USER':
     //     return {};
     //   default:
-    //     return state;
-    // }
-  };
+        return state;
+    };
   
   // user will be on the redux state at:
   // state.user
