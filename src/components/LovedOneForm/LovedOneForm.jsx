@@ -5,7 +5,6 @@ import LovedOne_Details from "./LovedOne_Details.jsx";
 import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Box, Typography, useTheme } from "@mui/material";
-import theme from '../Theme/FamiliCareTheme.jsx'
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
@@ -13,6 +12,7 @@ const CreateLovedOne = () => {
   const lovedOneId = useSelector((state) => state.lovedOne.id);
   const loading = useSelector((state) => state.lovedOne.loading);
   const error = useSelector((state) => state.lovedOne.error);
+  const theme = useTheme();
 
   useEffect(() => {
     if (error) {
@@ -93,10 +93,10 @@ const CreateLovedOne = () => {
   return (
     <div>
       <Typography variant="h1" align='center'>Add your loved one</Typography>
-      <Typography variant="h3" component="h2" align='center'>
+      <Typography variant="h3" component="h2" align='center' mb={4}>
         Step {step} of 4
       </Typography>
-      <Box sx={{padding: 2.5, border: 2, borderColor: theme.colors.darkTeal}}>
+      <Box sx={{mx: 'auto', width:'80%', padding: 2.5, border: 2, borderColor: theme.palette.primary.main}}>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {renderStep()}

@@ -45,11 +45,11 @@ function LovedOne_Name({ onSubmit }) {
         />
         {/* Conditional rendering for the Next button */}
         {firstName && lastName ? (
-          <Button className="primary on" type="submit">
+          <Button variant="contained" color="primary" type="submit" align='center' sx={{mx:'auto'}}>
             Next
           </Button>
         ) : (
-          <Button className="primary off" disabled>
+          <Button variant="contained" color="primary"  align='center' sx={{mx:'auto'}} disabled>
             Next
           </Button>
         )}
