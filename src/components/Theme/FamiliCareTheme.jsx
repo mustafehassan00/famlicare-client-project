@@ -38,11 +38,12 @@ const theme = createTheme({
   },
   typography: {
     fontFamily:
-      '"Libel-Suit Reg", "Acumin Pro Condensed", "MaryDale", sans-serif',
-    h1: { fontWeight: 500, fontSize: "2.5rem", fontFamily: "Libel-Suit Reg" }, // Style for h1 tags.
-    h2: { fontWeight: 500, fontFamily: "Libel-Suit Reg" }, // Style for h2 tags.
+      '"Libel-Suit Reg.", "Acumin Pro Condensed", "MaryDale", sans-serif',
+    h1: { fontSize: "2.5rem", fontFamily: "Libel-Suit Reg." }, // Style for h1 tags.
+    h2: { fontWeight: 500, fontSize: '1.5em', fontFamily: "Libel-Suit Reg." }, // Style for h2 tags.
+    h3: { fontWeight: 500, fontSize: '1em', fontFamily: "Libel-Suit Reg."},
     body1: { lineHeight: 1.6, fontFamily: "Acumin Pro Condensed" }, // Style for body text.
-    callout: { fontFamily: "Libel-Suit Reg" }, // Custom style for callouts.
+    callout: { fontFamily: "Libel-Suit Reg." }, // Custom style for callouts.
     feature: { fontFamily: "MaryDale" }, // Custom style for featured text.
   },
   components: {
