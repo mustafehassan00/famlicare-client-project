@@ -8,7 +8,7 @@ function LovedOne_Details({ onSubmit, onPrevStep }) {
   const [age, setAge] = useState("");
   const [main_condition, setMainCondition] = useState("");
   const theme = useTheme();
-  
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -56,11 +56,11 @@ function LovedOne_Details({ onSubmit, onPrevStep }) {
         <Button variant="text" onClick={onPrevStep}>Previous Step</Button>
           {/* Conditional rendering for the Next button */}
           {age && main_condition ? (
-            <Button className="primary on" type="submit">
+            <Button variant="contained" className="primary on" type="submit">
               Next
             </Button>
           ) : (
-            <Button className="primary off" disabled>
+            <Button variant="contained" className="primary off" disabled>
               Next
             </Button>
           )}

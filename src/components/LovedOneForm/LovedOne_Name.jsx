@@ -5,13 +5,13 @@ import { Box, Button, Container, TextField, Typography } from "@mui/material";
 // Functional component LovedOne_Name to capture and submit first and last name
 function LovedOne_Name({ onSubmit }) {
   // State hooks for first name and last name
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    onSubmit({ firstName, lastName }); // Pass firstName and lastName to the onSubmit prop
+    onSubmit({ first_name, last_name }); // Pass firstName and lastName to the onSubmit prop
   };
 
   return (
@@ -26,7 +26,7 @@ function LovedOne_Name({ onSubmit }) {
         <TextField
           label="First Name"
           variant="outlined"
-          value={firstName}
+          value={first_name}
           onChange={(e) => setFirstName(e.target.value)} // Update firstName state on change
           fullWidth
           margin="normal"
@@ -35,19 +35,19 @@ function LovedOne_Name({ onSubmit }) {
         <TextField
           label="Last Name"
           variant="outlined"
-          value={lastName}
+          value={last_name}
           onChange={(e) => setLastName(e.target.value)} // Update lastName state on change
           fullWidth
           margin="normal"
         />
         <Box display="flex" justifyContent="center" mt={2}>
           {/**Conditionally render the button */}
-          {firstName && lastName ? (
-            <Button variant="contained" color="primary" type="submit">
+          {first_name && last_name ? (
+            <Button variant="contained" color="secondary" type="submit">
               Next
             </Button>
           ) : (
-            <Button variant="contained" color="primary" disabled>
+            <Button variant="contained" color="secondary" disabled>
               Next
             </Button>
           )}

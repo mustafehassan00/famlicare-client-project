@@ -26,22 +26,14 @@ const CreateLovedOne = () => {
       // If it's the first step, create a new loved one
       dispatch({type: CREATE_LOVED_ONE_REQUEST, payload: data})}
       else if (step===2 || step ===3){
-        dispatch({type: UPDATE_LOVED_ONE_REQUEST})
+        dispatch({type: UPDATE_LOVED_ONE_REQUEST, payload: data})
       }
+    //Increment step counter
+    setStep((prevStep) => prevStep + 1);
   };
 
   const handlePrevStep = () => {
     setStep((prevStep) => prevStep - 1);
-  };
-
-  const handleSubmit = () => {
-    dispatch(updateUserTableWithLovedOneIdRequest({ lovedOneId }))
-      .then(() => {
-        // Handle success, such as navigating to a new page or showing a success message
-      })
-      .catch((err) => {
-        console.error("Failed to update user table with loved one ID:", err);
-      });
   };
 
   const renderStep = () => {
@@ -65,7 +57,6 @@ const CreateLovedOne = () => {
       case 4:
         return (
           <LovedOne_Review
-            onSubmit={handleSubmit}
             onPrevStep={handlePrevStep}
           />
         );
