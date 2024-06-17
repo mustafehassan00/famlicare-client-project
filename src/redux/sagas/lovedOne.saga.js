@@ -41,6 +41,7 @@ function* createLovedOneSaga(action) {
     const lovedOneData = response.data; // Assuming the API response contains the loved one data
 
     // Extract the necessary properties from the response
+    console.log (lovedOneData);
     const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId; // Adjust property name as per the response
     const first_name = lovedOneData.first_name;
     const last_name = lovedOneData.last_name;
