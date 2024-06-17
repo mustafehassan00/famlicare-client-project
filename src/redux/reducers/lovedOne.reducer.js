@@ -1,11 +1,18 @@
 //Imports
 import {
   CREATE_LOVED_ONE_REQUEST,
-  UPDATE_LOVED_ONE_REQUEST,
   CREATE_LOVED_ONE_SUCCESS,
   CREATE_LOVED_ONE_FAILURE,
+  UPDATE_LOVED_ONE_REQUEST,
   UPDATE_LOVED_ONE_SUCCESS,
   UPDATE_LOVED_ONE_FAILURE,
+  GET_LOVED_ONE_REQUEST,
+  GET_LOVED_ONE_SUCCESS,
+  GET_LOVED_ONE_FAILURE,
+  REMOVE_LOVED_ONE_REQUEST,
+  REMOVE_LOVED_ONE_SUCCESS,
+  REMOVE_LOVED_ONE_FAILURE,
+  AUTHORIZATION_FAILURE
 } from "./actions/lovedOne.actions";
 
 // initialState to including possible error messages and a loading state
@@ -29,6 +36,8 @@ const lovedOne = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_LOVED_ONE_REQUEST:
     case UPDATE_LOVED_ONE_REQUEST:
+    case GET_LOVED_ONE_REQUEST: // Add this line
+    case REMOVE_LOVED_ONE_REQUEST: // Add this line
       // Set loading to true at the start of these operations
       return {
         ...state,
@@ -45,8 +54,22 @@ const lovedOne = (state = initialState, action) => {
         loading: false,
       };
 
+    case GET_LOVED_ONE_SUCCESS: // Add this case
+      // On success, update the state with the retrieved loved one's data and stop loading
+      return {
+        ...state,
+        ...action.payload,
+        loading: false,
+      };
+
+    case REMOVE_LOVED_ONE_SUCCESS: // Add this case
+      // On success, reset the state to initialState and stop loading
+      return initialState;
+
     case CREATE_LOVED_ONE_FAILURE:
     case UPDATE_LOVED_ONE_FAILURE:
+    case GET_LOVED_ONE_FAILURE: // Add this line
+    case REMOVE_LOVED_ONE_FAILURE: // Add this line
       // On failure, stop loading and update the error message
       return {
         ...state,

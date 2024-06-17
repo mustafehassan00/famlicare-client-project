@@ -3,17 +3,21 @@ import {
   CREATE_LOVED_ONE_REQUEST,
   CREATE_LOVED_ONE_SUCCESS,
   CREATE_LOVED_ONE_FAILURE,
+
   UPDATE_LOVED_ONE_REQUEST,
   UPDATE_LOVED_ONE_SUCCESS,
   UPDATE_LOVED_ONE_FAILURE,
+
   GET_LOVED_ONE_REQUEST, 
   GET_LOVED_ONE_SUCCESS, 
   GET_LOVED_ONE_FAILURE, 
+  
   REMOVE_LOVED_ONE_REQUEST, 
   REMOVE_LOVED_ONE_SUCCESS, 
   REMOVE_LOVED_ONE_FAILURE, 
   AUTHORIZATION_FAILURE,
 } from '../reducers/actions/lovedOne.actions.js';
+import { getLovedOneApi, createLovedOneApi, updateLovedOneApi, removeLovedOneApi} from './api/lovedOne.api';
 
 // Centralized error handling function for sagas
 // Logs error to console and dispatches appropriate failure action
@@ -44,7 +48,7 @@ function* createLovedOneSaga(action) {
 // Similar structure to createLovedOneSaga
 function* updateLovedOneSaga(action) {
   try {
-    const response = yield call(updateLovedOneApi, action.payload);
+    const response = yield call(updateLovedOneApi, action.payload.loved_one_id, action.payload.updateData);
     yield put({ type: UPDATE_LOVED_ONE_SUCCESS, response });
   } catch (error) {
     yield* handleError(error, UPDATE_LOVED_ONE_FAILURE);
