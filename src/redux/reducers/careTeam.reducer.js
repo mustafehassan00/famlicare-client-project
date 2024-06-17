@@ -7,6 +7,7 @@ const careTeam = (state = {}, action) => {
       default:
         return state;
     };
+  }
   
   // user will be on the redux state at:
   // state.user
