@@ -13,6 +13,7 @@ function LovedOne_Details({ onSubmit, onPrevStep }) {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     onSubmit({ age, main_condition }); // Pass age and medical_condition to the onSubmit prop
+    console.log(age, main_condition)
   };
 
   return (

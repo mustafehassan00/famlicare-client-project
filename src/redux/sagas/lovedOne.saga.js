@@ -38,7 +38,8 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     const response = yield call(createLovedOneApi, action.payload); // Attempt to call API
-    yield put({ type: CREATE_LOVED_ONE_SUCCESS, response }); // Dispatch success action if API call is successful
+    const lovedOneId = response.data.lovedOneId //include the loved one ID from the response
+    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: {lovedOneId} }); // Dispatch success action if API call is successful
   } catch (error) {
     yield* handleError(error, CREATE_LOVED_ONE_FAILURE); // Handle errors
   }

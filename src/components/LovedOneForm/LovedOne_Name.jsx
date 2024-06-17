@@ -12,6 +12,7 @@ function LovedOne_Name({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     onSubmit({ first_name, last_name }); // Pass firstName and lastName to the onSubmit prop
+    console.log (first_name, last_name)
   };
 
   return (
