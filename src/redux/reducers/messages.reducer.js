@@ -1,12 +1,12 @@
 const messages = (state = {}, action) => {
-    // switch (action.type) {
+    switch (action.type) {
     //   case 'SET_USER':
     //     return action.payload;
     //   case 'UNSET_USER':
     //     return {};
-    //   default:
+      default:
         return state;
-    // }
+    }
   };
   
   // user will be on the redux state at:
