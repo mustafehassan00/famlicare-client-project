@@ -38,21 +38,29 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     const response = yield call(createLovedOneApi, action.payload); // Attempt to call API
-    const lovedOneId = response.data.lovedOneId //include the loved one ID from the response
-    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: {lovedOneId} }); // Dispatch success action if API call is successful
+    const lovedOneId = response.data.lovedOneId; //include the loved one ID from the response
+    const first_name = response. data.first_name;
+    const last_name = response.data.last_name;
+    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: {lovedOneId, first_name, last_name} }); // Dispatch success action if API call is successful
   } catch (error) {
     yield* handleError(error, CREATE_LOVED_ONE_FAILURE); // Handle errors
   }
 }
 
 // Saga to handle updates to a loved one
-// Similar structure to createLovedOneSaga
 function* updateLovedOneSaga(action) {
   try {
-    const response = yield call(updateLovedOneApi, action.payload.loved_one_id, action.payload.updateData);
-    yield put({ type: UPDATE_LOVED_ONE_SUCCESS, response });
+    const { loved_one_id, updates } = action.payload;
+
+    // Call the API with all updates at once 
+    const response = yield call(updateLovedOneApi, loved_one_id, updates);
+
+    // Dispatch a success action with the updated data to update the reducer
+    yield put({ type: UPDATE_LOVED_ONE_SUCCESS, payload: response.data });
+
   } catch (error) {
-    yield* handleError(error, UPDATE_LOVED_ONE_FAILURE);
+    // Handle the error more effectively, possibly by dispatching a failure action with error details
+    yield put({ type: UPDATE_LOVED_ONE_FAILURE, payload: error.message });
   }
 }
 

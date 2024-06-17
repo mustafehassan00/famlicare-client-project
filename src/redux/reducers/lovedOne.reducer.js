@@ -12,7 +12,7 @@ import {
   REMOVE_LOVED_ONE_REQUEST,
   REMOVE_LOVED_ONE_SUCCESS,
   REMOVE_LOVED_ONE_FAILURE,
-  AUTHORIZATION_FAILURE
+  AUTHORIZATION_FAILURE,
 } from "./actions/lovedOne.actions";
 
 // initialState to including possible error messages and a loading state
@@ -37,8 +37,8 @@ const lovedOne = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_LOVED_ONE_REQUEST:
     case UPDATE_LOVED_ONE_REQUEST:
-    case GET_LOVED_ONE_REQUEST: 
-    case REMOVE_LOVED_ONE_REQUEST: 
+    case GET_LOVED_ONE_REQUEST:
+    case REMOVE_LOVED_ONE_REQUEST:
       // Set loading to true at the start of these operations
       return {
         ...state,
@@ -54,7 +54,7 @@ const lovedOne = (state = initialState, action) => {
         first_name: action.payload.first_name,
         last_name: action.payload.last_name,
         loading: false,
-      }
+      };
 
     case UPDATE_LOVED_ONE_SUCCESS:
       // On success, update the state with the new loved one's data and stop loading
@@ -64,7 +64,7 @@ const lovedOne = (state = initialState, action) => {
         loading: false,
       };
 
-    case GET_LOVED_ONE_SUCCESS: 
+    case GET_LOVED_ONE_SUCCESS:
       // On success, update the state with the retrieved loved one's data and stop loading
       return {
         ...state,
@@ -72,21 +72,26 @@ const lovedOne = (state = initialState, action) => {
         loading: false,
       };
 
-    case REMOVE_LOVED_ONE_SUCCESS: 
+    case REMOVE_LOVED_ONE_SUCCESS:
       // On success, reset the state to initialState and stop loading
       return initialState;
 
     case CREATE_LOVED_ONE_FAILURE:
     case UPDATE_LOVED_ONE_FAILURE:
-    case GET_LOVED_ONE_FAILURE: 
-    case REMOVE_LOVED_ONE_FAILURE: 
+    case GET_LOVED_ONE_FAILURE:
+    case REMOVE_LOVED_ONE_FAILURE:
       // On failure, stop loading and update the error message
       return {
         ...state,
         loading: false,
         error: action.payload.error,
       };
-
+    case AUTHORIZATION_FAILURE:
+      // On authorization failure, reset the state to initialState and update the error message
+      return {
+        ...initialState,
+        error: "Authorization failed. Please log in again.",
+      };
     default:
       // Returns the current state if no action matches
       return state;

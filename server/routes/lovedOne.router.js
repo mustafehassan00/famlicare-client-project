@@ -103,7 +103,16 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 
   try {
     await pool.query(sqlText, sqlValues); // Execute the update query
-    res.status(200).json({ message: "Loved one updated successfully" }); // Respond with success message
+
+    // After updating, fetch the updated data
+    const selectSqlText = `SELECT * FROM loved_ones WHERE id = $1;`;
+    const result = await pool.query(selectSqlText, [id]);
+
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows[0]); // Return the updated data
+    } else {
+      res.status(404).json({ message: "Loved one not found" });
+    }
   } catch (error) {
     console.error("Error in PUT route: ", error);
     res.sendStatus(500); // Respond with server error on failure
