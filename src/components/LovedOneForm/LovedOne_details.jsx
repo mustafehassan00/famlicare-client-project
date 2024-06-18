@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Box, Button, Container, TextField, Typography, useTheme } from "@mui/material";
 
 // Functional component LovedOne_Details to capture and submit age and medical condition
-function LovedOne_Details({ onSubmit, onPrevStep }) {
+function LovedOne_Details({ lovedOneId, onSubmit, onPrevStep }) {
   // State hooks for age and medical condition
   const [age, setAge] = useState("");
   const [main_condition, setMainCondition] = useState("");
@@ -12,8 +12,8 @@ function LovedOne_Details({ onSubmit, onPrevStep }) {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    onSubmit({ age, main_condition }); // Pass age and medical_condition to the onSubmit prop
-    console.log(age, main_condition)
+    onSubmit({ lovedOneId, age, main_condition }); // Pass age and medical_condition to the onSubmit prop
+    console.log(lovedOneId, age, main_condition)
   };
 
   return (

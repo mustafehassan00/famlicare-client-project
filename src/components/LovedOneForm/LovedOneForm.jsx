@@ -50,6 +50,7 @@ const CreateLovedOne = () => {
       case 2:
         return (
           <LovedOne_Details
+            lovedOneId={lovedOneId}
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
@@ -57,6 +58,7 @@ const CreateLovedOne = () => {
       case 3:
         return (
           <LovedOne_Address
+            lovedOneId={lovedOneId}
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />

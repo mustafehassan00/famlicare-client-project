@@ -44,16 +44,15 @@ export const createLovedOneApi = async (lovedOneData) => {
  * @returns {Promise<Object>} The updated loved one data.
  * @throws Will throw an error if the request fails, useful for troubleshooting API call issues.
  */
-export const updateLovedOneApi = async (payload) => {
-  const { loved_one_id, ...updateData } = payload;
-  if (!Number.isInteger(loved_one_id)) {
-    throw new Error('loved_one_id must be an integer');
+export const updateLovedOneApi = async (lovedOneId, payload) => {
+  if (!Number.isInteger(lovedOneId)) {
+    throw new Error('lovedOneId must be an integer');
   }
   try {
-    const response = await axios.put(`${baseURL}/${loved_one_id}`, updateData);
+    const response = await axios.put(`${baseURL}/${lovedOneId}`, payload);
     return response.data;
   } catch (error) {
-    // Consider logging the error or sending it to a monitoring service here
+    // Error handling can be more sophisticated based on requirements
     throw error;
   }
 };

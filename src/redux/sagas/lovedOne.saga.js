@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { select, call, put, takeLatest } from "redux-saga/effects";
 import {
   CREATE_LOVED_ONE_REQUEST,
   CREATE_LOVED_ONE_SUCCESS,
@@ -21,6 +21,7 @@ import {
   removeLovedOneApi,
 } from "./api/lovedOne.api";
 
+
 // Centralized error handling function for sagas
 // Logs error to console and dispatches appropriate failure action
 // If error is 401 (Unauthorized), dispatches AUTHORIZATION_FAILURE action
@@ -40,14 +41,23 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     const response = yield call(createLovedOneApi, action.payload);
+    // Check if the response is undefined
+    if (response === undefined) {
+      console.error("API response is undefined.");
+      yield put({
+        type: CREATE_LOVED_ONE_FAILURE,
+        error: "API response is undefined",
+      });
+      return; // Exit the saga if the response is undefined
+    }
+
     console.log("API response: ", response.data);
 
     if (response.data && typeof response.data === "object") {
       const lovedOneData = response.data;
 
-      // Ensure all expected properties are present
       if ("id" in lovedOneData || "lovedOneId" in lovedOneData) {
-        const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId; // Corrected here as well
+        const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId;
         const first_name = lovedOneData.first_name;
         const last_name = lovedOneData.last_name;
 
@@ -80,29 +90,24 @@ function* createLovedOneSaga(action) {
 }
 
 // Saga to handle updates to a loved one
+
+// Selector to get lovedOneId from the state
+const getLovedOneId = state => state.lovedOne.id;
+
 function* updateLovedOneSaga(action) {
   try {
-    // Destructure lovedOneId and ensure it exists in the payload
-    const { lovedOneId, ...updates } = action.payload;
-    if (!lovedOneId) {
-      console.error("Missing lovedOneId in action payload");
-      yield put({ type: UPDATE_LOVED_ONE_FAILURE, error: "Missing lovedOneId in action payload" });
-      return; // Exit the saga if lovedOneId is missing
-    }
+    // Retrieve lovedOneId from the state
+    const stateLovedOneId = yield select(getLovedOneId);
+    // Validate the stateLovedOneId just like the payload's lovedOneId
+    // Ensure it's not null and is a valid integer
+    // If validation fails, use yield put to dispatch failure action
 
-    // Ensure lovedOneId is parsed as an integer
-    const parsedLovedOneId = parseInt(lovedOneId, 10);
-    if (isNaN(parsedLovedOneId)) {
-      console.error("Invalid lovedOneId:", lovedOneId);
-      yield put({ type: UPDATE_LOVED_ONE_FAILURE, error: "Invalid lovedOneId" });
-      return; // Exit the saga if lovedOneId is invalid
-    }
-
-    // Create the payload for the API, ensuring lovedOneId is an integer
-    const payloadForAPI = { loved_one_id: parsedLovedOneId, ...updates };
+    // Assuming validation passed and stateLovedOneId is used:
+    const { ...updates } = action.payload;
+    const payloadForAPI = { loved_one_id: stateLovedOneId, ...updates };
 
     // Use the structured payload in the API call
-    const response = yield call(updateLovedOneApi, payloadForAPI);
+    const response = yield call(updateLovedOneApi, stateLovedOneId, payloadForAPI);
 
     // Dispatch the success action with the updated loved one data
     yield put({ type: UPDATE_LOVED_ONE_SUCCESS, payload: response.data });

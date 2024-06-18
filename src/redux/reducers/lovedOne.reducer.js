@@ -36,10 +36,10 @@ const initialState = {
 
 // Helper function to reset lovedOne to its initial state
 const resetLovedOne = () => ({
-  id: "",
+  id: null,
   first_name: "",
   last_name: "",
-  age: "",
+  age: null,
   main_condition: "",
   street_address: "",
   street_address2: "",
