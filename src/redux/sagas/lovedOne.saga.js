@@ -172,7 +172,7 @@ function* storeLovedOneNameInfoSaga(action) {
 function* storeLovedOneAddressInfoSaga(action) {
   try {
     // Simulate success scenario
-    const { address } = action.payload;
+    const address  = action.payload;
     if (!address) {
       throw new Error('Missing address information');
     }
@@ -192,7 +192,9 @@ function* storeLovedOneAddressInfoSaga(action) {
 function* storeLovedOneDetailInfoSaga(action) {
   try {
     // Simulate success scenario
-    const { details } = action.payload;
+    const details= action.payload;
+    console.log(action.payload);
+    console.log(details);
     if (!details) {
       throw new Error('Missing detail information');
     }

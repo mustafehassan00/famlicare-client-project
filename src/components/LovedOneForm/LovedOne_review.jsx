@@ -7,6 +7,8 @@ export default function LovedOne_Review({ onSubmit, onPrevStep }) {
   const theme = useTheme();
   const lovedOne = useSelector((state) => state.lovedOne);
 
+  console.log(lovedOne);
+
   return (
     <Box sx={{ padding: theme.spacing(2) }}>
       <Typography variant="h5" gutterBottom>

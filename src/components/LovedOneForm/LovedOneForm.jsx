@@ -30,14 +30,17 @@ const CreateLovedOne = () => {
     case 1:
       // Dispatch action to store name info in the reducer
       dispatch({ type: STORE_LOVED_ONE_NAME_INFO_REQUEST, payload: data });
+      console.log(data);
       break;
     case 2:
       // Dispatch action to store details info in the reducer
       dispatch({ type: STORE_LOVED_ONE_DETAIL_INFO_REQUEST, payload: data });
+      console.log(data);
       break;
     case 3:
       // Dispatch action to store address info in the reducer
       dispatch({ type: STORE_LOVED_ONE_ADDRESS_INFO_REQUEST, payload: data });
+      console.log(data);
       break;
     case 4:
       // Only on the final step, create the loved one
