@@ -5,7 +5,7 @@ const pool = require("../modules/pool");
 const app = express();
 
 const storage = multer.memoryStorage();
-const { s3 } = require("aws-sek");
+const { s3 } = require("aws-sdk");
 
 exports.s3Uploadv2 = async (file) => {
   const s3 = new s3();
