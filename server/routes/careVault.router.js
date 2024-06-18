@@ -18,34 +18,42 @@ exports.s3Uploadv2 = async (file) => {
   return await s3.upload(parm).promise();
 };
 
-const upload = multer({ dest: "uploads/" });
-app.post("/upload", upload.single("file"), (req, res) => {
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 1000000000, files: 2 },
+});
+app.post("/upload", upload.array("file"), (req, res) => {
   res.json({ status: "success" });
-  // const file = req.file;
-  // const lovedOneId = req.body.lovedOneId;
+});
 
-  try {
-    const queryText = `
+// const upload = multer({ dest: "uploads/" });
+// app.post("/upload", upload.single("file"), (req, res) => {
+//   res.json({ status: "success" });
+// const file = req.file;
+// const lovedOneId = req.body.lovedOneId;
+
+try {
+  const queryText = `
       INSERT INTO vault 
       (loved_one_id, document_name, document_type, file_size, attachment_URL) 
       VALUES 
       ($1, $2, $3, $4, $5) 
       `;
 
-    const result = pool.query(queryText, [
-      lovedOneId,
-      file.originalname,
-      file.mimetype,
-      file.size,
-      file.url,
-    ]);
+  const result = pool.query(queryText, [
+    lovedOneId,
+    file.originalname,
+    file.mimetype,
+    file.size,
+    file.url,
+  ]);
 
-    res.send(result.rows[0]);
-  } catch (error) {
-    console.log("Error saving file:", error);
-    res.sendStatus(500);
-  }
-});
+  res.send(result.rows[0]);
+} catch (error) {
+  console.log("Error saving file:", error);
+  res.sendStatus(500);
+}
 
 router.delete("/delete/:id", async (req, res) => {
   const fileId = req.params.id;
