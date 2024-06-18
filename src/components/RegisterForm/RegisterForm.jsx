@@ -1,31 +1,35 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 function RegisterForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailAddress, setemailAddress] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailAddress, setemailAddress] = useState('');
 
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const signUp = (event) => {
+  const signUp = () => {
+   
     dispatch({
-      type: "USERNAME_EMAIL_PASSWORD",
+      type: 'USERNAME_EMAIL_PASSWORD',
       payload: {
         username: username,
         emailAddress: emailAddress,
-        password: password,
+        password: password
       },
     });
 
-    history.push("/registerpage/registerpage1");
+    history.push('/registerpage/registerpage1');
+
+
   }; // submit phone number
 
   return (
-    <>
+
+<>
       <div>
         <label htmlFor="username">
           Username:

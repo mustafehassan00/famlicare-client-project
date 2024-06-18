@@ -2,10 +2,10 @@ const initialState = {
   username: "",
   emailAddress: "",
   password: "",
-//   phoneNumber: "",
-//   image: "",
-//   firstName: "",
-//   lastName: "",
+  phoneNumber: "",
+  image: "",
+  firstName: "",
+  lastName: "",
 };
 
 const registerReducer = (state = initialState, action) => {
@@ -17,22 +17,22 @@ const registerReducer = (state = initialState, action) => {
         emailAddress: action.payload.emailAddress,
         password: action.payload.password,
       };
-//     case "PHONE_NUMBER":
-//       return {
-//         ...state,
-//         phoneNumber: action.payload.phoneNumber,
-//       };
-//     case "IMAGE":
-//       return {
-//         ...state,
-//         image: action.payload.image,
-//       };
-//     case "FIRST_LAST_NAME":
-//       return {
-//         ...state,
-//         firstName: action.payload.firstName,
-//         lastName: action.payload.lastName,
-//       };
+    case "PHONE_NUMBER":
+      return {
+        ...state,
+        phoneNumber: action.payload.phoneNumber,
+      };
+    case "IMAGE":
+      return {
+        ...state,
+        image: action.payload.image,
+      };
+    case "FIRST_LAST_NAME":
+      return {
+        ...state,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
+      };
     default:
       return state;
   }

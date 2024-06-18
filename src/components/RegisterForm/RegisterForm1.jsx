@@ -25,7 +25,7 @@ function RegisterForm1() {
     <>
       <div>
         <label htmlFor="Phone Number">
-          Password:
+          Phone Number:
           <input
             type="phoneNumber"
             name="phoneNumber"
