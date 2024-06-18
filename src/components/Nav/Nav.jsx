@@ -40,9 +40,6 @@ function Nav() {
           About
         </Link>
 
-        <Link className="navLink" to="/about1">
-          About1
-        </Link>
 
 
       </div>
