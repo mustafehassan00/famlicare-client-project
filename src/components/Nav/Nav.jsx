@@ -32,6 +32,10 @@ function Nav() {
               Info Page
             </Link>
 
+            <Link className="navLink" to="/lovedoneform">
+              Loved one form
+            </Link>
+
             <Link className="navLink" to="/careteamform">
               CareTeamForm
             </Link>
