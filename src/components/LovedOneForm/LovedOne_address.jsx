@@ -10,7 +10,7 @@ import {
 
 // This component handles the address form for a loved one.
 // It collects street address, optional address line 2, city, state/province, country, and postal code.
-function LovedOne_Address({ onSubmit }) {
+function LovedOne_Address({ onSubmit, onPrevStep}) {
   // State hooks for each input field in the form.
   const [street_address, setStreetAddress] = useState("");
   const [street_address2, setStreetAddress2] = useState("");
