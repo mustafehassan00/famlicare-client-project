@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
-import careTeam from './careTeam.reducer';
-import careVault from './careVault.reducer';
-import lovedOne from './lovedOne.reducer';
-import messages from './messages.reducer';
+import registerReducer from './register.reducer';
+// import careTeam from './careTeam.reducer';
+// import careVault from './careVault.reducer';
+// import lovedOne from './lovedOne.reducer';
+// import messages from './messages.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -15,10 +16,11 @@ import messages from './messages.reducer';
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  careTeam,
-  careVault,
-  lovedOne,
-  messages,
+  registerReducer,
+  // careTeam,
+  // careVault,
+  // lovedOne,
+  // messages,
 });
 
 export default rootReducer;

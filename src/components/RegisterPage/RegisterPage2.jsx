@@ -1,27 +1,26 @@
 import React from "react";
 
 import { useHistory } from "react-router-dom";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import RegisterForm2 from "../RegisterForm/RegisterForm2";
 
-function RegisterPage() {
+function RegisterPage2() {
   const history = useHistory();
 
   return (
     <div>
-      <h1>page1 email/pass</h1>
       <button onClick={() => history.goBack()}> ⬅️ </button>
       <button
         onClick={() => {
-          history.push("/registerpage/registerpage1");
+          history.push("/registerpage/registerpage3");
         }}
       >
         {" "}
         ➡️{" "}
       </button>
 
-      <RegisterForm />
+      <RegisterForm2 />
     </div>
   );
 }
 
-export default RegisterPage;
+export default RegisterPage2;
