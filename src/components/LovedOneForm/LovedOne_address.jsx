@@ -78,17 +78,27 @@ function LovedOne_Address({ onSubmit }) {
           fullWidth
           margin="normal"
         />
-        {/* Conditional rendering for the Next button.
-            It's enabled only if all required fields are filled. */}
-        {street_address && city && state_province && country && postal_code ? (
-          <Button type="submit">
-            Next
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: theme.spacing(2),
+          }}
+        >
+          <Button variant="text" onClick={onPrevStep}>
+            Previous Step
           </Button>
-        ) : (
-          <Button disabled>
-            Next
-          </Button>
-        )}
+          {/* Conditional rendering for the Next button */}
+          {street_address && city && state_province && country && postal_code ? (
+            <Button variant="contained" className="primary on" type="submit">
+              Next
+            </Button>
+          ) : (
+            <Button variant="contained" className="primary off" disabled>
+              Next
+            </Button>
+          )}
+        </Box>
       </form>
     </Container>
   );
