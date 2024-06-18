@@ -27,7 +27,7 @@ function LovedOne_Name({ onSubmit }) {
         <TextField
           label="First Name"
           variant="outlined"
-          value={first_name}
+          value={first_name}c
           onChange={(e) => setFirstName(e.target.value)} // Update firstName state on change
           fullWidth
           margin="normal"
@@ -44,11 +44,11 @@ function LovedOne_Name({ onSubmit }) {
         <Box display="flex" justifyContent="center" mt={2}>
           {/**Conditionally render the button */}
           {first_name && last_name ? (
-            <Button variant="contained" color="secondary" type="submit">
+            <Button variant="contained" className="primary on" type="submit">
               Next
             </Button>
           ) : (
-            <Button variant="contained" color="secondary" disabled>
+            <Button variant="contained" className="primary off" disabled>
               Next
             </Button>
           )}
