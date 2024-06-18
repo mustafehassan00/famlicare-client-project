@@ -3,7 +3,20 @@ const router = express.Router();
 const multer = require("multer");
 const pool = require("../modules/pool");
 const app = express();
+
 const storage = multer.memoryStorage();
+const { s3 } = require("aws-sek");
+
+exports.s3Uploadv2 = async (file) => {
+  const s3 = new s3();
+
+  const param = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `uploads/${file.originalname}`,
+    Body: file.buffer,
+  };
+  return await s3.upload(parm).promise();
+};
 
 const upload = multer({ dest: "uploads/" });
 app.post("/upload", upload.single("file"), (req, res) => {
