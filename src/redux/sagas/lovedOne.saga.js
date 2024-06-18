@@ -38,6 +38,7 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     const response = yield call(createLovedOneApi, action.payload);
+    console.log('api data: ', response.data)
     const lovedOneData = response.data; // Assuming the API response contains the loved one data
 
     // Extract the necessary properties from the response
