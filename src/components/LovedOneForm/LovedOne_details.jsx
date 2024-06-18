@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 // Importing necessary components from MUI
-import { Box, Button, Container, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 
 // Functional component LovedOne_Details to capture and submit age and medical condition
-function LovedOne_Details({ lovedOneId, onSubmit, onPrevStep }) {
+function LovedOne_Details({ onSubmit, onPrevStep }) {
   // State hooks for age and medical condition
   const [age, setAge] = useState("");
   const [main_condition, setMainCondition] = useState("");
@@ -12,8 +19,8 @@ function LovedOne_Details({ lovedOneId, onSubmit, onPrevStep }) {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    onSubmit({ lovedOneId, age, main_condition }); // Pass age and medical_condition to the onSubmit prop
-    console.log(lovedOneId, age, main_condition)
+    onSubmit({ age, main_condition }); // Pass age and medical_condition to the onSubmit prop
+    console.log(age, main_condition);
   };
 
   return (
@@ -54,7 +61,9 @@ function LovedOne_Details({ lovedOneId, onSubmit, onPrevStep }) {
             marginTop: theme.spacing(2),
           }}
         >
-        <Button variant="text" onClick={onPrevStep}>Previous Step</Button>
+          <Button variant="text" onClick={onPrevStep}>
+            Previous Step
+          </Button>
           {/* Conditional rendering for the Next button */}
           {age && main_condition ? (
             <Button variant="contained" className="primary on" type="submit">

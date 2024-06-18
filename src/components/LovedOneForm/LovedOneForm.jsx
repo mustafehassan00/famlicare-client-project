@@ -7,13 +7,14 @@ import LovedOne_Review from "./LovedOne_Review.jsx";
 import { Box, Typography, useTheme } from "@mui/material";
 import {
   CREATE_LOVED_ONE_REQUEST,
-  UPDATE_LOVED_ONE_REQUEST,
+  STORE_LOVED_ONE_NAME_INFO_REQUEST,
+  STORE_LOVED_ONE_DETAIL_INFO_REQUEST,
+  STORE_LOVED_ONE_ADDRESS_INFO_REQUEST,
 } from "../../redux/reducers/actions/lovedOne.actions.js";
 
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const lovedOneId = useSelector((state) => state.lovedOne.id);
   const loading = useSelector((state) => state.lovedOne.loading);
   const error = useSelector((state) => state.lovedOne.error);
   const theme = useTheme();

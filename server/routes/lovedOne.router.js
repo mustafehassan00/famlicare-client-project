@@ -6,8 +6,10 @@ const router = express.Router();
 // Middleware for checking if the user is authenticated
 const { rejectUnauthenticated } = require("../modules/authentication-middleware");
 
-// GET route to retrieve a specific loved one by their ID
-// Requires user to be authenticated
+/**
+ * GET route to retrieve a specific loved one by their ID.
+ * Requires user to be authenticated.
+ */
 router.get("/:id", rejectUnauthenticated, async (req, res) => {
   const id = req.params.id; // Extracting the ID from the request parameters
   const sqlText = `SELECT * FROM loved_ones WHERE id=$1;`; // SQL query to select a loved one by ID
@@ -16,32 +18,37 @@ router.get("/:id", rejectUnauthenticated, async (req, res) => {
   try {
     const result = await pool.query(sqlText, sqlValues); // Execute the query
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Loved one not found" }); // Handle case where no result is found
+      // Handle case where no result is found
+      return res.status(404).json({ message: "Loved one not found" });
     }
-    res.send(result.rows); // Send the result back to the client
+    // Send the result back to the client
+    res.send(result.rows);
   } catch (error) {
-    console.log(`Error in GET with query: ${sqlText}`, error);
-    res.sendStatus(500); // Send a server error response on failure
+    // Log and send server error response on failure
+    console.error(`Error in GET with query: ${sqlText}`, error);
+    res.sendStatus(500);
   }
 });
 
-// POST route to add a new loved one
-// Requires user to be authenticated
+/**
+ * POST route to add a new loved one.
+ * Requires user to be authenticated.
+ * Includes input validation for first_name and last_name.
+ */
 router.post(
   "/",
   rejectUnauthenticated,
   [
-    // Validation middleware to ensure first_name and last_name meet criteria
     body("first_name").trim().isString().withMessage("First name must be a string").isLength({ max: 100 }).withMessage("First name must be less than 100 characters").notEmpty().withMessage("First name is required"),
     body("last_name").trim().isString().withMessage("Last name must be a string").isLength({ max: 100 }).withMessage("Last name must be less than 100 characters").notEmpty().withMessage("Last name is required"),
   ],
   async (req, res) => {
     const errors = validationResult(req); // Check for validation errors
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() }); // Return errors if validation fails
+      // Return errors if validation fails
+      return res.status(400).json({ errors: errors.array() });
     }
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name;
+    const { first_name, last_name } = req.body;
     const userId = req.user.id; // Assuming req.user is populated from authentication middleware
 
     const client = await pool.connect(); // Start a database client from the pool
@@ -57,11 +64,12 @@ router.post(
       await client.query(updateSQL, [lovedOneId, userId]);
 
       await client.query("COMMIT"); // Commit the transaction
-      res.status(200).json({ lovedOneId: lovedOneId, first_name: first_name, last_name: last_name}); // Respond with success message
-      console.log(lovedOneId, first_name, last_name)
+      // Respond with success message
+      res.status(200).json({ lovedOneId: lovedOneId, first_name: first_name, last_name: last_name});
+      console.log(lovedOneId, first_name, last_name); // Log for troubleshooting
     } catch (error) {
       await client.query("ROLLBACK"); // Roll back the transaction on error
-      console.error("Error in transaction inserting loved one: ", error);
+      console.error("Error in transaction inserting loved one: ", error); // Log for maintenance
       res.sendStatus(500); // Respond with server error on failure
     } finally {
       client.release(); // Release the client back to the pool
@@ -69,8 +77,11 @@ router.post(
   }
 );
 
-// PUT route to update a loved one's information
-// Requires user to be authenticated
+/**
+ * PUT route to update a loved one's information.
+ * Requires user to be authenticated.
+ * Validates 'id' parameter and request body fields before updating.
+ */
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const { id } = req.params; // Extract the ID from request parameters
   // Validate 'id' parameter (example: ensure it's a positive integer)
@@ -78,7 +89,6 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     return res.status(400).json({ message: "Invalid ID provided" }); // Validate the ID is correct
   }
 
-  // Extract fields from request body
   const { age, main_condition, street_address, street_address2, city, state_province, country, postal_code } = req.body;
 
   let fieldsToUpdate = []; // Initialize an array to hold SQL fields to update
@@ -97,7 +107,8 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   // Add more fields and validations as needed
 
   if (fieldsToUpdate.length === 0) {
-    return res.status(400).json({ message: "No valid fields provided for update" }); // Return error if no valid fields are provided
+    // Return error if no valid fields are provided
+    return res.status(400).json({ message: "No valid fields provided for update" });
   }
 
   const sqlText = `UPDATE loved_ones SET ${fieldsToUpdate.join(", ")} WHERE id = $1;`; // Construct the SQL query
@@ -110,18 +121,21 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     const result = await pool.query(selectSqlText, [id]);
 
     if (result.rows.length > 0) {
-      res.status(200).json(result.rows[0]); // Return the updated data
+      // Return the updated data
+      res.status(200).json(result.rows[0]);
     } else {
       res.status(404).json({ message: "Loved one not found" });
     }
   } catch (error) {
-    console.error("Error in PUT route: ", error);
+    console.error("Error in PUT route: ", error); // Log for maintenance
     res.sendStatus(500); // Respond with server error on failure
   }
 });
 
-// DELETE route to remove a loved one by their ID
-// Requires user to be authenticated
+/**
+ * DELETE route to remove a loved one by their ID.
+ * Requires user to be authenticated and checks if the user is an admin.
+ */
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   const id = parseInt(req.params.id); // Parse the ID from request parameters
   const userId = req.user.id; // Assuming 'req.user' is populated from your authentication middleware
@@ -162,7 +176,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.status(200).json({ message: "Loved one deleted successfully" }); // Respond with success message
   } catch (error) {
     await client.query('ROLLBACK'); // Roll back the transaction on error
-    console.error("Error in DELETE operation: ", error);
+    console.error("Error in DELETE operation: ", error); // Log for maintenance
     res.status(500).json({ message: "Server error" }); // Respond with server error on failure
   } finally {
     client.release(); // Release the client back to the pool
