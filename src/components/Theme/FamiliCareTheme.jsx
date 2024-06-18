@@ -84,7 +84,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: "none",
-          fontFamily: "Libel-Suit Reg",
+          fontFamily: libelSuitReg,
           fontWeight: 500,
         },
         contained: {
