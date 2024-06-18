@@ -17,19 +17,17 @@ import {
 
 // initialState to include possible error messages and a loading state
 const initialState = {
-  lovedOne: {
-    id: "",
-    first_name: "",
-    last_name: "",
-    age: "",
-    main_condition: "",
-    street_address: "",
-    street_address2: "",
-    city: "",
-    state_province: "",
-    country: "",
-    postal_code: "",
-  },
+  id: "",
+  first_name: "",
+  last_name: "",
+  age: "",
+  main_condition: "",
+  street_address: "",
+  street_address2: "",
+  city: "",
+  state_province: "",
+  country: "",
+  postal_code: "",
   loading: false,
   error: null,
 };
@@ -75,12 +73,10 @@ const lovedOneReducer = (state = initialState, action) => {
       // Update lovedOne with ID, first_name, and last_name from payload
       return {
         ...state,
-        lovedOne: {
-          ...state.lovedOne,
-          id: action.payload.lovedOneId,
-          first_name: action.payload.first_name,
-          last_name: action.payload.last_name,
-        },
+        ...state.lovedOne,
+        id: action.payload.lovedOneId,
+        first_name: action.payload.first_name,
+        last_name: action.payload.last_name,
         loading: false,
       };
 
