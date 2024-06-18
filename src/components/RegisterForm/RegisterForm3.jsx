@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function RegisterForm3() {
-  const [firstName, setfirstName] = useState('');
-  const [lastName, setlastName] = useState('');
-  
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
 
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
-  
+  const history = useHistory();
 
-
+  const Continue = () => {
+    dispatch({
+      type: "FIRST_LAST_NAME",
+      payload: {
+        firstName: firstName,
+        lastName: lastName,
+      },
+    });
+    history.push("/registerpage/registerpage4");
+  }; // end registerUser
 
   return (
-  
-
+    <>
       <div>
         <label htmlFor="firstName">
           First Name:
@@ -39,7 +45,8 @@ function RegisterForm3() {
           />
         </label>
       </div>
-
+      <button onClick={Continue}>Continue</button>
+    </>
   );
 }
 

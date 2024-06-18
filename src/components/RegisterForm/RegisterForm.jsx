@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function RegisterForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailAddress, setemailAddress] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailAddress, setemailAddress] = useState("");
 
   const errors = useSelector((store) => store.errors);
-  // const dispatch = useDispatch();
-  
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const signUp = (event) => {
-    event.preventDefault();
-
     dispatch({
-      type: 'PHONE_NUMBER',
+      type: "USERNAME_EMAIL_PASSWORD",
       payload: {
-        phoneNumber: phoneNumber,
-  
+        username: username,
+        emailAddress: emailAddress,
+        password: password,
       },
     });
 
+    history.push("/registerpage/registerpage1");
   }; // submit phone number
 
   return (
-
-<>
+    <>
       <div>
         <label htmlFor="username">
           Username:
@@ -60,7 +60,7 @@ function RegisterForm() {
           />
         </label>
       </div>
-      <button onSubmit={signUp}>Sign Up</button>
+      <button onClick={signUp}>Sign Up</button>
     </>
   );
 }

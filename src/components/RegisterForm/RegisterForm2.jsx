@@ -1,46 +1,44 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function RegisterForm2() {
-//   const [imgae, setphoneNumber] = useState('');
+  const [image, setimage] = useState("");
 
+  const errors = useSelector((store) => store.errors);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-//   const errors = useSelector((store) => store.errors);
-//   const dispatch = useDispatch();
-
-//   const registerUser = (event) => {
-//     event.preventDefault();
-
-    // dispatch({
-    //   type: 'REGISTER',
-    //   payload: {
-    //     username: username,
-  
-    //   },
-    // });
-
-//   }; // end registerUser
+  const Continue = (event) => {
+    dispatch({
+      type: "IMAGE",
+      payload: {
+        image: image,
+      },
+    });
+    history.push("/registerpage/registerpage3");
+  }; // end registerUser
 
   return (
-    
-    // <form className="formPanel" onSubmit={registerUser}>
-    <div>
-      <h2>Registered User Profile picture</h2>
-      {/* <div>
-        <label htmlFor="Phone Number">
-          Password:
-          <input
-            type="phoneNumber"
-            name="phoneNumber"
-            value={phoneNumber}
-            required
-            onChange={(event) => setphoneNumber(event.target.value)}
-          />
-        </label>
-      </div> */}
+    <>
+      <div>
+        <h2>Registered User Profile picture</h2>
+        <div>
+          <label htmlFor="image">
+            Image:
+            <input
+              type="image"
+              name="image"
+              value={image}
+              placeholder="image url"
+              required
+              onChange={(event) => setimage(event.target.value)}
+            />
+          </label>
+        </div>
       </div>
-    
-    // </form>
+      <button onClick={Continue}>Continue</button>
+    </>
   );
 }
 

@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function RegisterForm1() {
-  const [phoneNumber, setphoneNumber] = useState('');
-
+  const [phoneNumber, setphoneNumber] = useState("");
 
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const CONTINUE = (event) => {
+  const Continue = (event) => {
     event.preventDefault();
 
     dispatch({
-      type: 'PHONE_NUMBER',
+      type: "PHONE_NUMBER",
       payload: {
         phoneNumber: phoneNumber,
-  
       },
     });
-
+    history.push("/registerpage/registerpage2");
   }; // end registerUser
 
   return (
     <>
-    <form className="formPanel" >
-      <h2>Register User</h2>
       <div>
         <label htmlFor="Phone Number">
           Password:
@@ -34,14 +32,11 @@ function RegisterForm1() {
             value={phoneNumber}
             required
             onChange={(event) => setphoneNumber(event.target.value)}
-            
           />
         </label>
       </div>
-    
-    </form>
-            <button onSubmit={CONTINUE}>CONTINUE</button>
-</>
+      <button onClick={Continue}>Continue</button>
+    </>
   );
 }
 
