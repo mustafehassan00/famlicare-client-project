@@ -1,18 +1,22 @@
 import React, { useState } from "react";
+import {useDispatch} from 'react-redux'
 // Importing necessary components and theme from MUI and local files
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {STORE_LOVED_ONE_NAME_INFO_REQUEST} from '../../redux/reducers/actions'
 
 // Functional component LovedOne_Name to capture and submit first and last name
 function LovedOne_Name({ onSubmit }) {
   // State hooks for first name and last name
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
+  const dispatch = useDispatch();
 
   // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    onSubmit({ first_name, last_name }); // Pass firstName and lastName to the onSubmit prop
-    console.log (first_name, last_name)
+    e.preventDefault();
+    // Dispatch the STORE_LOVED_ONE_NAME_INFO_REQUEST action with first_name and last_name as payload
+    dispatch(STORE_LOVED_ONE_NAME_INFO_REQUEST({ first_name, last_name }));
+    console.log(first_name, last_name);
   };
 
   return (
@@ -57,5 +61,6 @@ function LovedOne_Name({ onSubmit }) {
     </Container>
   );
 }
+import { STORE_LOVED_ONE_NAME_INFO_REQUEST } from "../../redux/reducers/actions/lovedOne.actions";
 
 export default LovedOne_Name; // Exporting the component for use in other parts of the app

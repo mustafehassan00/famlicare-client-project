@@ -148,6 +148,66 @@ function* removeLovedOneSaga(action) {
   }
 }
 
+// Saga to store name info
+function* storeLovedOneNameInfoSaga(action) {
+  try {
+    // Simulate success scenario
+    const { first_name, last_name } = action.payload;
+    if (!first_name || !last_name) {
+      throw new Error('Missing name information');
+    }
+    yield put({
+      type: STORE_LOVED_ONE_NAME_INFO_SUCCESS,
+      payload: { first_name, last_name },
+    });
+  } catch (error) {
+    yield put({
+      type: STORE_LOVED_ONE_NAME_INFO_FAILURE,
+      error: error.message,
+    });
+  }
+}
+
+// Saga to store address info
+function* storeLovedOneAddressInfoSaga(action) {
+  try {
+    // Simulate success scenario
+    const { address } = action.payload;
+    if (!address) {
+      throw new Error('Missing address information');
+    }
+    yield put({
+      type: STORE_LOVED_ONE_ADDRESS_INFO_SUCCESS,
+      payload: { address },
+    });
+  } catch (error) {
+    yield put({
+      type: STORE_LOVED_ONE_ADDRESS_INFO_FAILURE,
+      error: error.message,
+    });
+  }
+}
+
+// Saga to store detail info
+function* storeLovedOneDetailInfoSaga(action) {
+  try {
+    // Simulate success scenario
+    const { details } = action.payload;
+    if (!details) {
+      throw new Error('Missing detail information');
+    }
+    yield put({
+      type: STORE_LOVED_ONE_DETAIL_INFO_SUCCESS,
+      payload: { details },
+    });
+  } catch (error) {
+    yield put({
+      type: STORE_LOVED_ONE_DETAIL_INFO_FAILURE,
+      error: error.message,
+    });
+  }
+}
+
 // Root saga that listens for actions and delegates to specific sagas
 // Using takeLatest to cancel any ongoing saga if the action is dispatched again
 export default function* rootSaga() {
@@ -155,4 +215,7 @@ export default function* rootSaga() {
   yield takeLatest(UPDATE_LOVED_ONE_REQUEST, updateLovedOneSaga);
   yield takeLatest(GET_LOVED_ONE_REQUEST, getLovedOneSaga);
   yield takeLatest(REMOVE_LOVED_ONE_REQUEST, removeLovedOneSaga);
+  yield takeLatest(STORE_LOVED_ONE_NAME_INFO_REQUEST, storeLovedOneNameInfoSaga);
+  yield takeLatest(STORE_LOVED_ONE_ADDRESS_INFO_REQUEST, storeLovedOneAddressInfoSaga);
+  yield takeLatest(STORE_LOVED_ONE_DETAIL_INFO_REQUEST, storeLovedOneDetailInfoSaga);
 }

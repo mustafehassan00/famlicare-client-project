@@ -25,19 +25,31 @@ const CreateLovedOne = () => {
   }, [error]);
 
   const handleNextStep = (data) => {
-    if (step === 1) {
-      // If it's the first step, create a new loved one
+  switch (step) {
+    case 1:
+      // Dispatch action to store name info in the reducer
+      dispatch({ type: STORE_LOVED_ONE_NAME_INFO_REQUEST, payload: data });
+      break;
+    case 2:
+      // Dispatch action to store details info in the reducer
+      dispatch({ type: STORE_LOVED_ONE_DETAIL_INFO_REQUEST, payload: data });
+      break;
+    case 3:
+      // Dispatch action to store address info in the reducer
+      dispatch({ type: STORE_LOVED_ONE_ADDRESS_INFO_REQUEST, payload: data });
+      break;
+    case 4:
+      // Only on the final step, create the loved one
       dispatch({ type: CREATE_LOVED_ONE_REQUEST, payload: data });
-    } else if (step === 2 || step === 3) {
-      // For steps 2 and 3, update the loved one
-      dispatch({
-        type: UPDATE_LOVED_ONE_REQUEST,
-        payload: { data, loved_one_id: lovedOneId },
-      });
-    }
-    // Increment step counter
+      break;
+    default:
+      console.error("Invalid step");
+  }
+  // Increment step counter if not the last step
+  if (step < 4) {
     setStep((prevStep) => prevStep + 1);
-  };
+  }
+};
 
   const handlePrevStep = () => {
     setStep((prevStep) => prevStep - 1);
@@ -50,7 +62,6 @@ const CreateLovedOne = () => {
       case 2:
         return (
           <LovedOne_Details
-            lovedOneId={lovedOneId}
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
@@ -58,7 +69,6 @@ const CreateLovedOne = () => {
       case 3:
         return (
           <LovedOne_Address
-            lovedOneId={lovedOneId}
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
