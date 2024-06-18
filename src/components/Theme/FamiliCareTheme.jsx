@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 import { lighten, darken } from "@mui/system/colorManipulator";
-import { styleText } from "util";
 
 // Utility function to generate color variants for a base color.
 // This includes the main color, a lighter variant, and a darker variant for hover states.
