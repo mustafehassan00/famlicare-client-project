@@ -15,8 +15,8 @@ import {
 const CreateLovedOne = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const loading = useSelector((state) => state.lovedOne.loading);
-  const error = useSelector((state) => state.lovedOne.error);
+  const loading = useSelector((state) => state.lovedOne?.loading);
+  const error = useSelector((state) => state.lovedOne?.error);
   const theme = useTheme();
 
   useEffect(() => {

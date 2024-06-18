@@ -5,6 +5,7 @@ import {
   Container,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 
 // This component handles the address form for a loved one.
@@ -17,6 +18,7 @@ function LovedOne_Address({ onSubmit }) {
   const [state_province, setStateProvince] = useState("");
   const [country, setCountry] = useState("");
   const [postal_code, setPostalCode] = useState("");
+  const theme = useTheme();
 
   // Handles form submission.
   // Prevents the default form submit action and calls the onSubmit prop with form data.
