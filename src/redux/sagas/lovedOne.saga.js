@@ -178,7 +178,7 @@ function* storeLovedOneAddressInfoSaga(action) {
     }
     yield put({
       type: STORE_LOVED_ONE_ADDRESS_INFO_SUCCESS,
-      payload: { address },
+      address,
     });
   } catch (error) {
     yield put({
@@ -200,7 +200,7 @@ function* storeLovedOneDetailInfoSaga(action) {
     }
     yield put({
       type: STORE_LOVED_ONE_DETAIL_INFO_SUCCESS,
-      payload: { details },
+      details ,
     });
   } catch (error) {
     yield put({
