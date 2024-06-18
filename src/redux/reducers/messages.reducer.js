@@ -1,19 +1,10 @@
-
 const messages = (state = [], action) => {
-    switch (action.type) {
-      case 'SET_MESSAGES':
-        return action.payload;
+  switch (action.type) {
+    case "SET_MESSAGES":
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
-const messages = (state = {}, action) => {
-    switch (action.type) {
-    //   case 'SET_USER':
-    //     return action.payload;
-    //   case 'UNSET_USER':
-    //     return {};
-
-      default:
-        return state;
-    }
-  };
-
-  export default messages;
+export default messages;
