@@ -58,6 +58,7 @@ router.post(
 
       await client.query("COMMIT"); // Commit the transaction
       res.status(200).json({ lovedOneId: lovedOneId, first_name: first_name, last_name: last_name}); // Respond with success message
+      console.log(lovedOneId, first_name, last_name)
     } catch (error) {
       await client.query("ROLLBACK"); // Roll back the transaction on error
       console.error("Error in transaction inserting loved one: ", error);

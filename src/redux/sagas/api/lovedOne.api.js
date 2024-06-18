@@ -32,6 +32,7 @@ export const createLovedOneApi = async (lovedOneData) => {
     const response = await axios.post(requestUrl, lovedOneData);
     return response.data;
   } catch (error) {
+    console.error('Error in createLovedOneApi:', error);
     throw error;
   }
 };

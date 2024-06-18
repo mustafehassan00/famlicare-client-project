@@ -38,17 +38,23 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     const response = yield call(createLovedOneApi, action.payload);
-    console.log('api data: ', response.data)
-    const lovedOneData = response.data; // Assuming the API response contains the loved one data
 
-    // Extract the necessary properties from the response
-    console.log (lovedOneData);
-    const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId; // Adjust property name as per the response
-    const first_name = lovedOneData.first_name;
-    const last_name = lovedOneData.last_name;
+    // Check if response.data is defined and an object
+    if (response.data && typeof response.data === 'object') {
+      const lovedOneData = response.data;
 
-    // Dispatch the success action with the extracted data
-    yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: { lovedOneId, first_name, last_name } });
+      // Extract the necessary properties from the response
+      const lovedOneId = lovedOneData?.id || lovedOneData?.lovedOneId;
+      const first_name = lovedOneData?.first_name;
+      const last_name = lovedOneData?.last_name;
+
+      // Dispatch the success action with the extracted data
+      yield put({ type: CREATE_LOVED_ONE_SUCCESS, payload: { lovedOneId, first_name, last_name } });
+    } else {
+      // Handle the case where the API response is not as expected
+      console.error('Unexpected API response:', response.data);
+      yield put({ type: CREATE_LOVED_ONE_FAILURE, error: 'Unexpected API response' });
+    }
   } catch (error) {
     yield* handleError(error, CREATE_LOVED_ONE_FAILURE);
   }
