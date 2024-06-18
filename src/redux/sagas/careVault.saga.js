@@ -1,31 +1,44 @@
-import axios from 'axios';
-import { put, takeLatest } from 'redux-saga/effects';
+import axios from "axios";
+import { put, takeLatest } from "redux-saga/effects";
 
-// worker Saga: will be fired on "FETCH_USER" actions
-function* careVault() {
-//   try {
-//     const config = {
-//       headers: { 'Content-Type': 'application/json' },
-//       withCredentials: true,
-//     };
+function* uploadFile(action) {
+  try {
+    const formData = new FormData();
+    formData.append("file", action.payload.file);
+    formData.append("lovedOneId", action.payload.lovedOneId);
 
-//     // the config includes credentials which
-//     // allow the server session to recognize the user
-//     // If a user is logged in, this will return their information
-//     // from the server session (req.user)
-//     const response = yield axios.get('/api/user', config);
+    const response = yield axios.post("/api/care-vault/upload", formData);
 
-//     // now that the session has given us a user object
-//     // with an id and username set the client-side user object to let
-//     // the client-side code know the user is logged in
-//     yield put({ type: 'SET_USER', payload: response.data });
-//   } catch (error) {
-//     console.log('User get request failed', error);
-//   }
+    yield put({ type: "UPLOAD_SUCCESS", payload: response.data });
+  } catch (error) {
+    console.log("File upload failed", error);
+    yield put({ type: "UPLOAD_FAILURE", error });
+  }
+}
+
+function* deleteFile(action) {
+  try {
+    yield axios.delete(`/api/care-vault/delete/${action.payload.id}`);
+    yield put({ type: "DELETE_SUCCESS", payload: action.payload.id });
+  } catch (error) {
+    console.log("File deletion failed", error);
+    yield put({ type: "DELETE_FAILURE", error });
+  }
+}
+
+function* fetchFiles() {
+  try {
+    const response = yield axios.get("/api/care-vault/files");
+    yield put({ type: "SET_FILES", payload: response.data });
+  } catch (error) {
+    console.log("File fetch failed", error);
+  }
 }
 
 function* careVaultSaga() {
-//   yield takeLatest('', careVault);
+  yield takeLatest("UPLOAD_FILE", uploadFile);
+  yield takeLatest("DELETE_FILE", deleteFile);
+  yield takeLatest("FETCH_FILES", fetchFiles);
 }
 
 export default careVaultSaga;

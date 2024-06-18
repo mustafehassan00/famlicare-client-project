@@ -36,6 +36,10 @@ function Nav() {
               CareTeamForm
             </Link>
 
+            <Link className="navLink" to="/careVault">
+              CareVault
+            </Link>
+
             <LogOutButton className="navLink" />
           </>
         )}

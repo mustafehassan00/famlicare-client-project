@@ -33,10 +33,6 @@ app.use('/api/care-vault', careVaultRouter);
 app.use('api/loved-one', lovedOneRouter);
 app.use('api/messages', messagesRouter);
 
-
-
-
-
 // Listen Server & Port
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
