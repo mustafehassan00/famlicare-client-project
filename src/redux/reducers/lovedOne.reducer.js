@@ -15,8 +15,27 @@ import {
   AUTHORIZATION_FAILURE,
 } from "./actions/lovedOne.actions";
 
-// initialState to including possible error messages and a loading state
+// initialState to include possible error messages and a loading state
 const initialState = {
+  lovedOne: {
+    id: "",
+    first_name: "",
+    last_name: "",
+    age: "",
+    main_condition: "",
+    street_address: "",
+    street_address2: "",
+    city: "",
+    state_province: "",
+    country: "",
+    postal_code: "",
+  },
+  loading: false,
+  error: null,
+};
+
+// Helper function to reset lovedOne to its initial state
+const resetLovedOne = () => ({
   id: "",
   first_name: "",
   last_name: "",
@@ -28,12 +47,10 @@ const initialState = {
   state_province: "",
   country: "",
   postal_code: "",
-  loading: false,
-  error: null,
-};
+});
 
 // The reducer function for lovedOne state updates
-const lovedOne = (state = initialState, action) => {
+const lovedOneReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_LOVED_ONE_REQUEST:
     case UPDATE_LOVED_ONE_REQUEST:
@@ -47,34 +64,59 @@ const lovedOne = (state = initialState, action) => {
       };
 
     case CREATE_LOVED_ONE_SUCCESS:
-      // update ID, first_name, and last_name
+      // Validate lovedOneId is not undefined
+      if (typeof action.payload.lovedOneId === "undefined") {
+        return {
+          ...state,
+          loading: false,
+          error: "Invalid lovedOneId: undefined",
+        };
+      }
+      // Update lovedOne with ID, first_name, and last_name from payload
       return {
         ...state,
-        id: action.payload.lovedOneId,
-        first_name: action.payload.first_name,
-        last_name: action.payload.last_name,
+        lovedOne: {
+          ...state.lovedOne,
+          id: action.payload.lovedOneId,
+          first_name: action.payload.first_name,
+          last_name: action.payload.last_name,
+        },
         loading: false,
       };
 
     case UPDATE_LOVED_ONE_SUCCESS:
-      // On success, update the state with the new loved one's data and stop loading
-      return {
-        ...state,
-        ...action.payload,
-        loading: false,
-      };
+      // Assuming action.payload contains { lovedOneId, data: { age, main_condition } }
+      if (state.lovedOne.id === action.payload.lovedOneId) {
+        return {
+          ...state,
+          lovedOne: {
+            ...state.lovedOne,
+            ...action.payload.data, // Update only the fields provided in the payload
+          },
+          loading: false,
+        };
+      } else {
+        return state; // If the lovedOneId doesn't match, return the current state
+      }
 
     case GET_LOVED_ONE_SUCCESS:
-      // On success, update the state with the retrieved loved one's data and stop loading
+      // On success, update the state with the new/retreived loved one's data and stop loading
       return {
         ...state,
-        ...action.payload,
+        lovedOne: {
+          ...state.lovedOne,
+          ...action.payload,
+        },
         loading: false,
       };
 
     case REMOVE_LOVED_ONE_SUCCESS:
-      // On success, reset the state to initialState and stop loading
-      return initialState;
+      // On success, reset the lovedOne to its initial state and stop loading
+      return {
+        ...state,
+        lovedOne: resetLovedOne(),
+        loading: false,
+      };
 
     case CREATE_LOVED_ONE_FAILURE:
     case UPDATE_LOVED_ONE_FAILURE:
@@ -86,12 +128,14 @@ const lovedOne = (state = initialState, action) => {
         loading: false,
         error: action.payload.error,
       };
+
     case AUTHORIZATION_FAILURE:
       // On authorization failure, reset the state to initialState and update the error message
       return {
         ...initialState,
         error: "Authorization failed. Please log in again.",
       };
+
     default:
       // Returns the current state if no action matches
       return state;
@@ -99,4 +143,4 @@ const lovedOne = (state = initialState, action) => {
 };
 
 // Export the reducer
-export default lovedOne;
+export default lovedOneReducer;

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Base URL for all loved one related API calls. Adjust this as necessary based on your deployment.
-const baseURL = '/api/loved-one';
+const baseURL = "/api/loved-one";
 
 /**
  * Retrieve a specific loved one by their ID.
@@ -30,23 +30,27 @@ export const createLovedOneApi = async (lovedOneData) => {
     const requestUrl = `${baseURL}`;
     console.log(`Request URL: ${requestUrl}`, `Data being sent:`, lovedOneData);
     const response = await axios.post(requestUrl, lovedOneData);
+    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error('Error in createLovedOneApi:', error);
+    console.error("Error in createLovedOneApi:", error);
     throw error;
   }
 };
 
 /**
  * Update a loved one's information.
- * @param {string} id - The ID of the loved one to update.
- * @param {Object} updateData - The data to update the loved one with.
+ * @param {Object} payload - The payload containing the loved one's ID and the data to update the loved one with.
  * @returns {Promise<Object>} The updated loved one data.
  * @throws Will throw an error if the request fails, useful for troubleshooting API call issues.
  */
-export const updateLovedOneApi = async (id, updateData) => {
+export const updateLovedOneApi = async (payload) => {
+  const { loved_one_id, ...updateData } = payload;
+  if (!Number.isInteger(loved_one_id)) {
+    throw new Error('loved_one_id must be an integer');
+  }
   try {
-    const response = await axios.put(`${baseURL}/${id}`, updateData);
+    const response = await axios.put(`${baseURL}/${loved_one_id}`, updateData);
     return response.data;
   } catch (error) {
     // Consider logging the error or sending it to a monitoring service here
