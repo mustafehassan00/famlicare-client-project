@@ -28,8 +28,16 @@ function Nav() {
               Home
             </Link>
 
+            <Link className="navLink" to="/messages">
+              💬 Messages
+            </Link>
+
             <Link className="navLink" to="/info">
               Info Page
+            </Link>
+
+            <Link className="navLink" to="/careteamform">
+              CareTeamForm
             </Link>
 
             <LogOutButton className="navLink" />

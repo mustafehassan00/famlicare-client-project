@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import Nav from '../Nav/Nav';
@@ -191,6 +192,7 @@ function App() {
             }
           </Route>
 
+
              {/* New registration steps */}
 
 
@@ -212,6 +214,7 @@ function App() {
 
         
           
+
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
             <h1>404</h1>
