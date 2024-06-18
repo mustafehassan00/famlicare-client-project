@@ -19,14 +19,20 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // is that the password gets encrypted before being inserted
 router.post('/register', (req, res, next) => {
   const username = req.body.registerReducer.username;
+  const firstName = req.body.registerReducer.firstName;
+  const lastName = req.body.registerReducer.lastName;
+  const phoneNumber = req.body.registerReducer.phoneNumber;
+  const image = req.body.registerReducer.image;
+
+  
   const password = encryptLib.encryptPassword(req.body.registerReducer.password);
   const email = req.body.registerReducer.emailAddress;
   console.log("DATA in the Server!",req.body.registerReducer);
 
-  const queryText = `INSERT INTO "user" (username, password,email)
-    VALUES ($1, $2, $3) RETURNING id`;
+  const queryText = `INSERT INTO "user" (username, first_name, last_name, email, password, phone_number, profile_picture_url)
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`;
   pool
-    .query(queryText, [username, password,email])
+    .query(queryText, [username, firstName,lastName,email,password,phoneNumber,image])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('User registration failed: ', err);

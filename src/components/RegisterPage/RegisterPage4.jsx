@@ -13,7 +13,7 @@ console.log("What we received from the reducer",registerReducer);
   const registerUser = (event) => {
     event.preventDefault();
 
-    // history.push('/registerpage/registerpage2');
+
 
     dispatch({
       type: "REGISTER",
