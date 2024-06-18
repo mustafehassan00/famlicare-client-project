@@ -4,6 +4,12 @@ const careTeam = (state = {}, action) => {
         return action.payload;
       case 'UNSET_USER':
         return {};
+  switch (action.type) {
+    //   case 'SET_USER':
+    //     return action.payload;
+    //   case 'UNSET_USER':
+    //     return {};
+
       default:
         return state;
     }
