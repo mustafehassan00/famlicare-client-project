@@ -18,7 +18,7 @@ import UserPage from "../UserPage/UserPage";
 import InfoPage from "../InfoPage/InfoPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
-import RegisterPage from "../RegisterPage/RegisterPage";
+// import RegisterPage from "../RegisterPage/RegisterPage";
 //import components
 import HomePage from "../HomePage/HomePage";
 import Profile from "../Profile/Profile";
@@ -30,6 +30,13 @@ import Messages from "../Messages/Messages";
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
 import theme from "../Theme/FamiliCareTheme";
+// Step components for registration process
+import RegisterPage from '../RegisterPage/RegisterPage';
+import RegisterPage1 from '../RegisterPage/RegisterPage1';
+import RegisterPage2 from '../RegisterPage/RegisterPage2';
+import RegisterPage3 from '../RegisterPage/RegisterPage3';
+import RegisterPage4 from '../RegisterPage/RegisterPage4';
+
 
 import "./App.css";
 
@@ -168,15 +175,37 @@ function App() {
               )}
             </Route>
 
-            {/* If none of the other routes matched, we will show a 404. */}
-            <Route>
-              <h1>404</h1>
-            </Route>
-          </Switch>
-          <Footer />
-        </div>
-      </Router>
-    </ThemeProvider>
+
+             {/* New registration steps */}
+
+
+             <Route exact path="/registerpage/registerpage1">
+            <RegisterPage1 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage2">
+            <RegisterPage2 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage3">
+            <RegisterPage3 />
+          </Route>
+
+          <Route exact path="/registerpage/registerpage4">
+            <RegisterPage4 />
+          </Route>
+
+        
+          
+
+          {/* If none of the other routes matched, we will show a 404. */}
+          <Route>
+            <h1>404</h1>
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
