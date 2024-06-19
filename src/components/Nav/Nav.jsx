@@ -1,16 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { Link } from "react-router-dom";
+import LogOutButton from "../LogOutButton/LogOutButton";
+import "./Nav.css";
+import { useSelector } from "react-redux";
+import { useTheme } from "@mui/material";
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const theme = useTheme();
 
   return (
     <div className="nav">
       <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
+        <img
+          src="./PRIMARY Horiz.png"
+          alt="FamliCare Logo"
+          className="nav-title"
+        />
       </Link>
       <div>
         {/* If no user is logged in, show these links */}
@@ -51,9 +57,6 @@ function Nav() {
         <Link className="navLink" to="/about">
           About
         </Link>
-
-
-
       </div>
     </div>
   );
