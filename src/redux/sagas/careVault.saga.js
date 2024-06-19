@@ -12,7 +12,6 @@ function* uploadFile(action) {
     yield put({ type: "UPLOAD_SUCCESS", payload: response.data });
   } catch (error) {
     console.log("File upload failed", error);
-    yield put({ type: "UPLOAD_FAILURE", error });
   }
 }
 
@@ -22,7 +21,6 @@ function* deleteFile(action) {
     yield put({ type: "DELETE_SUCCESS", payload: action.payload.id });
   } catch (error) {
     console.log("File deletion failed", error);
-    yield put({ type: "DELETE_FAILURE", error });
   }
 }
 

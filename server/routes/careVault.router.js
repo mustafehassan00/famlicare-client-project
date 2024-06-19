@@ -2,58 +2,62 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const pool = require("../modules/pool");
-const app = express();
+const AWS = require("aws-sdk");
+require("dotenv").config();
 
 const storage = multer.memoryStorage();
-const { s3 } = require("aws-sdk");
+const upload = multer({ storage });
 
-exports.s3Uploadv2 = async (file) => {
-  const s3 = new s3();
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
 
-  const param = {
+const s3 = new AWS.S3();
+
+const s3Uploadv2 = async (file) => {
+  const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `uploads/${file.originalname}`,
     Body: file.buffer,
+    ContentType: file.mimetype,
   };
-  return await s3.upload(parm).promise();
+  return await s3.upload(params).promise();
 };
 
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 1000000000, files: 2 },
-});
-app.post("/upload", upload.array("file"), (req, res) => {
-  res.json({ status: "success" });
-});
+router.post("/upload", upload.single("file"), async (req, res) => {
+  const file = req.file;
+  const lovedOneId = req.body.lovedOneId;
 
-// const upload = multer({ dest: "uploads/" });
-// app.post("/upload", upload.single("file"), (req, res) => {
-//   res.json({ status: "success" });
-// const file = req.file;
-// const lovedOneId = req.body.lovedOneId;
+  if (!file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
 
-try {
-  const queryText = `
+  try {
+    const result = await s3Uploadv2(file);
+    const queryText = `
       INSERT INTO vault 
       (loved_one_id, document_name, document_type, file_size, attachment_URL) 
       VALUES 
-      ($1, $2, $3, $4, $5) 
-      `;
+      ($1, $2, $3, $4, $5);
+    `;
+    const queryParams = [
+      lovedOneId,
+      file.originalname,
+      file.mimetype,
+      file.size,
+      result.Location,
+    ];
 
-  const result = pool.query(queryText, [
-    lovedOneId,
-    file.originalname,
-    file.mimetype,
-    file.size,
-    file.url,
-  ]);
+    const dbResult = await pool.query(queryText, queryParams);
 
-  res.send(result.rows[0]);
-} catch (error) {
-  console.log("Error saving file:", error);
-  res.sendStatus(500);
-}
+    res.json({ status: "success", file: dbResult.rows[0] });
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    res.sendStatus(500);
+  }
+});
 
 router.delete("/delete/:id", async (req, res) => {
   const fileId = req.params.id;
@@ -61,32 +65,38 @@ router.delete("/delete/:id", async (req, res) => {
   try {
     const queryText = `
     DELETE FROM vault 
-    WHERE id = $1 
-    `;
-    const result = await pool.query(queryText, [fileId]);
+    WHERE id = $1;`;
+    const dbResult = await pool.query(queryText, [fileId]);
 
-    if (result.rowCount === 0) {
+    if (dbResult.rowCount === 0) {
       return res.sendStatus(404);
     }
 
+    const file = dbResult.rows[0];
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: file.attachment_URL.split("/").slice(-2).join("/"),
+    };
+
+    await s3.deleteObject(params).promise();
     res.sendStatus(204);
   } catch (error) {
-    console.log("Error deleting file:", error);
+    console.error("Error deleting file:", error);
     res.sendStatus(500);
   }
 });
 
 router.get("/files", async (req, res) => {
   const queryText = `
-  SELECT 
-  id, document_name, document_type, file_size, attachment_URL 
-  FROM vault`;
+    SELECT 
+    id, document_name, document_type, file_size, attachment_URL 
+    FROM vault`;
 
   try {
     const result = await pool.query(queryText);
     res.send(result.rows);
   } catch (error) {
-    console.log("Error retrieving files:", error);
+    console.error("Error retrieving files:", error);
     res.sendStatus(500);
   }
 });
