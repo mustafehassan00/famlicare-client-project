@@ -55,26 +55,26 @@ const theme = createTheme({
       styleOverrides: `
         @font-face {
           font-family: 'Libel-suit Reg';
-          src: url('/fonts/libel-suit-rg.otf') format('opentype');
+          src: url('../../../public/fonts/libel-suit-rg.otf') format('opentype');
           font-weight: normal;
           font-style: normal;
         }
           @font-face {
           font-family: 'Acumin Pro Condensed';
-          src: url('/fonts/Acumin-BdItPro.otf') format('opentype'),
-               url('/fonts/Acumin-BdPro.otf') format('opentype'),
-               url('/fonts/Acumin-BdItPro.otf') format('opentype'),
-               url('/fonts/Acumin-ItPro.otf') format ('opentype'),
-               url('/fonts/Acumin-RPro.otf') format ('opentype');
+          src: url('../../../public/fonts/Acumin-BdItPro.otf') format('opentype'),
+               url('../../../public/fonts/Acumin-BdPro.otf') format('opentype'),
+               url('../../../public/fonts/Acumin-BdItPro.otf') format('opentype'),
+               url('../../../public/fonts/Acumin-ItPro.otf') format ('opentype'),
+               url('../../../public/fonts/Acumin-RPro.otf') format ('opentype');
           font-weight: normal;
           font-style: normal;
         }
 
         @font-face {
           font-family: 'MaryDale';
-          src: url('/fonts/fonnts.com-Marydale-Black.otf') format('opentype'),
-               url('/fonts/fonnts.com-Marydale-Bold.otf') format('opentype'),
-               url('/fonts/fonnts.com-Marydale-Regular.otf') format('opentype'),;
+          src: url('../../../public/fonts/fonnts.com-Marydale-Black.otf') format('opentype'),
+               url('../../../public/fonts/fonnts.com-Marydale-Bold.otf') format('opentype'),
+               url('../../../public/fonts/fonnts.com-Marydale-Regular.otf') format('opentype'),;
           font-weight: normal;
           font-style: normal;
         }
