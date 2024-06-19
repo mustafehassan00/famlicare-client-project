@@ -80,7 +80,9 @@ const lovedOneReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        id: action.payload.lovedOneId,
         loading: false,
+        createdSuccessfully:true,
       };
 
     // Handle successful update of a loved one

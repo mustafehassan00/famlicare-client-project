@@ -30,13 +30,13 @@ const create_success = useSelector((state) => state.lovedOneReducer?.createdSucc
       console.error("An error occurred:", error);
     }
     //show modal on successful creation
-    if (lovedOne?.id && create_success) {
+    if (create_success) {
       setModalContent(
         `${lovedOne.first_name} ${lovedOne.last_name} has been added.`
       );
       setShowModal(true);
     }
-  }, [error, lovedOne, create_success]);
+  }, [error, lovedOne?.first_name, lovedOne?.last_name, create_success]);
 
   const handleClose = () => {
     setShowModal(false);
