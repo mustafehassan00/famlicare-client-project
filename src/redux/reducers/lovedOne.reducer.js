@@ -70,7 +70,7 @@ const lovedOneReducer = (state = initialState, action) => {
     // Assumes action.payload contains all loved one information including a unique ID
     // Enhances error handling for cases where lovedOneId might be missing or invalid
     case CREATE_LOVED_ONE_SUCCESS:
-      if (!action.payload.lovedOneId) {
+      if (!action.payload.id) {
         return {
           ...state,
           loading: false,
@@ -80,7 +80,7 @@ const lovedOneReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
-        id: action.payload.lovedOneId,
+        id: action.payload.id,
         loading: false,
         createdSuccessfully:true,
       };

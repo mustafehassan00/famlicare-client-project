@@ -75,13 +75,13 @@ function* createLovedOneSaga(action) {
     if (first_name && last_name) {
       // Log the payload being dispatched
       console.log("Dispatching CREATE_LOVED_ONE_SUCCESS with payload:", {
-        lovedOneId: id,
+        id,
         first_name,
         last_name,
       });
       yield put({
         type: CREATE_LOVED_ONE_SUCCESS,
-        payload: { lovedOneId: id, first_name, last_name },
+        payload: { id, first_name, last_name },
       });
     } else {
       console.error(
