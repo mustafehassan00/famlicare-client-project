@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, 'images')); // Destination folder where files will be stored
   },
+  
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname); // File naming convention
   }
