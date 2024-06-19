@@ -25,7 +25,7 @@ import Profile from "../Profile/Profile";
 import CareTeam from "../CareTeam/CareTeam";
 import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
-import LovedOneForm from "../LovedOneForm/LovedOneForm";
+// import LovedOneForm from "../LovedOneForm/LovedOneForm";
 import Messages from "../Messages/Messages";
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
@@ -133,10 +133,10 @@ function App() {
             <ProtectedRoute exact path="/careteamform">
               <CareTeamForm />
             </ProtectedRoute>
-
+{/* 
             <ProtectedRoute exact path="/lovedoneform">
               <LovedOneForm />
-            </ProtectedRoute>
+            </ProtectedRoute> */}
 
             <ProtectedRoute exact path="/newuserform">
               <NewUserForm />

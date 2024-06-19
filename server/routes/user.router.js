@@ -5,8 +5,36 @@ const {
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
-
 const router = express.Router();
+
+// Multer setup
+const multer = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'images')); // Destination folder where files will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // File naming convention
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Route for handling image upload
+router.post('/', upload.single('photo'), (req, res) => {
+  // Multer middleware will add `req.file` containing information about the uploaded file
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  // Logic to handle the uploaded file (e.g., save file path to database)
+  const filePath = req.file.path;
+  res.status(200).json({ message: 'File uploaded successfully', filePath: filePath });
+});
+
+
+
 
 // Handles Ajax request for user information if user is authenticated
 router.get('/', rejectUnauthenticated, (req, res) => {
