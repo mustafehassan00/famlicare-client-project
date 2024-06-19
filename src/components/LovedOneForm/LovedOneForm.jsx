@@ -78,7 +78,7 @@ const CreateLovedOne = () => {
           />
         );
       case 4:
-        return <LovedOne_Review onPrevStep={handlePrevStep} />;
+        return <LovedOne_Review onSubmit={handleNextStep} onPrevStep={handlePrevStep} />;
       default:
         return null;
     }
