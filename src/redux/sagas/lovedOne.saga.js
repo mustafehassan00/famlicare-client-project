@@ -50,14 +50,11 @@ function* handleError(error, failureAction) {
 function* createLovedOneSaga(action) {
   try {
     // Call the API to create a new loved one with the provided payload (action.payload)
-    const response = yield call(createLovedOneApi, action.payload);
+    const responseData = yield call(createLovedOneApi, action.payload);
 
     // Check if the API response is undefined, which indicates an issue with the API call
-    // This could be due to network issues, server downtime, or incorrect API endpoint
-    if (response === undefined) {
+    if (!responseData) {
       console.error("API response is undefined.");
-      // Dispatch a failure action with an error message
-      // This allows the application to handle the error (e.g., show an error message to the user)
       yield put({
         type: CREATE_LOVED_ONE_FAILURE,
         error: "API response is undefined",
@@ -66,40 +63,25 @@ function* createLovedOneSaga(action) {
     }
 
     // Log the API response for debugging purposes
-    // This can help in troubleshooting issues by providing insights into the data returned by the API
-    console.log("API response: ", response.data);
+    console.log("API response: ", responseData);
 
     // Destructure the necessary fields from the API response
-    // This assumes the API returns an object with id, first_name, and last_name fields
-    const { id, first_name, last_name } = response.data;
+    const { id, first_name, last_name } = responseData;
 
     // Check if both first_name and last_name are present in the API response
-    // This validation ensures that the necessary data is available before proceeding
     if (first_name && last_name) {
-      // Dispatch a success action with the relevant data
-      // This allows the application to update the state accordingly (e.g., add the new loved one to the list)
       yield put({
         type: CREATE_LOVED_ONE_SUCCESS,
         payload: { lovedOneId: id, first_name, last_name },
       });
     } else {
-      // Log an error if the necessary fields are missing in the API response
-      // This could indicate an issue with the API or the data sent in the request
-      console.error(
-        "Missing first_name or last_name in API response:",
-        response.data
-      );
-      // Dispatch a failure action with an error message
-      // This allows the application to handle the error appropriately
+      console.error("Missing first_name or last_name in API response:", responseData);
       yield put({
         type: CREATE_LOVED_ONE_FAILURE,
         error: "Missing data in API response",
       });
     }
   } catch (error) {
-    // Handle any errors that occur during the saga execution
-    // This includes API call failures, network issues, or unexpected exceptions
-    // The handleError function is called to log the error and dispatch a failure action
     yield* handleError(error, CREATE_LOVED_ONE_FAILURE);
   }
 }
