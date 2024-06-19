@@ -33,7 +33,7 @@ const CreateLovedOne = () => {
   const [modalContent, setModalContent] = useState("");
   const lovedOne = useSelector((store) => store.lovedOneReducer);
   const create_success = useSelector(
-    (state) => state.lovedOneReducer?.createdSuccessfully
+    (state) => state.lovedOne?.createdSuccessfully
   );
 
   useEffect(() => {
