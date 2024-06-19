@@ -151,7 +151,7 @@ const CreateLovedOne = () => {
             </DialogContentText>
           </DialogContent>
           <Button variant="contained" className="popup" onClick={handleClose}>
-            OK
+            Close
           </Button>
         </Dialog>
       </Box>
