@@ -30,7 +30,7 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/care-team', careTeamRouter);
 app.use('/api/care-vault', careVaultRouter);
-app.use('api/loved-one', lovedOneRouter);
+app.use('/api/loved-one', lovedOneRouter);
 app.use('/api/messages', messagesRouter);
 
 // Listen Server & Port
