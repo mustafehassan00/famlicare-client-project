@@ -33,7 +33,7 @@ const CreateLovedOne = () => {
   const [modalContent, setModalContent] = useState("");
   const lovedOne = useSelector((store) => store.lovedOneReducer);
   const create_success = useSelector(
-    (state) => state.lovedOneReducer?.createdSuccessfully
+    (state) => state.lovedOne?.createdSuccessfully
   );
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const CreateLovedOne = () => {
     //show modal on successful creation
     if (create_success) {
       setModalContent(
-        `${lovedOne.first_name} ${lovedOne.last_name} has been added with ID ${lovedOne.id}`
+        `${lovedOne?.first_name} ${lovedOne?.last_name} has been added with ID ${lovedOne?.id}`
       );
       setShowModal(true);
     }
