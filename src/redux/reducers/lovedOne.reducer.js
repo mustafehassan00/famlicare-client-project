@@ -80,7 +80,7 @@ const lovedOneReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
-        id: action.payload.lovedOneId,
+        id: action.payload.id,
         loading: false,
         createdSuccessfully:true,
       };
