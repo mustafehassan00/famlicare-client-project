@@ -43,11 +43,11 @@ const CreateLovedOne = () => {
     //show modal on successful creation
     if (create_success) {
       setModalContent(
-        `${lovedOne.first_name} ${lovedOne.last_name} has been added.`
+        `${lovedOne.first_name} ${lovedOne.last_name} has been added with ID ${lovedOne.id}`
       );
       setShowModal(true);
     }
-  }, [error, lovedOne?.first_name, lovedOne?.last_name, create_success]);
+  }, [error, lovedOne?.first_name, lovedOne?.last_name, lovedOne?.id, create_success]);
 
   const handleClose = () => {
     setShowModal(false);
