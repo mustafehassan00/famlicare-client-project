@@ -40,8 +40,11 @@ function Nav() {
           )}
           {user.id && (
             <>
-              <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+              <Button color="inherit" component={NavLink} to="/home" sx={{typography: 'h2', margin: theme.spacing(1)}}>
                 Home
+              </Button>
+              <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                User profile
               </Button>
               <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 💬 Messages
@@ -53,7 +56,7 @@ function Nav() {
                 Loved one Form
               </Button>
               <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                CareTeamForm
+                CareTeam Form
               </Button>
               <LogOutButton color="secondary" className="primary"/>
             </>
