@@ -1,8 +1,43 @@
 import React from 'react';
-import { Container, Grid, Button, Typography, useTheme } from '@mui/material';
+import { Container, Grid, Button, Typography, useTheme, Box } from '@mui/material';
 
 function Homepage() {
   const theme = useTheme();
+
+  const tileButtonStyle = {
+    height: '100px',
+    borderRadius: theme.shape.borderRadius,
+    fontWeight: 'bold',
+    fontSize: '1.2rem',
+    textTransform: 'none',
+  };
+
+  const organicButtonStyle = {
+    height: '100px',
+    borderRadius: '50% 20% / 10% 40%',
+    fontWeight: 'bold',
+    fontSize: '1.2rem',
+    textTransform: 'none',
+    position: 'relative',
+    overflow: 'hidden',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: '-10px',
+      left: '-10px',
+      right: '-10px',
+      bottom: '-10px',
+      background: 'inherit',
+      filter: 'blur(5px)',
+      zIndex: -1,
+    },
+  };
+
+  const disabledButtonStyle = {
+    backgroundColor: theme.palette.grey[300],
+    color: theme.palette.text.disabled,
+    border: `2px solid ${theme.palette.grey[400]}`,
+  };
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: theme.spacing(4) }}>
@@ -14,12 +49,11 @@ function Homepage() {
       </Typography>
       
       <Grid container spacing={3}>
-        {/* Navigation buttons */}
         <Grid item xs={6} sm={3}>
           <Button 
             variant="contained" 
             fullWidth 
-            sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}
+            sx={{ ...tileButtonStyle, backgroundColor: theme.palette.primary.main }}
           >
             User Profile
           </Button>
@@ -28,7 +62,7 @@ function Homepage() {
           <Button 
             variant="contained" 
             fullWidth 
-            sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}
+            sx={{ ...tileButtonStyle, backgroundColor: theme.palette.primary.main }}
           >
             Messages
           </Button>
@@ -37,7 +71,7 @@ function Homepage() {
           <Button 
             variant="contained" 
             fullWidth 
-            sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}
+            sx={organicButtonStyle}
           >
             CareTeam
           </Button>
@@ -46,34 +80,29 @@ function Homepage() {
           <Button 
             variant="contained" 
             fullWidth 
-            sx={{ backgroundColor: theme.palette.tertiary.main, color: theme.palette.primary.contrastText }}
+            sx={{ ...tileButtonStyle, backgroundColor: theme.palette.tertiary.main }}
           >
             CareVault
           </Button>
         </Grid>
         
-        {/* Placeholder for CareCalendar (stretch goal) */}
         <Grid item xs={12}>
           <Button 
             variant="contained" 
-            className='primary off'
             fullWidth 
             disabled 
-            sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
+            sx={{ ...tileButtonStyle, ...disabledButtonStyle }}
           >
             CareCalendar (Coming Soon)
           </Button>
         </Grid>
         
-        {/* Placeholders for CareFeed and CareMap (not included) */}
         <Grid item xs={6}>
           <Button 
             variant="contained" 
-            className='primary off'
-            
             fullWidth 
             disabled 
-            sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
+            sx={{ ...tileButtonStyle, ...disabledButtonStyle }}
           >
             CareFeed (Not Available)
           </Button>
@@ -81,10 +110,9 @@ function Homepage() {
         <Grid item xs={6}>
           <Button 
             variant="contained" 
-            className='primary off'
             fullWidth 
             disabled 
-            sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
+            sx={{ ...tileButtonStyle, ...disabledButtonStyle }}
           >
             CareMap (Not Available)
           </Button>
