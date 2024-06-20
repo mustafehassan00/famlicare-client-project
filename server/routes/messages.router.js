@@ -24,6 +24,7 @@ io.on("connection", (socket) => {
   // Gets the Id of the user connected 
   console.log("socket ID is:", socket.id)
 
+  // Joins the User into a room
   socket.on("join_room", (data) => {
     socket.join(data);
     console.log(`User ${socket.id} Joined Room: ${data}`);
