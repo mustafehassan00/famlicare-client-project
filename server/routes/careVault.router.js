@@ -63,19 +63,27 @@ router.delete("/delete/:id", async (req, res) => {
   const fileId = req.params.id;
 
   try {
-    const queryText = `
-    DELETE FROM vault 
-    WHERE id = $1;`;
-    const dbResult = await pool.query(queryText, [fileId]);
+    const selectQuery = `
+      SELECT * FROM vault 
+      WHERE id = $1;
+    `;
+    const selectResult = await pool.query(selectQuery, [fileId]);
 
-    if (dbResult.rowCount === 0) {
+    if (selectResult.rowCount === 0) {
       return res.sendStatus(404);
     }
 
-    const file = dbResult.rows[0];
+    const file = selectResult.rows[0];
+
+    const deleteQuery = `
+      DELETE FROM vault 
+      WHERE id = $1;
+    `;
+    await pool.query(deleteQuery, [fileId]);
+
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: file.attachment_URL.split("/").slice(-2).join("/"),
+      Key: `uploads/${file.originalname}`,
     };
 
     await s3.deleteObject(params).promise();
