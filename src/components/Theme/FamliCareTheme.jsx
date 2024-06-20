@@ -15,7 +15,7 @@ const generateColorVariants = (color) => ({
 
 // Define custom fonts
 const libelSuitReg = "'libel', sans-serif";
-const acuminProCondensed = "'Acumin Pro', sans-serif"; 
+const acuminProCondensed = "'Acumin Pro', sans-serif";
 const maryDale = "'Marydale', sans-serif";
 /**
  * Base colors with variants for the theme.
@@ -138,6 +138,78 @@ const theme = createTheme({
           right: 8,
           top: 8,
           color: colors.darkTeal.main,
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          // Base styles for the input
+          lineHeight: 1.6,
+          fontFamily: acuminProCondensed,
+          borderRadius: 4,
+          backgroundColor: colors.white.main,
+          border: "1px solid #ced4da",
+          fontSize: 16,
+          padding: "10px 12px",
+          "& .MuiInputBase-input::placeholder": {
+            fontFamily: acuminProCondensed,
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.light_text.main,
+          },
+          "&:hover": {
+            borderColor: "#b0bec5",
+          },
+          "&.Mui-focused": {
+            borderColor: colors.darkTeal.main,
+            boxShadow: `0 0 0 2px ${colors.darkTeal.light}`,
+          },
+          "&.Mui-error": {
+            borderColor: "#f44336",
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#e0e0e0",
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          // Similar base styles for the outlined input
+          lineHeight: 1.6,
+          fontFamily: acuminProCondensed,
+          borderRadius: 4,
+          backgroundColor: colors.white.main,
+          border: "1px solid #ced4da",
+          fontSize: 16,
+          padding: "10px 12px",
+          "& .MuiInputBase-input::placeholder": {
+            fontFamily: acuminProCondensed,
+            fontSize: 16,
+            fontWeight: "normal",
+            color: colors.light_text.main,
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#b0bec5",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: colors.darkTeal.main,
+            borderWidth: 2,
+          },
+          "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#f44336",
+          },
+          "&.Mui-disabled .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#e0e0e0",
+          },
+        },
+        notchedOutline: {
+          borderColor: "#ced4da",
+        },
+        input: {
+          padding: "10px 12px",
         },
       },
     },
