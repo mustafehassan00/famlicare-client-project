@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, take, takeLatest } from 'redux-saga/effects';
 
 function* fetchMessages() {
     try{
@@ -17,8 +17,24 @@ function* fetchMessages() {
     
 }
 
+function* fetchSentMessages(action){
+    try{
+        yield axios.post('/api/messages', action.payload);
+
+        // Emit a 'new message' event to the client
+        socket.emit('new message', action.payload);
+
+        yield put ({
+            type:'SEND_MESSAGE'
+        })
+    } catch (error) {
+        console.log('Error In fetchSentMessages', error)
+    }
+}
+
 function* messagesSaga() {
   yield takeLatest('FETCH_MESSAGES', fetchMessages);
+  yield takeLatest ('FETCH_SENT_MESSAGES', fetchSentMessages);
 }
 
 export default messagesSaga;
