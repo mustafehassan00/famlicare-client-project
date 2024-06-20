@@ -20,7 +20,7 @@ function UserPage() {
       </Typography>
       {/* Assuming LogOutButton can accept MUI Button props */}
       <LogOutButton 
-        className="btn" 
+        className="primary on" 
         component={Button} 
         sx={{ marginTop: theme.spacing(2) }}
       />
