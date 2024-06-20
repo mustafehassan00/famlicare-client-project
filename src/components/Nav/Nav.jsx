@@ -1,61 +1,66 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import LogOutButton from "../LogOutButton/LogOutButton";
+// import "./Nav.css";
+import { useSelector } from "react-redux";
+import { AppBar, Toolbar, Box, Button, useTheme } from "@mui/material";
+import famliCareLogo from './PRIMARY_Horiz.png';
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const theme = useTheme();
 
   return (
-    <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
-      </Link>
-      <div>
-        {/* If no user is logged in, show these links */}
-        {!user.id && (
-          // If there's no user, show login/registration links
-          <Link className="navLink" to="/login">
-            Login / Register
-          </Link>
-        )}
-
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
-            <Link className="navLink" to="/user">
-              Home
-            </Link>
-
-            <Link className="navLink" to="/messages">
-              💬 Messages
-            </Link>
-
-            <Link className="navLink" to="/info">
-              Info Page
-            </Link>
-
-            <Link className="navLink" to="/lovedoneform">
-              Loved one form
-            </Link>
-
-            <Link className="navLink" to="/careteamform">
-              CareTeamForm
-            </Link>
-
-            <LogOutButton className="navLink" />
-          </>
-        )}
-
-        <Link className="navLink" to="/about">
-          About
-        </Link>
-
-
-
-      </div>
-    </div>
+    <AppBar
+      position="static"
+      color="primary"
+      sx={{ marginBottom: theme.spacing(2) }}
+    >
+      <Toolbar>
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center"}}>
+          <NavLink
+            to="/home"
+            style={{
+              textDecoration: "none",
+              color: theme.palette.text.primary,
+            }}
+          >
+            <img
+              src={famliCareLogo}
+              alt="FamliCare Logo"
+              style={{ maxHeight: "100px", backgroundColor: "white", borderRadius: 18}}
+            />
+          </NavLink>
+        </Box>
+        <Box>
+          {!user.id && (
+            <Button color="inherit" component={NavLink} to="/login" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+              Login / Register
+            </Button>
+          )}
+          {user.id && (
+            <>
+              <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Home
+              </Button>
+              <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                💬 Messages
+              </Button>
+              <Button color="inherit" component={NavLink} to="/info" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Info Page
+              </Button>
+              <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Loved one Form
+              </Button>
+              <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                CareTeamForm
+              </Button>
+              <LogOutButton color="inherit" />
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
 

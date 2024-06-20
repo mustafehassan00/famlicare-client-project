@@ -1,21 +1,26 @@
 import { createTheme } from "@mui/material/styles";
 import { lighten, darken } from "@mui/system/colorManipulator";
 
-// Utility function to generate color variants for a base color.
-// This includes the main color, a lighter variant, and a darker variant for hover states.
+/**
+ * Utility function to generate color variants for a base color.
+ * This includes the main color, a lighter variant, and a darker variant for hover states.
+ * @param {string} color - The base color in hex format.
+ * @returns {Object} An object containing the main, light, and dark variants of the base color.
+ */
 const generateColorVariants = (color) => ({
   main: color,
   light: lighten(color, 0.3), // Generates a lighter variant of the base color.
   dark: darken(color, 0.1), // Generates a darker variant of the base color for hover states.
 });
 
-// define custom fonts
-const libelSuitReg = '"Libel-Suit Reg.", sans-serif';
-const acuminProCondensed = '"Acumin Pro Condensed", sans-serif';
-const maryDale = '"MaryDale", sans-serif';
-
-// Base colors with variants for the theme.
-// This includes primary, secondary, tertiary colors, and specific text colors.
+// Define custom fonts
+const libelSuitReg = "'libel', sans-serif";
+const acuminProCondensed = "'Acumin Pro', sans-serif"; 
+const maryDale = "'Marydale', sans-serif";
+/**
+ * Base colors with variants for the theme.
+ * This includes primary, secondary, tertiary colors, and specific text colors.
+ */
 const colors = {
   darkTeal: generateColorVariants("#2a788b"), // Used as the primary color.
   orange: generateColorVariants("#eaac60"), // Used as the secondary color.
@@ -25,10 +30,13 @@ const colors = {
   light_text: generateColorVariants("#98A9AE"), // Used for lighter text.
   text: generateColorVariants("#889BA1"), // Used for general text.
   title_text: generateColorVariants("#69878E"), // Used for titles.
-  white: "#fff",
+  white: "#fff", // Used for backgrounds and elements requiring a white color.
 };
 
-// Defines the theme with a custom color palette and typography settings.
+/**
+ * Defines the theme with a custom color palette and typography settings.
+ * The theme configuration includes palette colors, typography variants, and component overrides.
+ */
 const theme = createTheme({
   palette: {
     primary: colors.darkTeal,
@@ -43,43 +51,14 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: `${libelSuitReg}, ${acuminProCondensed}, ${maryDale}`,
-    h1: { fontSize: "2.5rem", fontFamily: libelSuitReg }, // Style for h1 tags.
-    h2: { fontWeight: 500, fontSize: "1.5em", fontFamily: libelSuitReg }, // Style for h2 tags.
+    h1: { fontSize: "2.5rem", fontFamily: libelSuitReg },
+    h2: { fontWeight: 500, fontSize: "1.5em", fontFamily: libelSuitReg },
     h3: { fontWeight: 500, fontSize: "1em", fontFamily: libelSuitReg },
-    body1: { lineHeight: 1.6, fontFamily: acuminProCondensed }, // Style for body text.
-    callout: { fontFamily: libelSuitReg }, // Custom style for callouts.
-    feature: { fontFamily: maryDale }, // Custom style for featured text.
+    body1: { lineHeight: 1.6, fontFamily: acuminProCondensed },
+    callout: { fontFamily: libelSuitReg },
+    feature: { fontFamily: maryDale },
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-        @font-face {
-          font-family: 'Libel-suit Reg';
-          src: url('/fonts/libel-suit-rg.otf') format('opentype');
-          font-weight: normal;
-          font-style: normal;
-        }
-          @font-face {
-          font-family: 'Acumin Pro Condensed';
-          src: url('/fonts/Acumin-BdItPro.otf') format('opentype'),
-               url('/fonts/Acumin-BdPro.otf') format('opentype'),
-               url('/fonts/Acumin-BdItPro.otf') format('opentype'),
-               url('/fonts/Acumin-ItPro.otf') format ('opentype'),
-               url('/fonts/Acumin-RPro.otf') format ('opentype');
-          font-weight: normal;
-          font-style: normal;
-        }
-
-        @font-face {
-          font-family: 'MaryDale';
-          src: url('/fonts/fonnts.com-Marydale-Black.otf') format('opentype'),
-               url('/fonts/fonnts.com-Marydale-Bold.otf') format('opentype'),
-               url('/fonts/fonnts.com-Marydale-Regular.otf') format('opentype'),;
-          font-weight: normal;
-          font-style: normal;
-        }
-      `,
-    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -90,7 +69,7 @@ const theme = createTheme({
         contained: {
           borderRadius: 18,
           "&.primary": {
-            backgroundColor: colors.orange.main, // Note: This applies the secondary color to primary variant buttons, in this case, orange
+            backgroundColor: colors.orange.main, // Applies the secondary color to primary variant buttons, in this case, orange
             color: colors.white,
             "&:hover": { backgroundColor: colors.orange.dark },
             "&.off": {
@@ -152,14 +131,16 @@ const theme = createTheme({
         },
       },
     },
-    MuiIconButton: { styleOverrides: {
-      root: {
-        position: 'absolute',
-        right: 8,
-        top: 8,
-        color: colors.darkTeal.main,
-      }
-    } },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: colors.darkTeal.main,
+        },
+      },
+    },
   },
 });
 

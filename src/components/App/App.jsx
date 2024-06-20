@@ -29,7 +29,7 @@ import LovedOneForm from "../LovedOneForm/LovedOneForm";
 import Messages from "../Messages/Messages";
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
-import theme from "../Theme/FamiliCareTheme";
+import theme from "../Theme/FamliCareTheme";
 // Step components for registration process
 import RegisterPage from '../RegisterPage/RegisterPage';
 import RegisterPage1 from '../RegisterPage/RegisterPage1';
