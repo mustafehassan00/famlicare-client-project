@@ -14,9 +14,9 @@ const generateColorVariants = (color) => ({
 });
 
 // Define custom fonts
-const libelSuitReg = '"Libel-Suit Reg", sans-serif';
-const acuminProCondensed = '"Acumin Pro Condensed", sans-serif';
-const maryDale = '"MaryDale", sans-serif';
+const libelSuitReg = "'Libel-Suit Reg', sans-serif";
+const acuminProCondensed = "'Acumin Pro Condensed', sans-serif";
+const maryDale = "'MaryDale', sans-serif";
 
 /**
  * Base colors with variants for the theme.
@@ -52,12 +52,12 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: `${libelSuitReg}, ${acuminProCondensed}, ${maryDale}`,
-    h1: { fontSize: "2.5rem", fontFamily: libelSuitReg }, // Style for h1 tags.
-    h2: { fontWeight: 500, fontSize: "1.5em", fontFamily: libelSuitReg }, // Style for h2 tags.
+    h1: { fontSize: "2.5rem", fontFamily: libelSuitReg },
+    h2: { fontWeight: 500, fontSize: "1.5em", fontFamily: libelSuitReg },
     h3: { fontWeight: 500, fontSize: "1em", fontFamily: libelSuitReg },
-    body1: { lineHeight: 1.6, fontFamily: acuminProCondensed }, // Style for body text.
-    callout: { fontFamily: libelSuitReg }, // Custom style for callouts.
-    feature: { fontFamily: maryDale }, // Custom style for featured text.
+    body1: { lineHeight: 1.6, fontFamily: acuminProCondensed },
+    callout: { fontFamily: libelSuitReg },
+    feature: { fontFamily: maryDale },
   },
   components: {
     MuiButton: {
@@ -135,12 +135,12 @@ const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          position: 'absolute',
+          position: "absolute",
           right: 8,
           top: 8,
           color: colors.darkTeal.main,
-        }
-      }
+        },
+      },
     },
   },
 });
