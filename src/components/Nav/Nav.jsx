@@ -4,6 +4,7 @@ import LogOutButton from "../LogOutButton/LogOutButton";
 // import "./Nav.css";
 import { useSelector } from "react-redux";
 import { AppBar, Toolbar, Box, Button, useTheme } from "@mui/material";
+import famliCareLogo from './PRIMARY_Horiz.png';
 
 function Nav() {
   const user = useSelector((store) => store.user);
@@ -12,11 +13,11 @@ function Nav() {
   return (
     <AppBar
       position="static"
-      color="default"
+      color="primary"
       sx={{ marginBottom: theme.spacing(2) }}
     >
       <Toolbar>
-        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center"}}>
           <NavLink
             to="/home"
             style={{
@@ -25,33 +26,33 @@ function Nav() {
             }}
           >
             <img
-              src="./PRIMARY_Horiz.png"
+              src={famliCareLogo}
               alt="FamliCare Logo"
-              style={{ maxHeight: "50px" }}
+              style={{ maxHeight: "50px", backgroundColor: "white"}}
             />
           </NavLink>
         </Box>
         <Box>
           {!user.id && (
-            <Button color="inherit" component={NavLink} to="/login">
+            <Button color="inherit" component={NavLink} to="/login" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
               Login / Register
             </Button>
           )}
           {user.id && (
             <>
-              <Button color="inherit" component={NavLink} to="/user">
+              <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 Home
               </Button>
-              <Button color="inherit" component={NavLink} to="/messages">
+              <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 💬 Messages
               </Button>
-              <Button color="inherit" component={NavLink} to="/info">
+              <Button color="inherit" component={NavLink} to="/info" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 Info Page
               </Button>
-              <Button color="inherit" component={NavLink} to="/lovedoneform">
+              <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 Loved one Form
               </Button>
-              <Button color="inherit" component={NavLink} to="/careteamform">
+              <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 CareTeamForm
               </Button>
               <LogOutButton color="inherit" />
