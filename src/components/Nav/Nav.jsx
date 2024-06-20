@@ -28,7 +28,7 @@ function Nav() {
             <img
               src={famliCareLogo}
               alt="FamliCare Logo"
-              style={{ maxHeight: "50px", backgroundColor: "white"}}
+              style={{ maxHeight: "100px", backgroundColor: "white", borderRadius: 18}}
             />
           </NavLink>
         </Box>
