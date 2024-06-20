@@ -43,7 +43,7 @@ console.log("What we received from the reducer",registerReducer);
 <br></br>
 {registerReducer.phoneNumber}
 <br></br>
-{registerReducer.image}
+{/* {registerReducer.image} */}
 
         <div>
           <input className="btn" type="submit" name="submit" value="Register" />

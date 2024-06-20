@@ -6,23 +6,34 @@ import { useHistory } from "react-router-dom";
 function RegisterForm2() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold selected file
   const history = useHistory();
+  const dispatch = useDispatch();
+
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Capture the selected file and save it to selectedFile variable
   };
 
   const continueRegistration = async () => {
-    // //if a file is not selected alert to select a file.
+    //if a file is not selected alert to select a file.
     if (!selectedFile) {
       alert("Please select a file.");
       return;
     }
 
-    try {
-    
+// Append the file to FormData ie add selected photo formData variable
+    const formData = new FormData();
+    formData.append("photo", selectedFile); 
+
+// dispatch the photo upload
+dispatch({
+  // type: 'POST_PHOTO',
+  type: "IMAGE",
+  payload: {
+    selectedFile: formData
+  },
+});
       // Dispatch action or handle state update if needed
       history.push("/registerpage/registerpage3");
-    } 
   };
 
   return (

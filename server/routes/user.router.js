@@ -7,7 +7,7 @@ const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
 const router = express.Router();
 
-// Multer setup
+// Multer setup for file upload
 const multer = require('multer');
 const path = require('path');
 const storage = multer.diskStorage({
@@ -22,17 +22,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Route for handling image upload
-router.post('/', upload.single('photo'), (req, res) => {
-  // Multer middleware will add `req.file` containing information about the uploaded file
-  if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded' });
-  }
+// // Route for handling image upload ❌
+// router.post('/', upload.single('photo'), (req, res) => {
+//   // Multer middleware will add `req.file` containing information about the uploaded file
+//   if (!req.file) {
+//     return res.status(400).json({ message: 'No file uploaded' });
+//   }
 
-  // Logic to handle the uploaded file (e.g., save file path to database)
-  const filePath = req.file.path;
-  res.status(200).json({ message: 'File uploaded successfully', filePath: filePath });
-});
+//   // Logic to handle the uploaded file (e.g., save file path to database)
+//   const filePath = req.file.path;
+//   res.status(200).json({ message: 'File uploaded successfully', filePath: filePath });
+// });
 
 
 
@@ -46,7 +46,16 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', (req, res, next) => {
+router.post('/register', upload.single('photo'), (req, res, next) => {
+
+  // Multer middleware will add `req.file` containing information about the uploaded file
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+   // Logic to handle the uploaded file (e.g., save file path to database)
+   const filePath = req.file.path;
+
   const username = req.body.registerReducer.username;
   const firstName = req.body.registerReducer.firstName;
   const lastName = req.body.registerReducer.lastName;
