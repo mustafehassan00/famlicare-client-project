@@ -46,7 +46,7 @@ function Homepage() {
           <Button 
             variant="contained" 
             fullWidth 
-            sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}
+            sx={{ backgroundColor: theme.palette.tertiary.main, color: theme.palette.primary.contrastText }}
           >
             CareVault
           </Button>
@@ -55,7 +55,8 @@ function Homepage() {
         {/* Placeholder for CareCalendar (stretch goal) */}
         <Grid item xs={12}>
           <Button 
-            variant="outlined" 
+            variant="contained" 
+            className=''
             fullWidth 
             disabled 
             sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
@@ -67,17 +68,17 @@ function Homepage() {
         {/* Placeholders for CareFeed and CareMap (not included) */}
         <Grid item xs={6}>
           <Button 
-            variant="outlined" 
+            variant="contained"             
             fullWidth 
             disabled 
-            sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
-          >
+            sx={{ backgroundColor: "#3495ad", color: theme.palette.common.white}}>
             CareFeed (Not Available)
           </Button>
         </Grid>
         <Grid item xs={6}>
           <Button 
-            variant="outlined" 
+            variant="contained" 
+            className='primary off'
             fullWidth 
             disabled 
             sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
