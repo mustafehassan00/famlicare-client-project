@@ -14,10 +14,9 @@ const generateColorVariants = (color) => ({
 });
 
 // Define custom fonts
-const libelSuitReg = "'Libel-Suit Reg', sans-serif";
-const acuminProCondensed = "'Acumin Pro Condensed', sans-serif";
-const maryDale = "'MaryDale', sans-serif";
-
+const libelSuitReg = "'libel', sans-serif";
+const acuminProCondensed = "'Acumin Pro', sans-serif"; 
+const maryDale = "'Marydale', sans-serif";
 /**
  * Base colors with variants for the theme.
  * This includes primary, secondary, tertiary colors, and specific text colors.

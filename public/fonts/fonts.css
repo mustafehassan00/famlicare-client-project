@@ -1,57 +1,69 @@
+/* Acumin Font Family */
+/* Ensure the font files are correctly placed relative to the CSS file to avoid loading issues. */
+@font-face {
+  font-family: 'Acumin Pro';
+  src: url('./Acumin-BdItPro.otf') format('opentype');
+  font-weight: bold; /* 'bold' for bold text. Standard CSS value. */
+  font-style: italic; /* 'italic' for italicized text. Standard CSS value. */
+}
 
-    @font-face {
-      font-family: 'Acumin';
-      src: url('./Acumin-BdItPro.otf') format('opentype');
-      font-weight: BdItPro;
-      font-style: normal;
-    }
-  
-    @font-face {
-      font-family: 'Acumin';
-      src: url('./Acumin-BdPro.otf') format('opentype');
-      font-weight: BdPro;
-      font-style: normal;
-    }
-  
-    @font-face {
-      font-family: 'Acumin';
-      src: url('./Acumin-ItPro.otf') format('opentype');
-      font-weight: ItPro;
-      font-style: normal;
-    }
-  
-    @font-face {
-      font-family: 'Acumin';
-      src: url('./Acumin-RPro.otf') format('opentype');
-      font-weight: RPro;
-      font-style: normal;
-    }
-  
-    @font-face {
-      font-family: 'fonnts.com';
-      src: url('./fonnts.com-Marydale-Black.otf') format('opentype');
-      font-weight: Marydale;
-      font-style: Black;
-    }
-  
-    @font-face {
-      font-family: 'fonnts.com';
-      src: url('./fonnts.com-Marydale-Bold.otf') format('opentype');
-      font-weight: Marydale;
-      font-style: Bold;
-    }
-  
-    @font-face {
-      font-family: 'fonnts.com';
-      src: url('./fonnts.com-Marydale-Regular.otf') format('opentype');
-      font-weight: Marydale;
-      font-style: Regular;
-    }
-  
-    @font-face {
-      font-family: 'libel';
-      src: url('./libel-suit-rg.otf') format('opentype');
-      font-weight: suit;
-      font-style: rg;
-    }
-  
+@font-face {
+  font-family: 'Acumin Pro';
+  src: url('./Acumin-BdPro.otf') format('opentype');
+  font-weight: bold; /* Bold text without italics. */
+  font-style: normal; /* Default style for non-italicized text. */
+}
+
+@font-face {
+  font-family: 'Acumin Pro';
+  src: url('./Acumin-ItPro.otf') format('opentype');
+  font-weight: normal; /* Standard weight for regular text. */
+  font-style: italic; /* Italicized text without bold. */
+}
+
+@font-face {
+  font-family: 'Acumin Pro';
+  src: url('./Acumin-RPro.otf') format('opentype');
+  font-weight: normal; /* Regular text. */
+  font-style: normal; /* Default style, neither bold nor italic. */
+}
+
+/* Marydale Font Family */
+/* Check for correct file paths and ensure there are no typos in the file names. */
+@font-face {
+  font-family: 'Marydale';
+  src: url('./fonnts.com-Marydale-Black.otf') format('opentype');
+  font-weight: bolder; /* Use for the heaviest available weight. */
+  font-style: normal; /* Standard style, not italicized. */
+}
+
+@font-face {
+  font-family: 'Marydale';
+  src: url('./fonnts.com-Marydale-Bold.otf') format('opentype');
+  font-weight: bold; /* Bold text. */
+  font-style: normal; /* Default style, not italicized. */
+}
+
+@font-face {
+  font-family: 'Marydale';
+  src: url('./fonnts.com-Marydale-Regular.otf') format('opentype');
+  font-weight: normal; /* Regular weight for standard text. */
+  font-style: normal; /* Default style, neither bold nor italic. */
+}
+
+/* Libel Suit Font Family */
+/* Ensure the 'libel-suit-rg.otf' file is correctly named and placed. */
+@font-face {
+  font-family: 'libel';
+  src: url('./libel-suit-rg.otf') format('opentype');
+  /* 'font-weight' and 'font-style' values below are placeholders and need correction. */
+  font-weight: normal; /* Adjusted to 'normal' as 'suit' is not a valid value. */
+  font-style: normal; /* Adjusted to 'normal' as 'rg' suggests regular, which is not a style. */
+}
+
+/* Troubleshooting Tips: */
+/* 1. If fonts do not display as expected, first check the network tab in your browser's developer tools to ensure the font files are loading correctly. */
+/* 2. Ensure there are no Cross-Origin Resource Sharing (CORS) issues when loading fonts from a different domain. */
+/* 3. Verify the paths to font files are correct relative to the CSS file. */
+/* 4. Regularly check for updates to your fonts to include new glyphs or improved rendering. */
+/* 5. Use the 'font-display' CSS property to control how fonts display depending on loading times. */
