@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { io } from 'socket.io-client';
+import Chat from "./chat";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -58,8 +59,9 @@ const joinRoom = () =>{
             onChange={handleRoomIDChange}
              />
             <button onClick={joinRoom}>Join Room</button>
+            <Chat socket = {socket} username= {username} room = {room}/>
         </div>
-    )
+    );
 }
 
 export default Messages;
