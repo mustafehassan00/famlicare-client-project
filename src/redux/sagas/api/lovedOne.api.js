@@ -30,7 +30,7 @@ export const createLovedOneApi = async (lovedOneData) => {
     const requestUrl = `${baseURL}`;
     console.log(`Request URL: ${requestUrl}`, `Data being sent:`, lovedOneData);
     const response = await axios.post(requestUrl, lovedOneData);
-    console.log(response.data);
+    console.log("API Response Data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error in createLovedOneApi:", error);
