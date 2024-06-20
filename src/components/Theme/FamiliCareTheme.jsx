@@ -144,6 +144,22 @@ const theme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: "16px",
+          padding: "20px",
+        },
+      },
+    },
+    MuiIconButton: { styleOverrides: {
+      root: {
+        position: 'absolute',
+        right: 8,
+        top: 8,
+        color: colors.darkTeal.main,
+      }
+    } },
   },
 });
 
