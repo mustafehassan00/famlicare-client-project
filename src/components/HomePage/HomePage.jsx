@@ -56,7 +56,7 @@ function Homepage() {
         <Grid item xs={12}>
           <Button 
             variant="contained" 
-            className=''
+            className='primary off'
             fullWidth 
             disabled 
             sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
@@ -68,10 +68,13 @@ function Homepage() {
         {/* Placeholders for CareFeed and CareMap (not included) */}
         <Grid item xs={6}>
           <Button 
-            variant="contained"             
+            variant="contained" 
+            className='primary off'
+            
             fullWidth 
             disabled 
-            sx={{ backgroundColor: "#3495ad", color: theme.palette.common.white}}>
+            sx={{ borderColor: theme.palette.secondary.main, color: theme.palette.secondary.main }}
+          >
             CareFeed (Not Available)
           </Button>
         </Grid>
