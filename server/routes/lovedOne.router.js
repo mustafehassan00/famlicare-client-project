@@ -39,40 +39,47 @@ router.post(
   "/",
   rejectUnauthenticated,
   [
+    // Validate all fields as per the database schema
     body("first_name").trim().isString().withMessage("First name must be a string").isLength({ max: 100 }).withMessage("First name must be less than 100 characters").notEmpty().withMessage("First name is required"),
     body("last_name").trim().isString().withMessage("Last name must be a string").isLength({ max: 100 }).withMessage("Last name must be less than 100 characters").notEmpty().withMessage("Last name is required"),
+    body("age").optional().isInt({ min: 0 }).withMessage("Age must be a positive integer"),
+    body("main_condition").optional().trim().isString().withMessage("Main condition must be a string"),
+    body("street_address").optional().trim().isString().withMessage("Street address must be a string").isLength({ max: 255 }),
+    body("street_address2").optional().trim().isString().withMessage("Street address 2 must be a string").isLength({ max: 255 }),
+    body("city").optional().trim().isString().withMessage("City must be a string").isLength({ max: 255 }),
+    body("state_province").optional().trim().isString().withMessage("State/Province must be a string").isLength({ max: 255 }),
+    body("country").optional().trim().isString().withMessage("Country must be a string").isLength({ max: 255 }),
+    body("postal_code").optional().trim().isString().withMessage("Postal code must be a string").isLength({ max: 100 }),
   ],
   async (req, res) => {
-    const errors = validationResult(req); // Check for validation errors
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // Return errors if validation fails
       return res.status(400).json({ errors: errors.array() });
     }
-    const { first_name, last_name } = req.body;
-    const userId = req.user.id; // Assuming req.user is populated from authentication middleware
 
-    const client = await pool.connect(); // Start a database client from the pool
+    const { first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code } = req.body;
+    const userId = req.user.id;
+
+    const client = await pool.connect();
 
     try {
-      await client.query("BEGIN"); // Begin the transaction
+      await client.query("BEGIN");
 
-      const insertSQLText = `INSERT INTO loved_ones(first_name, last_name) VALUES ($1, $2) RETURNING id;`; // SQL query to insert a new loved one
-      const insertResult = await client.query(insertSQLText, [first_name, last_name]);
-      const lovedOneId = insertResult.rows[0].id; // Retrieve the new loved one's ID
+      const insertSQLText = `
+        INSERT INTO loved_ones(first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;`;
+      const insertResult = await client.query(insertSQLText, [first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code]);
+      const lovedOne = insertResult.rows[0];
 
-      const updateSQL = `UPDATE "user" SET loved_one_id = $1, is_admin=true WHERE id = $2;`; // SQL query to update the user with the new loved one's ID, and toggle admin
-      await client.query(updateSQL, [lovedOneId, userId]);
-
-      await client.query("COMMIT"); // Commit the transaction
-      // Respond with success message
-      res.status(200).json({ lovedOneId: lovedOneId, first_name: first_name, last_name: last_name});
-      console.log(lovedOneId, first_name, last_name); // Log for troubleshooting
+      await client.query("COMMIT");
+      res.status(200).json(lovedOne);
+      console.log(lovedOne); // Log the entire loved one object
     } catch (error) {
-      await client.query("ROLLBACK"); // Roll back the transaction on error
-      console.error("Error in transaction inserting loved one: ", error); // Log for maintenance
-      res.sendStatus(500); // Respond with server error on failure
+      await client.query("ROLLBACK");
+      console.error("Error in transaction inserting loved one: ", error);
+      res.sendStatus(500);
     } finally {
-      client.release(); // Release the client back to the pool
+      client.release();
     }
   }
 );

@@ -30,7 +30,6 @@ import {
   removeLovedOneApi,
 } from "./api/lovedOne.api";
 
-
 // Centralized error handling function for sagas
 // Logs error to console and dispatches appropriate failure action
 // If error is 401 (Unauthorized), dispatches AUTHORIZATION_FAILURE action
@@ -45,53 +44,54 @@ function* handleError(error, failureAction) {
   }
 }
 
-// Saga to handle creation of a loved one
+/// Saga to handle creation of a loved one
 // Dispatches success or failure actions based on API call result
 function* createLovedOneSaga(action) {
   try {
-    const response = yield call(createLovedOneApi, action.payload);
-    // Check if the response is undefined
-    if (response === undefined) {
+    // Call the API to create a new loved one with the provided payload (action.payload)
+    const responseData = yield call(createLovedOneApi, action.payload);
+
+    // Check if the API response is undefined, which indicates an issue with the API call
+    if (!responseData) {
       console.error("API response is undefined.");
       yield put({
         type: CREATE_LOVED_ONE_FAILURE,
         error: "API response is undefined",
       });
-      return; // Exit the saga if the response is undefined
+      return; // Exit the saga if the API response is undefined
     }
 
-    console.log("API response: ", response.data);
+    // Log the API response for debugging purposes
+    console.log("API response: ", responseData);
 
-    if (response.data && typeof response.data === "object") {
-      const lovedOneData = response.data;
+    // Destructure the necessary fields from the API response
+    const { id, first_name, last_name } = responseData;
 
-      if ("id" in lovedOneData || "lovedOneId" in lovedOneData) {
-        const lovedOneId = lovedOneData.id || lovedOneData.lovedOneId;
-        const first_name = lovedOneData.first_name;
-        const last_name = lovedOneData.last_name;
+    console.log(
+      `Extracted Data - ID: ${id}, First Name: ${first_name}, Last Name: ${last_name}`
+    );
 
-        if (first_name && last_name) {
-          yield put({
-            type: CREATE_LOVED_ONE_SUCCESS,
-            payload: { lovedOneId, first_name, last_name },
-          });
-        } else {
-          console.error(
-            "Missing first_name or last_name in API response:",
-            lovedOneData
-          );
-          yield put({
-            type: CREATE_LOVED_ONE_FAILURE,
-            error: "Missing data in API response",
-          });
-        }
-      } else {
-        console.error("Missing id/lovedOneId in API response:", lovedOneData);
-        yield put({
-          type: CREATE_LOVED_ONE_FAILURE,
-          error: "Missing id in API response",
-        });
-      }
+    // Check if both first_name and last_name are present in the API response
+    if (first_name && last_name) {
+      // Log the payload being dispatched
+      console.log("Dispatching CREATE_LOVED_ONE_SUCCESS with payload:", {
+        id,
+        first_name,
+        last_name,
+      });
+      yield put({
+        type: CREATE_LOVED_ONE_SUCCESS,
+        payload: { id, first_name, last_name },
+      });
+    } else {
+      console.error(
+        "Missing first_name or last_name in API response:",
+        responseData
+      );
+      yield put({
+        type: CREATE_LOVED_ONE_FAILURE,
+        error: "Missing data in API response",
+      });
     }
   } catch (error) {
     yield* handleError(error, CREATE_LOVED_ONE_FAILURE);
@@ -101,7 +101,7 @@ function* createLovedOneSaga(action) {
 // Saga to handle updates to a loved one
 
 // Selector to get lovedOneId from the state
-const getLovedOneId = state => state.lovedOne.id;
+const getLovedOneId = (state) => state.lovedOne.id;
 
 function* updateLovedOneSaga(action) {
   try {
@@ -116,7 +116,11 @@ function* updateLovedOneSaga(action) {
     const payloadForAPI = { loved_one_id: stateLovedOneId, ...updates };
 
     // Use the structured payload in the API call
-    const response = yield call(updateLovedOneApi, stateLovedOneId, payloadForAPI);
+    const response = yield call(
+      updateLovedOneApi,
+      stateLovedOneId,
+      payloadForAPI
+    );
 
     // Dispatch the success action with the updated loved one data
     yield put({ type: UPDATE_LOVED_ONE_SUCCESS, payload: response.data });
@@ -154,7 +158,7 @@ function* storeLovedOneNameInfoSaga(action) {
     // Simulate success scenario
     const { first_name, last_name } = action.payload;
     if (!first_name || !last_name) {
-      throw new Error('Missing name information');
+      throw new Error("Missing name information");
     }
     yield put({
       type: STORE_LOVED_ONE_NAME_INFO_SUCCESS,
@@ -172,13 +176,13 @@ function* storeLovedOneNameInfoSaga(action) {
 function* storeLovedOneAddressInfoSaga(action) {
   try {
     // Simulate success scenario
-    const { address } = action.payload;
+    const address = action.payload;
     if (!address) {
-      throw new Error('Missing address information');
+      throw new Error("Missing address information");
     }
     yield put({
       type: STORE_LOVED_ONE_ADDRESS_INFO_SUCCESS,
-      payload: { address },
+      payload: { ...address },
     });
   } catch (error) {
     yield put({
@@ -192,13 +196,15 @@ function* storeLovedOneAddressInfoSaga(action) {
 function* storeLovedOneDetailInfoSaga(action) {
   try {
     // Simulate success scenario
-    const { details } = action.payload;
+    const details = action.payload;
+    console.log(action.payload);
+    console.log(details);
     if (!details) {
-      throw new Error('Missing detail information');
+      throw new Error("Missing detail information");
     }
     yield put({
       type: STORE_LOVED_ONE_DETAIL_INFO_SUCCESS,
-      payload: { details },
+      payload: { ...details },
     });
   } catch (error) {
     yield put({
@@ -215,7 +221,16 @@ export default function* rootSaga() {
   yield takeLatest(UPDATE_LOVED_ONE_REQUEST, updateLovedOneSaga);
   yield takeLatest(GET_LOVED_ONE_REQUEST, getLovedOneSaga);
   yield takeLatest(REMOVE_LOVED_ONE_REQUEST, removeLovedOneSaga);
-  yield takeLatest(STORE_LOVED_ONE_NAME_INFO_REQUEST, storeLovedOneNameInfoSaga);
-  yield takeLatest(STORE_LOVED_ONE_ADDRESS_INFO_REQUEST, storeLovedOneAddressInfoSaga);
-  yield takeLatest(STORE_LOVED_ONE_DETAIL_INFO_REQUEST, storeLovedOneDetailInfoSaga);
+  yield takeLatest(
+    STORE_LOVED_ONE_NAME_INFO_REQUEST,
+    storeLovedOneNameInfoSaga
+  );
+  yield takeLatest(
+    STORE_LOVED_ONE_ADDRESS_INFO_REQUEST,
+    storeLovedOneAddressInfoSaga
+  );
+  yield takeLatest(
+    STORE_LOVED_ONE_DETAIL_INFO_REQUEST,
+    storeLovedOneDetailInfoSaga
+  );
 }
