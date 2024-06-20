@@ -56,6 +56,8 @@ const theme = createTheme({
         @font-face {
           font-family: 'Libel-suit Reg';
           src: url('../../../public/fonts/libel-suit-rg.otf') format('opentype');
+          src: url('../../../public/fonts/libel-suit-rg.ttf') format('truetype');
+
           font-weight: normal;
           font-style: normal;
         }

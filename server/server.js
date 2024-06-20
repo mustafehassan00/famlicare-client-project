@@ -32,7 +32,7 @@ app.use('/api/care-team', careTeamRouter);
 app.use('/api/care-vault', careVaultRouter);
 app.use('/api/loved-one', lovedOneRouter);
 app.use('/api/messages', messagesRouter);
-
+app.use('/fonts', express.static(path.join(__dirname, '../../public/fonts')));
 
 
 
