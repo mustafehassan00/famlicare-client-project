@@ -41,23 +41,7 @@ function generateFontsCSS() {
   cssContent += listFontsAndGenerateCSS(webFontsDir);
 
   // Write the CSS content to a file or use it directly in your project
-  fs.writeFileSync(path.join(__dirname, 'public/fonts/fonts.css'), cssContent);
+  fs.writeFileSync(path.join(__dirname, '../../public/fonts/fonts.css'), cssContent);
 }
 
 generateFontsCSS();
-
-/**
- * GET route template
- */
-router.get('/', (req, res) => {
-  // GET route code here
-});
-
-/**
- * POST route template
- */
-router.post('/', (req, res) => {
-  // POST route code here
-});
-
-module.exports = router;
