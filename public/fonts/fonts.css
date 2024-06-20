@@ -1,0 +1,57 @@
+
+    @font-face {
+      font-family: 'Acumin';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/Acumin-BdItPro.otf') format('opentype');
+      font-weight: BdItPro;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'Acumin';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/Acumin-BdPro.otf') format('opentype');
+      font-weight: BdPro;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'Acumin';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/Acumin-ItPro.otf') format('opentype');
+      font-weight: ItPro;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'Acumin';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/Acumin-RPro.otf') format('opentype');
+      font-weight: RPro;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'fonnts.com';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/fonnts.com-Marydale-Black.otf') format('opentype');
+      font-weight: Marydale;
+      font-style: Black;
+    }
+  
+    @font-face {
+      font-family: 'fonnts.com';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/fonnts.com-Marydale-Bold.otf') format('opentype');
+      font-weight: Marydale;
+      font-style: Bold;
+    }
+  
+    @font-face {
+      font-family: 'fonnts.com';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/fonnts.com-Marydale-Regular.otf') format('opentype');
+      font-weight: Marydale;
+      font-style: Regular;
+    }
+  
+    @font-face {
+      font-family: 'libel';
+      src: url('/Users/jasonking-lowe/documents/primeHomework/familicare/famlicare-client-project/public/fonts/libel-suit-rg.otf') format('opentype');
+      font-weight: suit;
+      font-style: rg;
+    }
+  
