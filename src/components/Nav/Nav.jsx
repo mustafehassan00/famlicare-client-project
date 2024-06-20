@@ -34,7 +34,7 @@ function Nav() {
         </Box>
         <Box>
           {!user.id && (
-            <Button color="inherit" component={NavLink} to="/login" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+            <Button color="secondary" component={NavLink} to="/login" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
               Login / Register
             </Button>
           )}
@@ -55,7 +55,7 @@ function Nav() {
               <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 CareTeamForm
               </Button>
-              <LogOutButton color="inherit" />
+              <LogOutButton color="secondary" className="primary"/>
             </>
           )}
         </Box>
