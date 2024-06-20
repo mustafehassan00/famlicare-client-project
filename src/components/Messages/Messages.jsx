@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { io } from 'socket.io-client';
 
-const socket = io.connect("http://localhost:5173");
+const socket = io.connect("http://localhost:3001");
 
 
 
@@ -26,13 +26,19 @@ const handleUsernameChange = (e) => {
 
 // Loved One data ID will be used to auto populate for the roomID 
 const lovedOneID = user.loved_one_id;
-const [lovedOne, newLovedOne] = useState(lovedOneID);
+const [room, newRoom] = useState(lovedOneID);
 
 const handleRoomIDChange = (e) => {
-    newLovedOne(e.target.value);
+    newRoom(e.target.value);
 }
 
-
+// Joining a room 
+const joinRoom = () =>{
+    //if statement is saying that username and roomID cannot be empty
+    if(username !== "" && room !== "") {
+        socket.emit("join_room", room);
+    }
+}
 
     return(
         <div>
@@ -48,10 +54,10 @@ const handleRoomIDChange = (e) => {
             <input 
             id = "RoomId"
             type="text" 
-            value = {lovedOne}
+            value = {room}
             onChange={handleRoomIDChange}
              />
-            <button>Join Room</button>
+            <button onClick={joinRoom}>Join Room</button>
         </div>
     )
 }

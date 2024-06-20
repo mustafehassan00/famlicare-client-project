@@ -14,7 +14,7 @@ const server = http.createServer(app)
 //Using this to establish a connection
 const io = new Server(server, {
     cors: {
-      origin:"http://localhost:5173",
+      origin:["http://localhost:3001","http://localhost:5173"],
       method: ["GET", "POST"],
     }
 });
@@ -24,6 +24,11 @@ io.on("connection", (socket) => {
   // Gets the Id of the user connected 
   console.log("socket ID is:", socket.id)
 
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`User ${socket.id} Joined Room: ${data}`);
+  });
+    
 // Disconnects from our server
   socket.on("disconnect", () => {
     console.log(`User ${socket.id} Disconnected`)
@@ -31,6 +36,6 @@ io.on("connection", (socket) => {
 })
 
 server.listen(3001, () => {
-  console.log('SERVER RUNNING ON 3001', )
+  console.log('SERVER RUNNING ON 5173', )
 })
 module.exports = router;
