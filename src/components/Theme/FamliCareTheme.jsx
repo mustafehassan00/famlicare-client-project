@@ -10,7 +10,7 @@ const generateColorVariants = (color) => ({
 });
 
 // define custom fonts
-const libelSuitReg = '"Libel-Suit Reg.", sans-serif';
+const libelSuitReg = '"Libel-Suit Reg", sans-serif';
 const acuminProCondensed = '"Acumin Pro Condensed", sans-serif';
 const maryDale = '"MaryDale", sans-serif';
 
