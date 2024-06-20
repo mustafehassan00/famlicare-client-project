@@ -5,7 +5,7 @@ import registerReducer from './register.reducer';
 // import careTeam from './careTeam.reducer';
 // import careVault from './careVault.reducer';
 import lovedOne from './lovedOne.reducer';
-// import messages from './messages.reducer';
+import messages from './messages.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   // careTeam,
   // careVault,
   lovedOne,
-  // messages,
+  messages,
 });
 
 export default rootReducer;

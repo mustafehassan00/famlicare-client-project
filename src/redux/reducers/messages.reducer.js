@@ -4,7 +4,7 @@ const messages = (state = [], action) => {
     case 'SET_MESSAGES':
       return action.payload;
     case 'SEND_MESSAGES':
-      return action.payload;
+      return [...state, action.payload];
     default:
       return state;
   }
