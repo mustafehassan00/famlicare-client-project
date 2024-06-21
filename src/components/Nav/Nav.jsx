@@ -1,66 +1,80 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import LogOutButton from "../LogOutButton/LogOutButton";
+// import "./Nav.css"; // Uncomment for custom styles. Ensure the path is correct.
+import { useSelector } from "react-redux";
+import { AppBar, Toolbar, Box, Button, useTheme } from "@mui/material";
+import famliCareLogo from './PRIMARY_Horiz.png';
 
 function Nav() {
+  // Accessing the current user state from the Redux store.
   const user = useSelector((store) => store.user);
+  // Using the theme for consistent styling across the app.
+  const theme = useTheme();
 
   return (
-    <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
-      </Link>
-      <div>
-        {/* If no user is logged in, show these links */}
-        {!user.id && (
-          // If there's no user, show login/registration links
-          <Link className="navLink" to="/login">
-            Login / Register
-          </Link>
-        )}
-
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
-            <Link className="navLink" to="/user">
-              Home
-            </Link>
-
-            <Link className="navLink" to="/messages">
-              💬 Messages
-            </Link>
-
-            <Link className="navLink" to="/info">
-              Info Page
-            </Link>
-
-            <Link className="navLink" to="/lovedoneform">
-              Loved one form
-            </Link>
-
-            <Link className="navLink" to="/careteamform">
-              CareTeamForm
-            </Link>
-
-            <Link className="navLink" to="/careVault">
-              CareVault
-            </Link>
-
-            <LogOutButton className="navLink" />
-          </>
-        )}
-
-        <Link className="navLink" to="/about">
-          About
-        </Link>
-
-
-
-      </div>
-    </div>
+    <AppBar
+      position="static"
+      color="primary"
+      // Margin bottom is used to avoid overlap with the page content.
+      sx={{ marginBottom: theme.spacing(2) }}
+    >
+      <Toolbar>
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center"}}>
+          <NavLink
+            to="/home"
+            // Styling for the NavLink to make it fit the theme.
+            style={{
+              textDecoration: "none",
+              color: theme.palette.text.primary,
+            }}
+          >
+            <img
+              src={famliCareLogo}
+              alt="FamliCare Logo"
+              // Adjust the logo size and background. Modify maxHeight for larger/smaller logo.
+              style={{ maxHeight: "100px", backgroundColor: "white", borderRadius: 18}}
+            />
+          </NavLink>
+        </Box>
+        <Box>
+          {!user.id && (
+            // Show login/register button if user is not logged in.
+            <Button color="secondary" component={NavLink} to="/login" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+              Login / Register
+            </Button>
+          )}
+          {user.id && (
+            // Show navigation buttons if user is logged in.
+            <>
+              <Button color="inherit" component={NavLink} to="/home" sx={{typography: 'h2', margin: theme.spacing(1)}}>
+                Home
+              </Button>
+              <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                User profile
+              </Button>
+              <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                💬 Messages
+              </Button>
+              <Button color="inherit" component={NavLink} to="/info" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Info Page
+              </Button>
+              <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Loved one Form
+              </Button>
+              <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                CareTeam Form
+              </Button>
+              <LogOutButton color="secondary" className="primary"/>
+              {/* LogOutButton component handles user logout. Ensure it's correctly implemented in its file. */}
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
 
 export default Nav;
+// Note: Ensure all routes in NavLink components are correctly defined in your router setup.
+// If any issues arise with navigation, check for typos in the path and ensure the corresponding route components are properly imported and rendered.
