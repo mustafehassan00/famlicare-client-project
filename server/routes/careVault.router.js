@@ -26,6 +26,28 @@ const s3Uploadv2 = async (file) => {
   return await s3.upload(params).promise();
 };
 
+const getPresignedURL = (fileName) => {
+  const params = {
+  Bucket: process.env.AWS_BUCKET_NAME,
+  Key: fileName,
+  Expires: 60 * 5 //url expiry time in seconds
+};
+
+return s3.getSignedUrl('getObject', params);
+};
+
+//VIEW (get) route
+router.get('/view/:fileName', (req, res) => {
+  const url = getPresignedURL(req.params.fileName);
+  res.redirect(url);
+})
+
+//Share Files
+router.get('/share/:filename', (req, res) => {
+  const url=getPresignedURL(req.params.filename);
+  res.send({url});
+})
+
 router.post("/upload", upload.single("file"), async (req, res) => {
   const file = req.file;
   const lovedOneId = req.body.lovedOneId;
