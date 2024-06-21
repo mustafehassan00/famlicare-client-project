@@ -59,6 +59,8 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+// This DELETES both the S3 OBJECTS and the DATABASE!!
+  // Only DELETES in DATABASE if S3 is confirmed successful!!
 router.delete("/delete/:id", async (req, res) => {
   const fileId = req.params.id;
 
@@ -75,22 +77,28 @@ router.delete("/delete/:id", async (req, res) => {
 
     const file = selectResult.rows[0];
 
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `uploads/${file.document_name}`,
+    };
+    try {
+      await s3.deleteObject(params).promise();
+      console.log("File deleted from S3");
+    } catch (s3Error) {
+      console.error("Error in S3:", s3Error);
+      return res.status(500);
+    }
+
     const deleteQuery = `
-      DELETE FROM vault 
+      DELETE FROM vault
       WHERE id = $1;
     `;
     await pool.query(deleteQuery, [fileId]);
-
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${file.originalname}`,
-    };
-
-    await s3.deleteObject(params).promise();
-    res.sendStatus(204);
+    console.log("File deleted from database");
+    res.status(200);
   } catch (error) {
-    console.error("Error deleting file:", error);
-    res.sendStatus(500);
+    console.error("Error in database:", error);
+    res.status(500);
   }
 });
 
