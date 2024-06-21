@@ -1,70 +1,154 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// MUI components for UI design
-import { Button, Container, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from "@mui/material";
-// Icons for delete and upload actions
-import DeleteIcon from '@mui/icons-material/Delete';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-// Utility for styling components
-import { styled } from '@mui/material/styles';
+import {
+  Button,
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  useTheme,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import ShareIcon from "@mui/icons-material/Share";
+import DownloadIcon from "@mui/icons-material/Download";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { styled } from "@mui/material/styles";
 
-// Styled component for hiding the file input element
-const Input = styled('input')({
-  display: 'none',
-});
+const Input = styled("input")(({ theme }) => ({
+  display: "none",
+}));
 
 function CareVault() {
-  // State for managing the selected file
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("");
+  const [fileError, setFileError] = useState(""); // Added state for file error message
   const dispatch = useDispatch();
-  // Fetching files from the Redux store
   const files = useSelector((state) => state.careVault.files);
+  const theme = useTheme();
+  const is_admin = useSelector((state) => state.user.is_admin);
 
-  // Function to dispatch the upload action
-  const upload = () => {
-    // Dispatching with a static lovedOneId for now, consider making this dynamic based on user selection
-    dispatch({ type: "UPLOAD_FILE", payload: { file, lovedOneId: 1 } });
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      // Check if the file type is audio or video
+      if (
+        selectedFile.type.startsWith("audio/") ||
+        selectedFile.type.startsWith("video/")
+      ) {
+        // Set error message for audio and video files
+        setFileError("Audio and video files are not allowed.");
+        setFile(null);
+        setFilename("");
+      } else {
+        // Clear error and proceed for other file types
+        setFile(selectedFile);
+        setFilename(selectedFile.name);
+        setFileError(""); // Clear any previous error message
+      }
+    }
   };
 
-  // Function to dispatch the delete action
-  const handleDelete = (id) => {
-    dispatch({ type: "DELETE_FILE", payload: { id } });
+  const handleUpload = () => {
+    if (file) {
+      dispatch({ type: "UPLOAD_FILE", payload: { file, lovedOneId: 1 } });
+      setFile(null);
+      setFilename("");
+      setFileError(""); // Clear error message after successful upload
+    }
   };
 
-  // Fetch files on component mount
   useEffect(() => {
     dispatch({ type: "FETCH_FILES" });
   }, [dispatch]);
 
+  console.log("is admin:", is_admin);
+console.log('files being rendered:', files);
+
   return (
     <Container>
-      {/* File input hidden but accessible via label */}
       <label htmlFor="contained-button-file">
-        <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={(e) => setFile(e.target.files[0])} />
-        <Button variant="contained" component="span" startIcon={<UploadFileIcon />}>
-          <Typography variant='h2'>Choose a file ...</Typography>
+        {/* Removed the accept attribute to allow all file types except audio/video which are filtered programmatically */}
+        <Input
+          id="contained-button-file"
+          multiple
+          type="file"
+          onChange={handleFileChange}
+        />
+        <Button
+          variant="contained"
+          component="span"
+          startIcon={<UploadFileIcon />}
+          style={{ backgroundColor: theme.palette.primary.main }}
+        >
+          <Typography variant="h6">Choose File...</Typography>
         </Button>
       </label>
-      {/* Button to trigger file upload */}
-      <Button variant="contained" className="primary off" onClick={upload} style={{ marginLeft: '10px' }}>
-        <Typography variant="h2" >Upload File</Typography>
+      {/* Display an error message if an unsupported file type is selected */}
+      {fileError && <Typography color="error">{fileError}</Typography>}
+      {filename && (
+        <Typography variant="subtitle1" style={{ marginTop: theme.spacing(2) }}>
+          {filename}
+        </Typography>
+      )}
+      <Button
+        variant="contained"
+        color="primary"
+        disabled={!file}
+        onClick={handleUpload}
+        style={{ marginTop: theme.spacing(2) }}
+      >
+        <Typography variant="h6">Upload</Typography>
       </Button>
-
-      {/* List of files fetched from the store */}
-      <List>
-        {files.map((file) => (
-          <ListItem key={file.id} divider>
-            {/* Link to the file, ensure the URL is secure and valid */}
-            <ListItemText primary={<a href={file.attachment_URL} target="_blank" rel="noopener noreferrer">{file.document_name}</a>} />
-            {/* Delete action for each file */}
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(file.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
+      <TableContainer component={Paper} style={{ marginTop: theme.spacing(2) }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>File Name</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {files.map((file, index) => (
+              <TableRow key={file.id}>
+                {/* Ensure unique key; fallback to index if file.id is not unique */}
+                <TableCell component="th" scope="row">
+                  {file.document_name}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton aria-label="view">
+                    <VisibilityIcon />
+                  </IconButton>
+                  {is_admin && (
+                    <>
+                      <IconButton aria-label="download">
+                        <DownloadIcon />
+                      </IconButton>
+                      <IconButton aria-label="share">
+                        <ShareIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => {
+                          /* Handle delete */
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 }

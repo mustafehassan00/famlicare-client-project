@@ -28,7 +28,8 @@ const careVault = (state = initialState, action) => {
         error: action.error,
       };
     case "SET_FILES":
-      return {
+    console.log('files being set in Redux:', action.payload);  
+    return {
         ...state,
         files: action.payload,
       };
