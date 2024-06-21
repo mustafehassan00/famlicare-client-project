@@ -170,19 +170,21 @@ router.delete(
 
 // Route to retrieve all files
 router.get("/files", rejectUnauthenticated, async (req, res) => {
-  user = req.user.id;
-  console.log('user ID:', req.user.id);
+  console.log("Fetching files for user:", req.user.id);
+  console.log("User object:", req.user);
+  
   const queryText = `
-  SELECT DISTINCT ON (v.id)
-  v.id, v.document_name, v.document_type, v.file_size, v.attachment_URL, v.uploaded_timestamp 
-  FROM vault v
-  JOIN "user" u ON v.loved_one_id = u.loved_one_id
-  WHERE u.id = $1
-  ORDER BY v.id, v.uploaded_timestamp DESC;
-`;
+    SELECT DISTINCT ON (v.id)
+    v.id, v.document_name, v.document_type, v.file_size, v.attachment_URL, v.uploaded_timestamp 
+    FROM vault v
+    JOIN "user" u ON v.loved_one_id = u.loved_one_id
+    WHERE u.id = $1
+    ORDER BY v.id, v.uploaded_timestamp DESC;
+  `;
 
   try {
     const result = await pool.query(queryText, [req.user.id]);
+    console.log("Query result:", result.rows);
     res.send(result.rows);
   } catch (error) {
     console.error("Error retrieving files:", error);

@@ -20,6 +20,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { styled } from "@mui/material/styles";
+import {useNavigate} from 'react-router-dom'
 
 const Input = styled("input")(({ theme }) => ({
   display: "none",
@@ -33,6 +34,9 @@ function CareVault() {
   const files = useSelector((state) => state.careVault.files);
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
+  const navigate = useNavigate();
+
+  console.log("Is admin in component:", is_admin);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -64,12 +68,24 @@ function CareVault() {
     }
   };
 
+  const handleViewFile = (fileId) => {
+    console.log("Viewing file with id:", fileId);
+    navigate(`/view-document/${fileId}`);
+  };
+
+  const handleDeleteFile = (fileId) => {
+    console.log("Deleting file with id:", fileId);
+    if (window.confirm("Are you sure you want to delete this file?")) {
+      dispatch({ type: "DELETE_FILE", payload: { id: fileId } });
+    }
+  };
+
   useEffect(() => {
     dispatch({ type: "FETCH_FILES" });
   }, [dispatch]);
 
   console.log("is admin:", is_admin);
-console.log('files being rendered:', files);
+  console.log("files being rendered:", files);
 
   return (
     <Container>
@@ -115,18 +131,18 @@ console.log('files being rendered:', files);
             </TableRow>
           </TableHead>
           <TableBody>
-            {files.map((file, index) => (
+            {files.map((file) => (
               <TableRow key={file.id}>
-                {/* Ensure unique key; fallback to index if file.id is not unique */}
                 <TableCell component="th" scope="row">
                   {file.document_name}
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="view">
+                  <IconButton aria-label="view" onClick={() => handleViewFile(file.id)}>
                     <VisibilityIcon />
                   </IconButton>
-                  {is_admin && (
+                  {isAdmin && (
                     <>
+                      {console.log("Rendering admin buttons")}
                       <IconButton aria-label="download">
                         <DownloadIcon />
                       </IconButton>
@@ -135,9 +151,7 @@ console.log('files being rendered:', files);
                       </IconButton>
                       <IconButton
                         aria-label="delete"
-                        onClick={() => {
-                          /* Handle delete */
-                        }}
+                        onClick={() => handleDeleteFile(file.id)}
                       >
                         <DeleteIcon />
                       </IconButton>
