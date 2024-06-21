@@ -147,9 +147,6 @@ function CareVault() {
                 File Name
               </TableCell>
               <TableCell align="right" style={{ border: "1px solid black" }}>
-                File Size
-              </TableCell>
-              <TableCell align="right" style={{ border: "1px solid black" }}>
                 Actions
               </TableCell>
             </TableRow>
@@ -169,9 +166,6 @@ function CareVault() {
                   {file.document_name}
                 </TableCell>
                 <TableCell align="right" style={{ border: "1px solid black" }}>
-                  {file.file_size}
-                </TableCell>
-                <TableCell align="right" style={{ border: "1px solid black" }}>
                   <Button
                     startIcon={<VisibilityIcon />}
                     onClick={() => handleViewFile(file.id)}
@@ -183,7 +177,7 @@ function CareVault() {
                   </Button>
                   <Button
                     startIcon={<DownloadIcon />}
-                    color="primary"
+                    color="secondary"
                     variant="contained"
                     size="small"
                   >
@@ -191,7 +185,7 @@ function CareVault() {
                   </Button>
                   <Button
                     startIcon={<ShareIcon />}
-                    color="primary"
+                    color="tertiary"
                     variant="contained"
                     size="small"
                   >
