@@ -8,12 +8,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@sendgrid/mail": "^8.1.3",
     "aws-sdk": "^2.1644.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "connect-pg-simple": "^9.0.1",
+  
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.19.2",
@@ -30,7 +32,8 @@
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.1.3",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
   },
   "scripts": {
     "start": "node server/server.js",

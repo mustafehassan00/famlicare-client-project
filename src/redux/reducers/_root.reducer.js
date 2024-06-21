@@ -4,7 +4,7 @@ import user from './user.reducer';
 import registerReducer from './register.reducer';
 // import careTeam from './careTeam.reducer';
 import careVault from './careVault.reducer';
-// import lovedOne from './lovedOne.reducer';
+import lovedOne from './lovedOne.reducer';
 // import messages from './messages.reducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   registerReducer,
   // careTeam,
   careVault,
-  // lovedOne,
+  lovedOne,
   // messages,
 });
 

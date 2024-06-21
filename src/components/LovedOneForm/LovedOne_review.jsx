@@ -7,6 +7,12 @@ export default function LovedOne_Review({ onSubmit, onPrevStep }) {
   const theme = useTheme();
   const lovedOne = useSelector((state) => state.lovedOne);
 
+  console.log(lovedOne);
+  // Modified onSubmit to explicitly pass lovedOne
+  const handleSubmit = () => {
+    onSubmit(lovedOne); // Pass the entire lovedOne object to the onSubmit function
+  };
+
   return (
     <Box sx={{ padding: theme.spacing(2) }}>
       <Typography variant="h5" gutterBottom>
@@ -42,7 +48,7 @@ export default function LovedOne_Review({ onSubmit, onPrevStep }) {
         <Button variant="text" onClick={onPrevStep}>
           Previous Step
         </Button>
-        <Button variant="contained" color="primary" onClick={onSubmit}>
+        <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
           Confirm Submission
         </Button>
       </Box>
