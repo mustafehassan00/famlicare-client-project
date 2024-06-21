@@ -30,19 +30,20 @@ const Input = styled("input")(({ theme }) => ({
 }));
 
 function CareVault() {
-  const [file, setFile] = useState(null);
-  const [filename, setFilename] = useState("");
-  const [fileError, setFileError] = useState(""); // Added state for file error message
-  const [fileUrl, setFileUrl] = useState("");
-  const [viewingFile, setViewingFile] = useState(null);
+  // State management for file operations
+  const [file, setFile] = useState(null); // Holds the currently selected file
+  const [filename, setFilename] = useState(""); // Holds the name of the selected file
+  const [fileError, setFileError] = useState(""); // Holds error message for file selection
+  const [fileUrl, setFileUrl] = useState(""); // URL for viewing the file
+  const [viewingFile, setViewingFile] = useState(null); // Holds the file object that is being viewed
 
+  // Redux hooks for dispatching actions and selecting state
   const dispatch = useDispatch();
-  const files = useSelector((state) => state.careVault.files);
-  const theme = useTheme();
-  const is_admin = useSelector((state) => state.user.is_admin);
+  const files = useSelector((state) => state.careVault.files); // Selects files from the Redux store
+  const theme = useTheme(); // Accesses the theme for styling components
+  const is_admin = useSelector((state) => state.user.is_admin); // Determines if the user is an admin
 
-  console.log("Is admin in component:", is_admin);
-
+  // File selection handler
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -64,49 +65,50 @@ function CareVault() {
     }
   };
 
+  // File upload handler
   const handleUpload = () => {
     if (file) {
+      // Dispatches an action to upload the file, example payload structure
       dispatch({ type: "UPLOAD_FILE", payload: { file, lovedOneId: 1 } });
+      // Reset file selection state after upload
       setFile(null);
       setFilename("");
       setFileError(""); // Clear error message after successful upload
     }
   };
 
+  // File viewing handler
   const handleViewFile = async (fileId) => {
-    console.log("Viewing file with id:", fileId);
     try {
       const response = await axios.get(`/api/care-vault/view/${fileId}`);
-      setFileUrl(response.data.url);
-      setViewingFile(files.find((f) => f.id === fileId));
+      setFileUrl(response.data.url); // Sets the URL for the iframe to display the file
+      setViewingFile(files.find((f) => f.id === fileId)); // Finds and sets the file being viewed
     } catch (error) {
-      console.error("Error fetching file URL:", error);
+      console.error("Error fetching file URL:", error); // Logs error for troubleshooting
     }
   };
 
+  // Viewer close handler
   const handleCloseViewer = () => {
-    setViewingFile(null);
-    setFileUrl("");
+    setViewingFile(null); // Resets the viewing file state
+    setFileUrl(""); // Clears the file URL
   };
 
+  // File deletion handler
   const handleDeleteFile = (fileId) => {
-    console.log("Deleting file with id:", fileId);
     if (window.confirm("Are you sure you want to delete this file?")) {
-      dispatch({ type: "DELETE_FILE", payload: { id: fileId } });
+      dispatch({ type: "DELETE_FILE", payload: { id: fileId } }); // Dispatches delete action
     }
   };
 
+  // Fetch files on component mount
   useEffect(() => {
-    dispatch({ type: "FETCH_FILES" });
-  }, [dispatch]);
-
-  console.log("is admin:", is_admin);
-  console.log("files being rendered:", files);
+    dispatch({ type: "FETCH_FILES" }); // Dispatches action to fetch files
+  }, [dispatch]); // Dependency array to avoid infinite loop
 
   return (
     <Container>
       <label htmlFor="contained-button-file">
-        {/* Removed the accept attribute to allow all file types except audio/video which are filtered programmatically */}
         <Input
           id="contained-button-file"
           multiple
@@ -122,7 +124,6 @@ function CareVault() {
           <Typography variant="h6">Choose File...</Typography>
         </Button>
       </label>
-      {/* Display an error message if an unsupported file type is selected */}
       {fileError && <Typography color="error">{fileError}</Typography>}
       {filename && (
         <Typography variant="subtitle1" style={{ marginTop: theme.spacing(2) }}>
@@ -136,48 +137,75 @@ function CareVault() {
         onClick={handleUpload}
         style={{ marginTop: theme.spacing(2) }}
       >
-        <Typography variant="h6">Upload</Typography>
+        <Typography variant="h2">Upload</Typography>
       </Button>
       <TableContainer component={Paper} style={{ marginTop: theme.spacing(2) }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>File Name</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell style={{ border: "1px solid black" }}>
+                File Name
+              </TableCell>
+              <TableCell align="right" style={{ border: "1px solid black" }}>
+                File Size
+              </TableCell>
+              <TableCell align="right" style={{ border: "1px solid black" }}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {files.map((file) => (
               <TableRow key={file.id}>
-                <TableCell component="th" scope="row">
+                <TableCell
+                  component="td"
+                  scope="row"
+                  style={{
+                    width: "40%",
+                    maxWidth: "200px",
+                    border: "1px solid black",
+                  }}
+                >
                   {file.document_name}
                 </TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    aria-label="view"
+                <TableCell align="right" style={{ border: "1px solid black" }}>
+                  {file.file_size}
+                </TableCell>
+                <TableCell align="right" style={{ border: "1px solid black" }}>
+                  <Button
+                    startIcon={<VisibilityIcon />}
                     onClick={() => handleViewFile(file.id)}
-                    color = "primary"
+                    color="primary"
+                    variant="contained"
+                    size="small"
                   >
-                    <VisibilityIcon />
-                  </IconButton>
-                  {is_admin && (
-                    <>
-                      {console.log("Rendering admin buttons")}
-                      <IconButton aria-label="download" color="primary">
-                        <DownloadIcon />
-                      </IconButton>
-                      <IconButton aria-label="share" color = "primary">
-                        <ShareIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeleteFile(file.id)}
-                        color="primary"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </>
-                  )}
+                    View
+                  </Button>
+                  <Button
+                    startIcon={<DownloadIcon />}
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                  >
+                    Download
+                  </Button>
+                  <Button
+                    startIcon={<ShareIcon />}
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                  >
+                    Share
+                  </Button>
+                  <Button
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteFile(file.id)}
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
