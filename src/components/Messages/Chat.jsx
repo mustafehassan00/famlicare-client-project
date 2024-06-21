@@ -1,6 +1,25 @@
-import React from "react"
+import React, { useState } from 'react';
 
-function Chat(socket, username, room) {
+
+function chat({ socket, username, room }) {
+    console.log('Chat props:', socket, username, room);
+    
+
+    const [currentMessage, setCurrentMessage] = useState("")
+
+    const sendMessage = async () => {
+        if(currentMessage !== "") {
+            const messageData = {
+                room: room,
+                username: username,
+                message: currentMessage,
+                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
+
+            }
+            await socket.emit("send_message", messageData)
+        }
+    }
+
     return (
         <div>
             <div classname="chat-header">
@@ -10,14 +29,17 @@ function Chat(socket, username, room) {
 
             </div>
             <div classname="chat-footer">
-                <input type="text" 
-                placeholder="Type a message..." 
+                <input 
+                type="text"
+                placeholder="Type a message..."
+                onChange={(e) => {setCurrentMessage(e.target.value)}}
                 />
-                <button>&#9658;</button>
+                <button onClick={sendMessage}>&#9658;</button>
 
             </div>
         </div>
     )
 }
 
-export default Chat;
+export default chat;
+

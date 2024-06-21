@@ -30,21 +30,21 @@ const handleUsernameChange = (e) => {
 
 // Loved One data ID will be used to auto populate for the roomID 
 const lovedOneID = user.loved_one_id;
-const [room, newRoom] = useState(lovedOneID);
+const [room, setRoom] = useState(lovedOneID);
 
 const handleRoomIDChange = (e) => {
-    newRoom(e.target.value);
+    setRoom(e.target.value);
 }
 
 // Joining a room 
-const joinRoom = () =>{
-    //if statement is saying that username and roomID cannot be empty
-    if(username !== "" && room !== "") {
+const joinRoom = () => {
+    console.log('Joining room...');
+    if (username !== "" && room !== "") {
         socket.emit("join_room", room);
+        console.log('Joined Room Succesfully !')
     }
     history.push('/Chat');
-}
-
+  };
     return(
         <div>
             <h4>Enter Loved One's Name</h4>
@@ -63,7 +63,7 @@ const joinRoom = () =>{
             onChange={handleRoomIDChange}
              />
             <button onClick={joinRoom}>Join Room</button>
-            <Chat socket = {socket} username= {username} room = {room}/>
+            <Chat socket={socket} username={username} room={room} />
         </div>
     );
 }
