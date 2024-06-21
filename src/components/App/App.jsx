@@ -27,6 +27,7 @@ import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
 // import LovedOneForm from "../LovedOneForm/LovedOneForm";
 import Messages from "../Messages/Messages";
+import Chat from "../Messages/chat";
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
 import theme from "../Theme/FamliCareTheme";
@@ -36,6 +37,7 @@ import RegisterPage1 from '../RegisterPage/RegisterPage1';
 import RegisterPage2 from '../RegisterPage/RegisterPage2';
 import RegisterPage3 from '../RegisterPage/RegisterPage3';
 import RegisterPage4 from '../RegisterPage/RegisterPage4';
+
 
 
 import "./App.css";
@@ -120,6 +122,13 @@ function App() {
               path="/messages"
             >
               <Messages />
+            </ProtectedRoute>
+            <ProtectedRoute
+              
+              exact
+              path="/Chat"
+            >
+              <Chat />
             </ProtectedRoute>
 
             <ProtectedRoute

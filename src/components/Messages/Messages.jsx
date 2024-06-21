@@ -11,7 +11,10 @@ const socket = io.connect("http://localhost:3001");
 
 
 
+
 function Messages() {
+const history = useHistory()
+
 // Use this to use as auto fill to fill in the user 
 const user = useSelector((store) => store.user);
 const firstName = user.first_name
@@ -39,6 +42,7 @@ const joinRoom = () =>{
     if(username !== "" && room !== "") {
         socket.emit("join_room", room);
     }
+    history.push('/Chat');
 }
 
     return(
