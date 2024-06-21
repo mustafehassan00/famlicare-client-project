@@ -13,14 +13,17 @@ import {
   Paper,
   IconButton,
   useTheme,
+  Modal,
+  Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
-import {useNavigate} from 'react-router-dom'
+import axios from "axios";
 
 const Input = styled("input")(({ theme }) => ({
   display: "none",
@@ -30,11 +33,13 @@ function CareVault() {
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("");
   const [fileError, setFileError] = useState(""); // Added state for file error message
+  const [fileUrl, setFileUrl] = useState("");
+  const [viewingFile, setViewingFile] = useState(null);
+
   const dispatch = useDispatch();
   const files = useSelector((state) => state.careVault.files);
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
-  const navigate = useNavigate();
 
   console.log("Is admin in component:", is_admin);
 
@@ -68,9 +73,20 @@ function CareVault() {
     }
   };
 
-  const handleViewFile = (fileId) => {
+  const handleViewFile = async (fileId) => {
     console.log("Viewing file with id:", fileId);
-    navigate(`/view-document/${fileId}`);
+    try {
+      const response = await axios.get(`/api/care-vault/view/${fileId}`);
+      setFileUrl(response.data.url);
+      setViewingFile(files.find((f) => f.id === fileId));
+    } catch (error) {
+      console.error("Error fetching file URL:", error);
+    }
+  };
+
+  const handleCloseViewer = () => {
+    setViewingFile(null);
+    setFileUrl("");
   };
 
   const handleDeleteFile = (fileId) => {
@@ -137,21 +153,26 @@ function CareVault() {
                   {file.document_name}
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="view" onClick={() => handleViewFile(file.id)}>
+                  <IconButton
+                    aria-label="view"
+                    onClick={() => handleViewFile(file.id)}
+                    color = "primary"
+                  >
                     <VisibilityIcon />
                   </IconButton>
-                  {isAdmin && (
+                  {is_admin && (
                     <>
                       {console.log("Rendering admin buttons")}
-                      <IconButton aria-label="download">
+                      <IconButton aria-label="download" color="primary">
                         <DownloadIcon />
                       </IconButton>
-                      <IconButton aria-label="share">
+                      <IconButton aria-label="share" color = "primary">
                         <ShareIcon />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
                         onClick={() => handleDeleteFile(file.id)}
+                        color="primary"
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -163,6 +184,50 @@ function CareVault() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Modal
+        open={viewingFile !== null}
+        onClose={handleCloseViewer}
+        aria-labelledby="document-viewer"
+        aria-describedby="view-document"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "90%",
+            height: "90%",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <IconButton
+            onClick={handleCloseViewer}
+            style={{ position: "absolute", top: 10, right: 10 }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" component="h2" mb={2}>
+            {viewingFile?.document_name}
+          </Typography>
+          {fileUrl ? (
+            <iframe
+              src={fileUrl}
+              style={{
+                width: "100%",
+                height: "calc(100% - 50px)",
+                border: "none",
+              }}
+              title="Document Viewer"
+            />
+          ) : (
+            <Typography>Loading document...</Typography>
+          )}
+        </Box>
+      </Modal>
     </Container>
   );
 }
