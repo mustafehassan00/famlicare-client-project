@@ -1,13 +1,17 @@
 import React from 'react';
-import './Footer.css';
-
-// This is one of our simplest components
-// It doesn't have local state, so it can be a function component.
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is, so it doesn't need 'connect()'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 function Footer() {
-  return <footer>&copy; Prime Digital Academy</footer>;
+  const theme = useTheme(); 
+  return (
+    <Box component="footer" sx={{ py: 2, textAlign: 'center', borderTop: 1, borderColor: 'divider' }}>
+      <Typography variant="body2">
+        &copy; Famlicare 2024
+      </Typography>
+    </Box>
+  );
 }
 
 export default Footer;
