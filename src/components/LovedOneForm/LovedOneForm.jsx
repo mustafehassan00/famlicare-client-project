@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import LovedOne_name from "./LovedOne_Name.jsx";
 import LovedOne_details from "./LovedOne_Details.jsx";
 import LovedOne_address from "./LovedOne_Address.jsx";
-import LovedOne_review from "./LovedOne_Review.jsx";
+import LovedOne_Review from "./LovedOne_Review.jsx";
 import {
   Box,
   Button,
@@ -107,7 +107,7 @@ const CreateLovedOne = () => {
         );
       case 4:
         return (
-          <LovedOne_review
+          <LovedOne_Review
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
