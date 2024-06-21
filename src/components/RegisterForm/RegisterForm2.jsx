@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import FormData from "form-data"; // Import FormData from axios-form-data
 
 
 function RegisterForm2() {
@@ -20,14 +21,13 @@ function RegisterForm2() {
       return;
     }
 
-// Append the file to FormData ie add selected photo formData variable
+// Append the file to FormData ie add selected photo to formData variable
     const formData = new FormData();
     formData.append("photo", selectedFile); 
 
-// dispatch the photo upload
+// dispatch the photo upload to store selected file in Redux state
 dispatch({
-  // type: 'POST_PHOTO',
-  type: "IMAGE",
+  type: "IMAGE_SELECTED",
   payload: {
     selectedFile: formData
   },

@@ -7,9 +7,18 @@ function* registerUser(action) {
     // clear any existing error on the registration page
     yield put({ type: "CLEAR_REGISTRATION_ERROR" });
 
-    // passes the username and password from the payload to the server
-    yield axios.post("/api/user/register", action.payload);
+
+
+
+    // passes the username and password/image from the payload to the server
+    yield axios.post("/api/user/register", action.payload.selectedFile, {
+      
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    } );
     console.log("We are in the SAGA!", action.payload);
+   
 
     //     // pullling username and password from this object
     //
