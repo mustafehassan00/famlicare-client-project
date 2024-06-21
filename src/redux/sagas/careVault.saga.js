@@ -19,6 +19,7 @@ function* deleteFile(action) {
   try {
     yield axios.delete(`/api/care-vault/delete/${action.payload.id}`);
     yield put({ type: "DELETE_SUCCESS", payload: action.payload.id });
+    yield put ({type: "FETCH_FILES"});
   } catch (error) {
     console.log("File deletion failed", error);
   }
