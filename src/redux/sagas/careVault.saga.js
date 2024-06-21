@@ -1,5 +1,5 @@
 import axios from "axios";
-import { put, takeLatest } from "redux-saga/effects";
+import { put, takeLatest, call } from "redux-saga/effects";
 
 function* uploadFile(action) {
   try {
@@ -33,10 +33,35 @@ function* fetchFiles() {
   }
 }
 
+function* downloadFileSaga(action) {
+  try {
+    yield put({ type: "DOWNLOAD_START" });
+    const response = yield call(
+      axios.get,
+      `/api/care-vault/download/${action.payload.id}`,
+      {
+        responseType: "blob",
+      }
+    );
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", action.payload.fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+    yield put({ type: "DOWNLOAD_SUCCESS" });
+  } catch (error) {
+    console.log("File download failed", error);
+    yield put({ type: "DOWNLOAD_FAILURE", error });
+  }
+}
+
 function* careVaultSaga() {
   yield takeLatest("UPLOAD_FILE", uploadFile);
   yield takeLatest("DELETE_FILE", deleteFile);
   yield takeLatest("FETCH_FILES", fetchFiles);
+  yield takeLatest("DOWNLOAD_FILE", downloadFileSaga);
 }
 
 export default careVaultSaga;

@@ -17,6 +17,11 @@ function CareVault() {
     dispatch({ type: "DELETE_FILE", payload: { id } });
   };
 
+  // DOWNLOAD FILES!!
+  const handleDownload = (id, fileName) => {
+    window.open(`/api/care-vault/download/${id}`, '_blank');
+  };
+
   // RETRIEVES LIST OF ALL FILES!!
   useEffect(() => {
     dispatch({ type: "FETCH_FILES" });
@@ -32,8 +37,11 @@ function CareVault() {
       <div>
         {files.map((file) => (
           <div key={file.id}>
-            <a href={file.attachment_URL}>{file.document_name}</a>
+            <span>{file.document_name}</span>
             <button onClick={() => handleDelete(file.id)}>Delete</button>
+            <button onClick={() => handleDownload(file.id, file.document_name)}>
+              Download
+            </button>
           </div>
         ))}
       </div>
