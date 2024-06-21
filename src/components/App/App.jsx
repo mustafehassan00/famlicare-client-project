@@ -15,6 +15,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
 import UserPage from "../UserPage/UserPage";
+import EdituserPage from "../UserPage/EdituserPage";
 import InfoPage from "../InfoPage/InfoPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
@@ -93,6 +94,14 @@ function App() {
               path="/profile"
             >
               <Profile />
+            </ProtectedRoute>
+            
+            <ProtectedRoute
+              // logged in shows HomePage
+              exact
+              path="/profileEdit"
+            >
+              <EdituserPage />
             </ProtectedRoute>
 
             {/* CareTeam component */}
