@@ -90,24 +90,24 @@ const CreateLovedOne = () => {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <LovedOne_name onSubmit={handleNextStep} />;
+        return <LovedOne_Name onSubmit={handleNextStep} />;
       case 2:
         return (
-          <LovedOne_details
+          <LovedOne_Details
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
         );
       case 3:
         return (
-          <LovedOne_address
+          <LovedOne_Address
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
         );
       case 4:
         return (
-          <LovedOne_review
+          <LovedOne_Review
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
