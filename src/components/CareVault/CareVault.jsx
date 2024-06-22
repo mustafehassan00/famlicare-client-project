@@ -60,74 +60,80 @@ function CareVault() {
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
 
-  useEffect(() => {
-    dispatch({ type: "FETCH_FILES" });
-  }, [dispatch]);
+  // useEffect hook to fetch files on component mount
+useEffect(() => {
+  dispatch({ type: "FETCH_FILES" }); // Dispatches action to fetch files from the backend
+}, [dispatch]); // Dependency array with dispatch to avoid unnecessary re-renders
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (
-        selectedFile.type.startsWith("audio/") ||
-        selectedFile.type.startsWith("video/")
-      ) {
-        setFileError("Audio and video files are not allowed.");
-        setFile(null);
-        setFilename("");
-      } else {
-        setFile(selectedFile);
-        setFilename(selectedFile.name);
-        setFileError("");
-      }
-    }
-  };
-
-  // Dispatches an action to upload the selected file
-  const handleUpload = () => {
-    if (file) {
-      dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } });
-      setFile(null);
-      setFilename("");
-      setFileError("");
-    }
-  };
-
-  const handleViewFile = (fileId) => {
-    dispatch({ type: "GET_FILE_URL", payload: { id: fileId } });
-    setViewingFile(files.find((f) => f.id === fileId));
-  };
-
-  const handleCloseViewer = () => {
-    setViewingFile(null);
-  };
-
-  const handleDeleteFile = (fileId) => {
-    if (is_admin) {
-      if (window.confirm("Are you sure you want to delete this file?")) {
-        dispatch({ type: "DELETE_FILES", payload: { id: fileId } });
-      }
+// Handles file selection change
+const handleFileChange = (e) => {
+  const selectedFile = e.target.files[0]; // Access the file selected by the user
+  if (selectedFile) {
+    // Check if the selected file is an audio or video file
+    if (
+      selectedFile.type.startsWith("audio/") ||
+      selectedFile.type.startsWith("video/")
+    ) {
+      setFileError("Audio and video files are not allowed."); // Set error for unsupported file types
+      setFile(null); // Reset file state
+      setFilename(""); // Reset filename state
     } else {
-      alert("Only admins can delete files.");
+      setFile(selectedFile); // Set selected file to state
+      setFilename(selectedFile.name); // Set filename to state
+      setFileError(""); // Clear any existing errors
     }
-  };
+  }
+};
 
-  // Dispatches an action to download a file, with admin check
-  const handleDownload = (id, fileName) => {
-    if (is_admin) {
-      dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
-    } else {
-      alert("Only admins can download files.");
-    }
-  };
+// Handles the upload button click
+const handleUpload = () => {
+  if (file) {
+    dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } }); // Dispatch action to upload file
+    setFile(null); // Reset file state after upload
+    setFilename(""); // Reset filename state after upload
+    setFileError(""); // Clear any existing errors
+  }
+};
 
-  // Dispatches an action to share a file, with admin check
-  const handleShare = (fileId) => {
-    if (is_admin) {
-      dispatch({ type: "SHARE_FILES", payload: { id: fileId } });
-    } else {
-      alert("Only admins can share files.");
+// Handles viewing a file
+const handleViewFile = (fileId) => {
+  dispatch({ type: "GET_FILE_URL", payload: { id: fileId } }); // Dispatch action to get file URL
+  setViewingFile(files.find((f) => f.id === fileId)); // Set the viewing file state to the selected file
+};
+
+// Handles closing the file viewer modal
+const handleCloseViewer = () => {
+  setViewingFile(null); // Reset viewing file state to close the modal
+};
+
+// Handles file deletion
+const handleDeleteFile = (fileId) => {
+  if (is_admin) { // Check if the user is an admin
+    if (window.confirm("Are you sure you want to delete this file?")) { // Confirm deletion with the user
+      dispatch({ type: "DELETE_FILES", payload: { id: fileId } }); // Dispatch action to delete file
     }
-  };
+  } else {
+    alert("Only admins can delete files."); // Alert if the user is not an admin
+  }
+};
+
+// Handles file download
+const handleDownload = (id, fileName) => {
+  if (is_admin) { // Check if the user is an admin
+    dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } }); // Dispatch action to download file
+  } else {
+    alert("Only admins can download files."); // Alert if the user is not an admin
+  }
+};
+
+// Handles file sharing
+const handleShare = (fileId) => {
+  if (is_admin) { // Check if the user is an admin
+    dispatch({ type: "SHARE_FILES", payload: { id: fileId } }); // Dispatch action to share file
+  } else {
+    alert("Only admins can share files."); // Alert if the user is not an admin
+  }
+};
 
   return (
     <Container>

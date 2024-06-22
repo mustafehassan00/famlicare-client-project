@@ -74,21 +74,33 @@ router.post(
   rejectUnauthenticated,
   async (req, res) => {
     const file = req.file; // The uploaded file.
-    const lovedOneId = req.body.lovedOneId; // Additional form data.
 
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" }); // No file was uploaded.
     }
 
-    // List of allowed MIME types for uploaded files.
-    const allowedMimeTypes = [
-      // Add or remove MIME types based on your requirements.
+    // List of disallowed MIME types for audio and video files.
+    const disallowedMimeTypes = [
+      'audio/aac',
+      'audio/midi',
+      'audio/x-midi',
+      'audio/mpeg',
+      'audio/ogg',
+      'audio/opus',
+      'audio/wav',
+      'audio/webm',
+      'video/x-msvideo',
+      'video/mp4',
+      'video/mpeg',
+      'video/ogg',
+      'video/webm',
+      'video/3gpp',
+      'video/3gpp2'
     ];
 
-    if (!allowedMimeTypes.includes(file.mimetype)) {
-      return res.status(400).json({ message: "Invalid file type" }); // Uploaded file has a disallowed MIME type.
+    if (disallowedMimeTypes.includes(file.mimetype)) {
+      return res.status(400).json({ message: "Invalid file type. Audio and video files are not allowed." });
     }
-
     
     try {
       const result = await s3Uploadv2(file); // Upload the file to S3.
