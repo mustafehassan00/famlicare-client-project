@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Box, TextField, Button } from "@mui/material";
 
 function RegisterForm1() {
-  const [phoneNumber, setphoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
@@ -19,24 +20,28 @@ function RegisterForm1() {
       },
     });
     history.push("/registerpage/registerpage2");
-  }; // end registerUser
+  };
 
   return (
-    <>
-      <div>
-        <label htmlFor="Phone Number">
-          Phone Number:
-          <input
-            type="phoneNumber"
-            name="phoneNumber"
-            value={phoneNumber}
-            required
-            onChange={(event) => setphoneNumber(event.target.value)}
-          />
-        </label>
-      </div>
-      <button onClick={Continue}>Continue</button>
-    </>
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField
+        label="Phone Number"
+        variant="outlined"
+        type="tel"
+        name="phoneNumber"
+        value={phoneNumber}
+        required
+        onChange={(event) => setPhoneNumber(event.target.value)}
+      />
+      <Button variant="contained" onClick={Continue}>Continue</Button>
+    </Box>
   );
 }
 
