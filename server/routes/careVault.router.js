@@ -1,118 +1,97 @@
-/**
- * careVault Router
- * 
- * This router handles all file operations for the CareVault feature.
- * 
- * Troubleshooting:
- * - Ensure all environment variables (AWS credentials, bucket name) are correctly set.
- * - Check S3 bucket permissions if file operations fail.
- * - Verify database connection and schema if database operations fail.
- * 
- * Maintenance:
- * - Regularly review and update allowed MIME types in the upload route.
- * - Consider implementing file versioning for better file management.
- * - Periodically review and optimize database queries for performance.
- */
-
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const pool = require("../modules/pool");
-const AWS = require("aws-sdk");
-const { isAdmin } = require("../modules/isAdmin"); // Ensures only admins can access certain routes
-const passport = require("passport");
-require("dotenv").config(); // Loads environment variables from a .env file
+const multer = require("multer"); // Used for handling multipart/form-data, primarily used for uploading files.
+const pool = require("../modules/pool"); // Pooling client connections to PostgreSQL database.
+const AWS = require("aws-sdk"); // AWS SDK to interact with Amazon Web Services like S3.
+const { isAdmin } = require("../modules/isAdmin"); // Custom middleware to check if the user is an admin.
+const passport = require("passport"); // Authentication middleware for Node.js.
+require("dotenv").config(); // Loads environment variables from a .env file into process.env.
 const {
   rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
+} = require("../modules/authentication-middleware"); // Middleware to reject unauthenticated requests.
 
-// Setup multer for memory storage to temporarily hold files before uploading to S3
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+// Setup multer for memory storage
+const storage = multer.memoryStorage(); // Stores files in memory as Buffer objects.
+const upload = multer({ storage }); // Initializes multer with memory storage.
 
-// Configure AWS SDK with credentials and region from environment variables
+// Configure AWS SDK
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Your AWS Access Key ID.
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Your AWS Secret Access Key.
+  region: process.env.AWS_REGION, // The region your S3 bucket is in.
 });
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3(); // Initialize a new instance of S3.
 
 // Function to upload files to AWS S3
 const s3Uploadv2 = async (file) => {
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME, // S3 bucket name
-    Key: `uploads/${file.originalname}`, // File path in S3
-    Body: file.buffer, // File content
-    ContentType: file.mimetype, // File MIME type
+    Bucket: process.env.AWS_BUCKET_NAME, // The name of your S3 bucket.
+    Key: `uploads/${file.originalname}`, // The name of the file within your bucket.
+    Body: file.buffer, // The file itself, as a buffer.
+    ContentType: file.mimetype, // The MIME type of the file.
   };
-  // Upload file to S3 and return the result
-  return await s3.upload(params).promise();
+  // Note: Consider adding error handling here for S3 upload issues.
+  return await s3.upload(params).promise(); // Returns a promise that resolves with the details of the upload.
 };
 
 // Function to generate a presigned URL for accessing a file
 const getPresignedURL = (fileName) => {
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: fileName,
-    Expires: 60 * 60 * 24, // URL expiry time in seconds (24 hours)
+    Bucket: process.env.AWS_BUCKET_NAME, // Your S3 bucket name.
+    Key: fileName, // The file path in your bucket.
+    Expires: 60 * 60, // URL expiry time in seconds (1 hour).
   };
-  // Generate and return a presigned URL for the file
-  return s3.getSignedUrl("getObject", params);
+  // Note: Adjust the Expires value based on your application's needs.
+  return s3.getSignedUrl("getObject", params); // Generates a presigned URL for downloading the file.
 };
 
-// Route to view a file by redirecting to a presigned URL
-router.get("/view/:fileName", rejectUnauthenticated, (req, res) => {
-  const url = getPresignedURL(`uploads/${req.params.fileName}`);
-  res.redirect(url);
-});
+/// Route to get a pre-signed URL for a file
+router.get("/file/:id", rejectUnauthenticated, async (req, res) => {
+  const fileId = req.params.id;
+  try {
+    const query = "SELECT * FROM vault WHERE id = $1";
+    const result = await pool.query(query, [fileId]);
 
-// Route to share a file by sending a presigned URL
-router.get("/share/:filename", rejectUnauthenticated, isAdmin, (req, res) => {
-  const url = getPresignedURL(`uploads/${req.params.filename}`);
-  res.send({ url });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "File not found" }); // File not found in the database.
+    }
+
+    const file = result.rows[0];
+    const url = getPresignedURL(`uploads/${file.document_name}`);
+
+    res.json({ url, fileName: file.document_name });
+  } catch (error) {
+    console.error("Error generating pre-signed URL:", error);
+    res.status(500).json({ message: "Error accessing file" }); // Internal server error, possibly database or AWS S3 issue.
+  }
 });
 
 // Route to upload a file
 router.post(
   "/upload",
-  upload.single("file"),
+  upload.single("file"), // Middleware to handle single file upload under the "file" field name.
   rejectUnauthenticated,
   async (req, res) => {
-    const file = req.file;
-    const lovedOneId = req.body.lovedOneId;
+    const file = req.file; // The uploaded file.
+    const lovedOneId = req.body.lovedOneId; // Additional form data.
 
     if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({ message: "No file uploaded" }); // No file was uploaded.
     }
 
-    // Define allowed MIME types for file uploads
+    // List of allowed MIME types for uploaded files.
     const allowedMimeTypes = [
-      "application/pdf",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "text/plain",
-      "text/html",
-      "text/markdown",
-      "application/msword", // for .doc files
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // for .docx files
-      "application/vnd.ms-excel", // for .xls files
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // for .xlsx files
-      "application/vnd.ms-powerpoint", // for .ppt files
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation", // for .pptx files
+      // Add or remove MIME types based on your requirements.
     ];
 
-    // Check if the uploaded file's MIME type is allowed
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      return res.status(400).json({ message: "Invalid file type" });
+      return res.status(400).json({ message: "Invalid file type" }); // Uploaded file has a disallowed MIME type.
     }
 
+    
     try {
-      // Upload file to S3
-      const result = await s3Uploadv2(file);
-      // Insert file metadata into the database
+      const result = await s3Uploadv2(file); // Upload the file to S3.
       const queryText = `
       INSERT INTO vault 
       (loved_one_id, document_name, document_type, file_size, attachment_URL) 
@@ -123,32 +102,31 @@ router.post(
       const queryParams = [
         lovedOneId,
         file.originalname,
-        file.mimetype.split("/")[1], // Extract and use the file's extension as document_type
+        file.mimetype.split("/")[1], // Extracts the file type from the MIME type.
         file.size,
-        result.Location, // S3 URL of the uploaded file
+        result.Location, // The URL of the uploaded file in S3.
       ];
 
-      const dbResult = await pool.query(queryText, queryParams);
+      const dbResult = await pool.query(queryText, queryParams); // Insert file metadata into the database.
 
       res.json({ status: "success", file: dbResult.rows[0] });
     } catch (error) {
       console.error("Error uploading file:", error);
-      res.sendStatus(500);
+      res.sendStatus(500); // Internal server error, possibly due to database or AWS S3 issues.
     }
   }
 );
 
-// This DELETES both the S3 OBJECTS and the DATABASE!!
-// Only DELETES in DATABASE if S3 is confirmed successful!!
+      
+// Route to delete a file
 router.delete(
   "/delete/:id",
   rejectUnauthenticated,
-  isAdmin,
+  isAdmin, // Ensure the user is an admin before allowing deletion.
   async (req, res) => {
     const fileId = req.params.id;
 
     try {
-      // Retrieve file metadata from the database
       const selectQuery = `
       SELECT * FROM vault 
       WHERE id = $1;
@@ -156,31 +134,29 @@ router.delete(
       const selectResult = await pool.query(selectQuery, [fileId]);
 
       if (selectResult.rowCount === 0) {
-        return res.sendStatus(404); // File not found
+        return res.sendStatus(404); // File not found in the database.
       }
 
       const file = selectResult.rows[0];
-      // Delete file from S3
       const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: `uploads/${file.document_name}`,
       };
 
-      await s3.deleteObject(params).promise();
+      await s3.deleteObject(params).promise(); // Delete the file from S3.
       console.log("File deleted from S3");
 
-      // Delete file metadata from the database
       const deleteQuery = `
       DELETE FROM vault
       WHERE id = $1;
     `;
-      await pool.query(deleteQuery, [fileId]);
+      await pool.query(deleteQuery, [fileId]); // Delete the file metadata from the database.
       console.log("File deleted from database");
 
-      res.sendStatus(200);
+      res.sendStatus(200); // Successfully deleted the file.
     } catch (error) {
       console.error("Error in database:", error);
-      res.sendStatus(500);
+      res.sendStatus(500); // Internal server error, possibly due to database issues.
     }
   }
 );
@@ -188,7 +164,6 @@ router.delete(
 // Route to retrieve all files
 router.get("/files", rejectUnauthenticated, async (req, res) => {
   console.log("Fetching files for user:", req.user.id);
-  console.log("User object:", req.user);
   
   const queryText = `
     SELECT DISTINCT ON (v.id)
@@ -200,81 +175,12 @@ router.get("/files", rejectUnauthenticated, async (req, res) => {
   `;
 
   try {
-    const result = await pool.query(queryText, [req.user.id]);
+    const result = await pool.query(queryText, [req.user.id]); // Retrieve files associated with the user.
     console.log("Query result:", result.rows);
-    res.send(result.rows);
+    res.send(result.rows); // Send the list of files to the client.
   } catch (error) {
     console.error("Error retrieving files:", error);
-    res.sendStatus(500);
-  }
-});
-
-// Route for admins to download a file
-router.get(
-  "/download/:id",
-  rejectUnauthenticated,
-  isAdmin,
-  async (req, res) => {
-    const fileId = req.params.id;
-
-    try {
-      // Retrieve file metadata from the database
-      const selectQuery = `
-      SELECT * FROM vault 
-      WHERE id = $1;
-    `;
-      const selectResult = await pool.query(selectQuery, [fileId]);
-
-      if (selectResult.rowCount === 0) {
-        return res.sendStatus(404); // File not found
-      }
-
-      const file = selectResult.rows[0];
-      // Generate a presigned URL for downloading the file
-      const params = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `uploads/${file.document_name}`,
-        Expires: 60 * 60 * 24, // URL expiry time in seconds (24 hours)
-      };
-
-      const url = s3.getSignedUrl("getObject", params);
-      res.json({ url });
-    } catch (error) {
-      console.error("Error generating download URL:", error);
-      res.sendStatus(500);
-    }
-  }
-);
-
-router.get("/download/:id", async (req, res) => {
-  const fileId = req.params.id;
-  try {
-    const selectQuery = `
-    SELECT * FROM vault 
-    WHERE id = $1
-    `;
-    const selectResult = await pool.query(selectQuery, [fileId]);
-
-    if (selectResult.rowCount === 0) {
-      return res.status(404);
-    }
-
-    const file = selectResult.rows[0];
-
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${file.document_name}`,
-    };
-
-    const s3Object = await s3.getObject(params).promise();
-
-    res.setHeader("Content-Type", file.document_type);
-    res.setHeader("Content-Length", file.file_size);
-
-    res.send(s3Object.Body);
-  } catch (error) {
-    console.error("Error downloading file:", error);
-    res.status(500);
+    res.sendStatus(500); // Internal server error, possibly due to database issues.
   }
 });
 
