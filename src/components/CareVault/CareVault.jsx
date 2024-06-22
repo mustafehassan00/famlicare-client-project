@@ -13,6 +13,7 @@
  * - Consider implementing file type icons for better visual representation.
  * - Optimize rendering performance for large file lists.
  */
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -59,7 +60,6 @@ function CareVault() {
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
 
-  // Handles file selection, filtering out unsupported file types
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -136,6 +136,21 @@ function CareVault() {
   };
 
   // Fetches the list of files on component mount
+    if (is_admin) {
+      dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
+    } else {
+      alert("Only admins can download files.");
+    }
+  };
+
+  const handleShare = (fileId) => {
+    if (is_admin) {
+      dispatch({ type: "SHARE_FILES", payload: { id: fileId } });
+    } else {
+      alert("Only admins can share files.");
+    }
+  };
+
   useEffect(() => {
     dispatch({ type: "FETCH_FILES" });
   }, [dispatch]);
