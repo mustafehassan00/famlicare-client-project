@@ -69,7 +69,7 @@ function CareVault() {
   const handleUpload = () => {
     if (file) {
       // Dispatches an action to upload the file, example payload structure
-      dispatch({ type: "UPLOAD_FILE", payload: { file, lovedOneId: 1 } });
+      dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } });
       // Reset file selection state after upload
       setFile(null);
       setFilename("");
@@ -97,8 +97,13 @@ function CareVault() {
   // File deletion handler
   const handleDeleteFile = (fileId) => {
     if (window.confirm("Are you sure you want to delete this file?")) {
-      dispatch({ type: "DELETE_FILE", payload: { id: fileId } }); // Dispatches delete action
+      dispatch({ type: "DELETE_FILES", payload: { id: fileId } }); // Dispatches delete action
     }
+  };
+
+  // DOWNLOAD FILES!!
+  const handleDownload = (id, fileName) => {
+    dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
   };
 
   // Fetch files on component mount

@@ -122,7 +122,8 @@ router.post(
   }
 );
 
-// Route to delete a file
+// This DELETES both the S3 OBJECTS and the DATABASE!!
+// Only DELETES in DATABASE if S3 is confirmed successful!!
 router.delete(
   "/delete/:id",
   rejectUnauthenticated,
@@ -228,5 +229,37 @@ router.get(
     }
   }
 );
+
+router.get("/download/:id", async (req, res) => {
+  const fileId = req.params.id;
+  try {
+    const selectQuery = `
+    SELECT * FROM vault 
+    WHERE id = $1
+    `;
+    const selectResult = await pool.query(selectQuery, [fileId]);
+
+    if (selectResult.rowCount === 0) {
+      return res.status(404);
+    }
+
+    const file = selectResult.rows[0];
+
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `uploads/${file.document_name}`,
+    };
+
+    const s3Object = await s3.getObject(params).promise();
+
+    res.setHeader("Content-Type", file.document_type);
+    res.setHeader("Content-Length", file.file_size);
+
+    res.send(s3Object.Body);
+  } catch (error) {
+    console.error("Error downloading file:", error);
+    res.status(500);
+  }
+});
 
 module.exports = router;

@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+// const socket = io('http://localhost:3000');
 
 function Messages() {
     // const dispatch = useDispatch();
