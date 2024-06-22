@@ -40,7 +40,8 @@ const getPresignedURL = (fileName) => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME, // Your S3 bucket name.
     Key: fileName, // The file path in your bucket.
-    Expires: 60 * 60, // URL expiry time in seconds (1 hour).
+    Expires: 60 * 60 * 24 , // URL expiry time in seconds (24 hours).
+    ResponseContentDisposition: 'attachment', // Suggests to the browser to download rather than displaying the file.
   };
   // Note: Adjust the Expires value based on your application's needs.
   return s3.getSignedUrl("getObject", params); // Generates a presigned URL for downloading the file.
