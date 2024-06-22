@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 
 function RegisterForm1() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -23,25 +23,49 @@ function RegisterForm1() {
   };
 
   return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField
-        label="Phone Number"
-        variant="outlined"
-        type="tel"
-        name="phoneNumber"
-        value={phoneNumber}
-        required
-        onChange={(event) => setPhoneNumber(event.target.value)}
-      />
-      <Button variant="contained" onClick={Continue}>Continue</Button>
-    </Box>
+    <>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "auto",
+          width: "fit-content",
+          border: "2px solid",
+          borderColor: "primary.main",
+          padding: 2,
+          "& .MuiFormControl-root": {
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Box className="MuiFormControl-root">
+          <Typography variant="h6" sx={{ mr: 2, minWidth: "120px" }}>
+            Phone Number
+          </Typography>
+          <TextField
+            label="Phone Number"
+            variant="outlined"
+            type="tel"
+            name="phoneNumber"
+            value={phoneNumber}
+            required
+            onChange={(event) => setPhoneNumber(event.target.value)}
+            sx={{ flexGrow: 1 }}
+          />
+        </Box>
+      </Box>
+      <Button variant="contained" onClick={Continue} sx={{ mt: 2 }}>Continue</Button>
+    </>
   );
 }
 
