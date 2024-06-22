@@ -6,7 +6,7 @@ CREATE TABLE vault (
     uploaded_timestamp TIMESTAMP DEFAULT NOW(),
     file_size INTEGER CHECK (file_size > 0),
     attachment_URL VARCHAR(2048) NOT NULL, 
-    CONSTRAINT valid_document_type CHECK (document_type IN ('pdf', 'image', 'text')) -- allowed types
+    CONSTRAINT valid_document_type CHECK (document_type IN ('pdf', 'jpeg', 'png', 'gif', 'txt', 'html', 'markdown', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'))
 );
 
 -- Indexes for performance improvement
