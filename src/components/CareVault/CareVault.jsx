@@ -9,17 +9,17 @@ function CareVault() {
   // NEED TO COME BACK TO THIS AND REFACTOR LOVEDONEID !!
   // FILE UPLOADS!!
   const upload = () => {
-    dispatch({ type: "UPLOAD_FILE", payload: { file, lovedOneId: 1 } });
+    dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } });
   };
 
   // DELETE FILES!!
   const handleDelete = (id) => {
-    dispatch({ type: "DELETE_FILE", payload: { id } });
+    dispatch({ type: "DELETE_FILES", payload: { id } });
   };
 
   // DOWNLOAD FILES!!
   const handleDownload = (id, fileName) => {
-    window.open(`/api/care-vault/download/${id}`, '_blank');
+    dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
   };
 
   // RETRIEVES LIST OF ALL FILES!!
