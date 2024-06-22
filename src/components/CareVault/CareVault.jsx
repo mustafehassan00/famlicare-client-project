@@ -47,18 +47,22 @@ const Input = styled("input")(({ theme }) => ({
 }));
 
 function CareVault() {
-  // State hooks for managing file selection, errors, and viewing
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("");
   const [fileError, setFileError] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
   const [viewingFile, setViewingFile] = useState(null);
 
-  // Hooks for Redux actions and selectors
   const dispatch = useDispatch();
   const files = useSelector((state) => state.careVault.files);
+  const isLoading = useSelector((state) => state.careVault.isLoading);
+  const error = useSelector((state) => state.careVault.error);
+  const currentFileUrl = useSelector((state) => state.careVault.currentFileUrl);
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_FILES" });
+  }, [dispatch]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -88,25 +92,15 @@ function CareVault() {
     }
   };
 
-  // Fetches the URL for viewing a file and sets the state for the modal viewer
-  const handleViewFile = async (fileId) => {
-    try {
-      const response = await axios.get(`/api/care-vault/view/${fileId}`);
-      setFileUrl(response.data.url);
-      setViewingFile(files.find((f) => f.id === fileId));
-    } catch (error) {
-      console.error("Error fetching file URL:", error);
-      alert("Failed to view file. Please try again.");
-    }
+  const handleViewFile = (fileId) => {
+    dispatch({ type: "GET_FILE_URL", payload: { id: fileId } });
+    setViewingFile(files.find((f) => f.id === fileId));
   };
 
-  // Closes the file viewer modal
   const handleCloseViewer = () => {
     setViewingFile(null);
-    setFileUrl("");
   };
 
-  // Dispatches an action to delete a file, with admin check
   const handleDeleteFile = (fileId) => {
     if (is_admin) {
       if (window.confirm("Are you sure you want to delete this file?")) {
@@ -134,10 +128,6 @@ function CareVault() {
       alert("Only admins can share files.");
     }
   };
-
-  useEffect(() => {
-    dispatch({ type: "FETCH_FILES" });
-  }, [dispatch]);
 
   return (
     <Container>
@@ -176,6 +166,12 @@ function CareVault() {
       >
         <Typography variant="h2">Upload</Typography>
       </Button>
+
+      {/* Display loading state */}
+      {isLoading && <Typography>Loading...</Typography>}
+
+      {/* Display error messages */}
+      {error && <Typography color="error">{error}</Typography>}
 
       {/* Table to display files */}
       <TableContainer component={Paper} style={{ marginTop: theme.spacing(2) }}>
@@ -282,9 +278,9 @@ function CareVault() {
           <Typography variant="h6" component="h2" mb={2}>
             {viewingFile?.document_name}
           </Typography>
-          {fileUrl ? (
+          {currentFileUrl ? (
             <iframe
-              src={fileUrl}
+              src={currentFileUrl}
               style={{
                 width: "100%",
                 height: "calc(100% - 50px)",
