@@ -59,6 +59,7 @@ function CareVault() {
   const currentFileUrl = useSelector((state) => state.careVault.currentFileUrl);
   const theme = useTheme();
   const is_admin = useSelector((state) => state.user.is_admin);
+  const lovedOneId = useSelector((state) => state.user.loved_one_id);
 
   // useEffect hook to fetch files on component mount
 useEffect(() => {
@@ -88,7 +89,7 @@ const handleFileChange = (e) => {
 // Handles the upload button click
 const handleUpload = () => {
   if (file) {
-    dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } }); // Dispatch action to upload file
+    dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId } }); // Dispatch action to upload file
     setFile(null); // Reset file state after upload
     setFilename(""); // Reset filename state after upload
     setFileError(""); // Clear any existing errors
