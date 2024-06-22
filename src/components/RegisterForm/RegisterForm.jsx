@@ -96,7 +96,7 @@ function RegisterForm() {
         />
       </Box>
     </Box>
-    <Button variant='contained'>Next</Button>
+    <Button variant='contained' onClick={signUp}>Sign Up</Button>
     </>
   );
 }
