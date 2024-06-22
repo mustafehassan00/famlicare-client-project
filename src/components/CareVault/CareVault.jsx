@@ -1,3 +1,4 @@
+// Import necessary libraries and components
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,94 +26,92 @@ import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 
+// Styled component for hiding the file input while keeping it functional
 const Input = styled("input")(({ theme }) => ({
   display: "none",
 }));
 
 function CareVault() {
-  // State management for file operations
-  const [file, setFile] = useState(null); // Holds the currently selected file
-  const [filename, setFilename] = useState(""); // Holds the name of the selected file
-  const [fileError, setFileError] = useState(""); // Holds error message for file selection
-  const [fileUrl, setFileUrl] = useState(""); // URL for viewing the file
-  const [viewingFile, setViewingFile] = useState(null); // Holds the file object that is being viewed
+  // State hooks for managing file operations and UI states
+  const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("");
+  const [fileError, setFileError] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+  const [viewingFile, setViewingFile] = useState(null);
 
-  // Redux hooks for dispatching actions and selecting state
+  // Redux hooks for dispatching actions and selecting parts of the state
   const dispatch = useDispatch();
-  const files = useSelector((state) => state.careVault.files); // Selects files from the Redux store
-  const theme = useTheme(); // Accesses the theme for styling components
-  const is_admin = useSelector((state) => state.user.is_admin); // Determines if the user is an admin
+  const files = useSelector((state) => state.careVault.files);
+  const theme = useTheme();
+  const is_admin = useSelector((state) => state.user.is_admin);
 
-  // File selection handler
+  // Handles file selection, filtering out unsupported file types
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      // Check if the file type is audio or video
       if (
         selectedFile.type.startsWith("audio/") ||
         selectedFile.type.startsWith("video/")
       ) {
-        // Set error message for audio and video files
         setFileError("Audio and video files are not allowed.");
         setFile(null);
         setFilename("");
       } else {
-        // Clear error and proceed for other file types
         setFile(selectedFile);
         setFilename(selectedFile.name);
-        setFileError(""); // Clear any previous error message
+        setFileError("");
       }
     }
   };
 
-  // File upload handler
+  // Handles file upload, dispatching a Redux action with the file data
   const handleUpload = () => {
     if (file) {
-      // Dispatches an action to upload the file, example payload structure
       dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId: 1 } });
-      // Reset file selection state after upload
       setFile(null);
       setFilename("");
-      setFileError(""); // Clear error message after successful upload
+      setFileError("");
     }
   };
 
-  // File viewing handler
+  // Fetches the URL for viewing a file and updates state accordingly
   const handleViewFile = async (fileId) => {
     try {
       const response = await axios.get(`/api/care-vault/view/${fileId}`);
-      setFileUrl(response.data.url); // Sets the URL for the iframe to display the file
-      setViewingFile(files.find((f) => f.id === fileId)); // Finds and sets the file being viewed
+      setFileUrl(response.data.url);
+      setViewingFile(files.find((f) => f.id === fileId));
     } catch (error) {
-      console.error("Error fetching file URL:", error); // Logs error for troubleshooting
+      console.error("Error fetching file URL:", error);
     }
   };
 
-  // Viewer close handler
+  // Resets the file viewing state
   const handleCloseViewer = () => {
-    setViewingFile(null); // Resets the viewing file state
-    setFileUrl(""); // Clears the file URL
+    setViewingFile(null);
+    setFileUrl("");
   };
 
-  // File deletion handler
+  // Handles file deletion with user confirmation
   const handleDeleteFile = (fileId) => {
     if (window.confirm("Are you sure you want to delete this file?")) {
-      dispatch({ type: "DELETE_FILES", payload: { id: fileId } }); // Dispatches delete action
+      dispatch({ type: "DELETE_FILES", payload: { id: fileId } });
     }
   };
 
-  // DOWNLOAD FILES!!
+  // Placeholder for file download functionality
   const handleDownload = (id, fileName) => {
     dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
   };
 
-  // Fetch files on component mount
+  // Fetches files on component mount
   useEffect(() => {
-    dispatch({ type: "FETCH_FILES" }); // Dispatches action to fetch files
-  }, [dispatch]); // Dependency array to avoid infinite loop
+    dispatch({ type: "FETCH_FILES" });
+  }, [dispatch]);
 
+  // UI rendering
   return (
     <Container>
+      {/* File selection and upload UI */}
       <label htmlFor="contained-button-file">
         <Input
           id="contained-button-file"
@@ -144,6 +143,8 @@ function CareVault() {
       >
         <Typography variant="h2">Upload</Typography>
       </Button>
+
+      {/* Files list and actions UI */}
       <TableContainer component={Paper} style={{ marginTop: theme.spacing(2) }}>
         <Table>
           <TableHead>
@@ -212,6 +213,7 @@ function CareVault() {
         </Table>
       </TableContainer>
 
+      {/* File viewer modal */}
       <Modal
         open={viewingFile !== null}
         onClose={handleCloseViewer}
