@@ -135,22 +135,6 @@ function CareVault() {
     }
   };
 
-  // Fetches the list of files on component mount
-    if (is_admin) {
-      dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } });
-    } else {
-      alert("Only admins can download files.");
-    }
-  };
-
-  const handleShare = (fileId) => {
-    if (is_admin) {
-      dispatch({ type: "SHARE_FILES", payload: { id: fileId } });
-    } else {
-      alert("Only admins can share files.");
-    }
-  };
-
   useEffect(() => {
     dispatch({ type: "FETCH_FILES" });
   }, [dispatch]);
