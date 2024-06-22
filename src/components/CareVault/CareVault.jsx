@@ -119,18 +119,52 @@ const handleDeleteFile = (fileId) => {
 };
 
 // Handles file download
-const handleDownload = (id, fileName) => {
-  if (is_admin) { // Check if the user is an admin
-    dispatch({ type: "DOWNLOAD_FILES", payload: { id, fileName } }); // Dispatch action to download file
+const handleDownload = async (id, fileName) => {
+  if (is_admin) { // Ensure the user is an admin
+    try {
+      const response = await dispatch({ type: "GET_FILE_URL", payload: { id, fileName } });
+      // Assuming the action returns the file URL in the response
+      const fileUrl = response.payload.url; // Adjust according to your state management
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.setAttribute('download', fileName); // Set the filename for the download
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      alert("Failed to download file.");
+    }
   } else {
     alert("Only admins can download files."); // Alert if the user is not an admin
   }
 };
 
-// Handles file sharing
-const handleShare = (fileId) => {
+const handleShare = async (fileId) => {
   if (is_admin) { // Check if the user is an admin
-    dispatch({ type: "SHARE_FILES", payload: { id: fileId } }); // Dispatch action to share file
+    try {
+      // Assuming dispatch returns the file URL to be shared
+      const response = await dispatch({ type: "SHARE_FILES", payload: { id: fileId } });
+      const fileUrl = response.payload.url; // Adjust according to your state management
+
+      if (navigator.share) {
+        // Use the Web Share API
+        navigator.share({
+          title: 'Share File', // Optional: Title of the file to share
+          url: fileUrl, // URL of the file to share
+        }).then(() => {
+          alert('File shared successfully');
+        }).catch((error) => {
+          console.error('Error sharing file:', error);
+        });
+      } else {
+        // Fallback or inform the user
+        alert("Your browser does not support direct sharing. Please copy the link: " + fileUrl);
+      }
+    } catch (error) {
+      console.error("Error sharing file:", error);
+      alert("Failed to share file."); // Inform the user of failure
+    }
   } else {
     alert("Only admins can share files."); // Alert if the user is not an admin
   }

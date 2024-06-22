@@ -36,20 +36,28 @@ const s3Uploadv2 = async (file) => {
 };
 
 // Function to generate a presigned URL for accessing a file
-const getPresignedURL = (fileName) => {
+// Added a new parameter `useType` to specify the intended use of the URL
+const getPresignedURL = (fileName, useType = 'view') => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME, // Your S3 bucket name.
     Key: fileName, // The file path in your bucket.
-    Expires: 60 * 60 * 24 , // URL expiry time in seconds (24 hours).
-    ResponseContentDisposition: 'attachment', // Suggests to the browser to download rather than displaying the file.
+    Expires: 60 * 60 * 24, // URL expiry time in seconds (24 hours).
   };
-  // Note: Adjust the Expires value based on your application's needs.
-  return s3.getSignedUrl("getObject", params); // Generates a presigned URL for downloading the file.
+
+  // Conditionally set the ResponseContentDisposition based on the useType
+  if (useType === 'download') {
+    params.ResponseContentDisposition = 'attachment'; // Suggests to the browser to download rather than displaying the file.
+  }
+
+  // Generates a presigned URL for the specified use.
+  return s3.getSignedUrl("getObject", params);
 };
 
-/// Route to get a pre-signed URL for a file
+// Adjust the route to get a pre-signed URL for a file to specify the intended use
 router.get("/file/:id", rejectUnauthenticated, async (req, res) => {
   const fileId = req.params.id;
+  const useType = req.query.useType || 'view'; // Get the useType from query parameters, default to 'view'
+
   try {
     const query = "SELECT * FROM vault WHERE id = $1";
     const result = await pool.query(query, [fileId]);
@@ -59,9 +67,9 @@ router.get("/file/:id", rejectUnauthenticated, async (req, res) => {
     }
 
     const file = result.rows[0];
-    const url = getPresignedURL(`uploads/${file.document_name}`);
+    const url = getPresignedURL(`uploads/${file.document_name}`, useType);
 
-    res.json({ url, fileName: file.document_name });
+    res.json({ url, fileName: file.document_name, useType });
   } catch (error) {
     console.error("Error generating pre-signed URL:", error);
     res.status(500).json({ message: "Error accessing file" }); // Internal server error, possibly database or AWS S3 issue.
