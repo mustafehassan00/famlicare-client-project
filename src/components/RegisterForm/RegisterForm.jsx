@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Typography, TextField, Button, Box } from '@mui/material';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -12,60 +13,60 @@ function RegisterForm() {
   const history = useHistory();
 
   const signUp = () => {
-   
     dispatch({
       type: 'USERNAME_EMAIL_PASSWORD',
       payload: {
         username: username,
         emailAddress: emailAddress,
-        password: password
+        password: password,
       },
     });
 
     history.push('/registerpage/registerpage1');
-
-
-  }; // submit phone number
+  };
 
   return (
-
-<>
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
       <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <label htmlFor="emailAddress">
-          email:
-          <input
-            type="text"
-            name="emailAddress"
-            value={emailAddress}
-            required
-            onChange={(event) => setemailAddress(event.target.value)}
-          />
-        </label>
+        <TextField
+          required
+          id="username"
+          label="Username"
+          variant="outlined"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <TextField
+          required
+          id="emailAddress"
+          label="Email"
+          variant="outlined"
+          value={emailAddress}
+          onChange={(event) => setemailAddress(event.target.value)}
+        />
       </div>
       <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
+        <TextField
+          required
+          id="password"
+          label="Password"
+          type="password"
+          variant="outlined"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
       </div>
-      <button onClick={signUp}>Sign Up</button>
-    </>
+      <Button variant="contained" onClick={signUp} sx={{ mt: 3, ml: 1 }}>
+        <Typography variant="h2">Sign Up</Typography>
+      </Button>
+    </Box>
   );
 }
 
