@@ -1,3 +1,19 @@
+/**
+ * careVault Router
+ * 
+ * This router handles all file operations for the CareVault feature.
+ * 
+ * Troubleshooting:
+ * - Ensure all environment variables (AWS credentials, bucket name) are correctly set.
+ * - Check S3 bucket permissions if file operations fail.
+ * - Verify database connection and schema if database operations fail.
+ * 
+ * Maintenance:
+ * - Regularly review and update allowed MIME types in the upload route.
+ * - Consider implementing file versioning for better file management.
+ * - Periodically review and optimize database queries for performance.
+ */
+
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
