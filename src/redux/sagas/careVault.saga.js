@@ -47,9 +47,8 @@ function* downloadFiles(action) {
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("download", action.payload.fileName);
-    document.body.appendChild(link);
     link.click();
-    link.parentNode.removeChild(link);
+    window.URL.revokeObjectURL(url);
     yield put({ type: "DOWNLOAD_SUCCESS" });
   } catch (error) {
     console.log("File download failed", error);
