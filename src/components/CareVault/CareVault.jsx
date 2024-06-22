@@ -140,6 +140,8 @@ const handleDownload = async (id, fileName) => {
   }
 };
 
+// Handles file sharing
+// Corrected handleShare function using the Web Share API to trigger built-in browser sharing functionality.
 const handleShare = async (fileId) => {
   if (is_admin) { // Check if the user is an admin
     try {
