@@ -26,6 +26,28 @@ const s3Uploadv2 = async (file) => {
   return await s3.upload(params).promise();
 };
 
+const getPresignedURL = (fileName) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: fileName,
+    Expires: 60 * 5 // URL expiry time in seconds
+  };
+  return s3.getSignedUrl('getObject', params);
+};
+
+// VIEW (get) route
+router.get('/view/:fileName', (req, res) => {
+  const url = getPresignedURL(`uploads/${req.params.fileName}`);
+  res.redirect(url);
+});
+
+// Share Files
+router.get('/share/:filename', (req, res) => {
+  const url = getPresignedURL(`uploads/${req.params.filename}`);
+  res.send({ url });
+});
+
+// Upload file
 router.post("/upload", upload.single("file"), async (req, res) => {
   const file = req.file;
   const lovedOneId = req.body.lovedOneId;
@@ -40,12 +62,13 @@ router.post("/upload", upload.single("file"), async (req, res) => {
       INSERT INTO vault 
       (loved_one_id, document_name, document_type, file_size, attachment_URL) 
       VALUES 
-      ($1, $2, $3, $4, $5);
+      ($1, $2, $3, $4, $5)
+      RETURNING *;
     `;
     const queryParams = [
       lovedOneId,
       file.originalname,
-      file.mimetype,
+      file.mimetype.split('/')[1], // To match the valid document types in the database
       file.size,
       result.Location,
     ];
@@ -76,18 +99,13 @@ router.delete("/delete/:id", async (req, res) => {
     }
 
     const file = selectResult.rows[0];
-
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `uploads/${file.document_name}`,
     };
-    try {
-      await s3.deleteObject(params).promise();
-      console.log("File deleted from S3");
-    } catch (s3Error) {
-      console.error("Error in S3:", s3Error);
-      return res.status(500);
-    }
+
+    await s3.deleteObject(params).promise();
+    console.log("File deleted from S3");
 
     const deleteQuery = `
       DELETE FROM vault
@@ -95,18 +113,22 @@ router.delete("/delete/:id", async (req, res) => {
     `;
     await pool.query(deleteQuery, [fileId]);
     console.log("File deleted from database");
-    res.status(200);
+
+    res.sendStatus(200);
   } catch (error) {
     console.error("Error in database:", error);
-    res.status(500);
+    res.sendStatus(500);
   }
 });
 
+// Retrieve all files
 router.get("/files", async (req, res) => {
   const queryText = `
     SELECT 
-    id, document_name, document_type, file_size, attachment_URL 
-    FROM vault`;
+    id, document_name, document_type, file_size, attachment_URL, uploaded_timestamp 
+    FROM vault
+    ORDER BY uploaded_timestamp DESC;
+  `;
 
   try {
     const result = await pool.query(queryText);
