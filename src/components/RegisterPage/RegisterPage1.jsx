@@ -1,13 +1,21 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import RegisterForm1 from "../RegisterForm/RegisterForm1";
+import {
+  Container,
+  Typography,
+  Button,
+  useTheme,
+  Avatar,
+  Grid,
+  TextField,
+} from "@mui/material";
 
 function RegisterPage1() {
   const history = useHistory();
 
   return (
     <div>
-      <h1>phone number?</h1>
       <button onClick={() => history.goBack()}> ⬅️ </button>
       <button
         onClick={() => {
@@ -17,6 +25,10 @@ function RegisterPage1() {
         {" "}
         ➡️{" "}
       </button>
+      <br></br>
+      <Typography variant="h2">Enter your phone number</Typography>
+      <br></br>
+
       <RegisterForm1 />
     </div>
   );

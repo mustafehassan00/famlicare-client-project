@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Typography, Button, useTheme,Avatar,Grid } from '@mui/material';
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
 // import LogOutButton from '../LogOutButton/LogOutButton';
 import { useHistory } from "react-router-dom";
 
@@ -25,6 +25,7 @@ function UserPage() {
           border: "2px solid",
           borderColor: theme.palette.primary.light,
           padding: theme.spacing(2),
+          backgroundColor: theme.palette.primary.main,
         }}
       >
         <Grid container alignItems="center" justifyContent="left" spacing={2}>
@@ -55,6 +56,23 @@ function UserPage() {
           </Grid>
         </Grid>
       </Container>
+      <TextField
+          variant="outlined"
+          placeholder='Privacy Policy {coming soon}'
+          disabled
+           
+          fullWidth
+          margin="normal"
+        />
+             <TextField
+          variant="outlined"
+          placeholder='Change Password {coming soon}'
+          disabled
+          fullWidth
+          margin="normal"
+        />
+        
+
 
       {/* <Typography>{JSON.stringify(user, null, 2)}</Typography> */}
 

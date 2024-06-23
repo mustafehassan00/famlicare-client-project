@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -28,43 +29,42 @@ function RegisterForm() {
   }; // submit phone number
 
   return (
-
-<>
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <label htmlFor="emailAddress">
-          email:
-          <input
+    <>
+        <Grid  justifyContent="center">
+        <Grid item xs={12} align="center">
+        <TextField
+          label="Enter User Name"
+          type="text"
+          name="username"
+          value={username}
+          required
+          onChange={(event) => setUsername(event.target.value)}
+        />
+         </Grid>
+        <br></br>
+        <Grid item xs={12} align="center">
+         <TextField
+           label="Enter Email Address"
             type="text"
             name="emailAddress"
             value={emailAddress}
             required
             onChange={(event) => setemailAddress(event.target.value)}
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+           </Grid>
+      <br></br>
+      <Grid item xs={12} align="center">
+          <TextField
+            label="Enter Password"
             type="password"
             name="password"
             value={password}
             required
             onChange={(event) => setPassword(event.target.value)}
           />
-        </label>
-      </div>
-      <button onClick={signUp}>Sign Up</button>
+           </Grid>
+      <Button onClick={signUp} variant="contained" className="primary on">Sign Up</Button>
+      </Grid>
     </>
   );
 }

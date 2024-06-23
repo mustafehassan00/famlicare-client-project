@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
 
 function RegisterForm2() {
   const [image, setimage] = useState("");
@@ -22,10 +23,18 @@ function RegisterForm2() {
   return (
     <>
       <div>
-        <h2>Registered User Profile picture</h2>
+      <br></br>
+        <Typography variant="h2">Upload your profile picture</Typography>
+        <br></br>
         <div>
+        <Avatar
+          sx={{ width: 100, height: 100 }}
+          alt="Profile Picture"
+          src="/path/to/profile-image.jpg"
+         
+        />
           <label htmlFor="image">
-            Image:
+
             <input
               type="image"
               name="image"
@@ -37,7 +46,7 @@ function RegisterForm2() {
           </label>
         </div>
       </div>
-      <button onClick={Continue}>Continue</button>
+      <Button onClick={Continue} variant="contained" className="primary on">Continue</Button>
     </>
   );
 }
