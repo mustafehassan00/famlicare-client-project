@@ -6,6 +6,7 @@ import careTeamSaga from './careTeam.saga';
 import careVaultSaga from './careVault.saga';
 import lovedOneSaga from './lovedOne.saga';
 import messagesSaga from './messages.saga';
+import editUsersaga from './editUserprofile.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     careVaultSaga(),
     lovedOneSaga(),
     messagesSaga(),
+    editUsersaga(),
   ]);
 }
