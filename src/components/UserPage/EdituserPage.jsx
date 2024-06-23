@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
 import { useParams } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
+
 
 //fetch the data of the user that i want to edit;
 //need to know id of the user to edit 
 function EdituserPage() {
+  const history = useHistory();
+
   const theme = useTheme();
   const user = useSelector((store) => store.user);
   const params = useParams();
@@ -57,10 +61,12 @@ const updateProfile = (event) => {
     <Grid
       container
       alignItems="center"
-      justifyContent="left"
+      justifyContent="center"
       spacing={2}
       padding={4}
     >
+            <Button onClick={() => history.goBack()}> ⬅️ </Button>
+
       <Grid item justifyContent="Center" >
         <Avatar
           sx={{ width: 100, height: 100 }}
