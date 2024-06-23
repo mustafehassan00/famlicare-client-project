@@ -12,7 +12,7 @@ function UserPage() {
 
   const editUserinfo = () => {
     // route to the form where the user can edit their information
-    history.push("/profileEdit");
+    history.push(`/update-user/${user.id}`);
     console.log('Edit the user with the id of',user.id)
 
   };

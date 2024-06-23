@@ -99,7 +99,7 @@ function App() {
             <ProtectedRoute
               // logged in shows HomePage
               exact
-              path="/profileEdit"
+              path="/update-user/:id"
             >
               <EdituserPage />
             </ProtectedRoute>
