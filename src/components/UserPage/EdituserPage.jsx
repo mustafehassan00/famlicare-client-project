@@ -46,9 +46,10 @@ const handlePhonechange = (event) => {
 }
 
 const updateProfile = (event) => {
+    event.preventDefault()
     // Sends values reducer to saga to update user profile
     dispatch ({
-        type: "CHANGE-ROFILE-VALUES",
+        type: "CHANGE-PROFILE-VALUES",
         payload: editUserprofile
     })
 }
@@ -95,7 +96,7 @@ const updateProfile = (event) => {
           fullWidth
           margin="normal"
         />
-        <Button variant="contained" className="primary on">
+        <Button variant="contained" className="primary on" onClick={updateProfile}>
           Save
         </Button>
       </Grid>

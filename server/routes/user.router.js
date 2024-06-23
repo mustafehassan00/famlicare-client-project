@@ -41,23 +41,33 @@ router.post('/register', (req, res, next) => {
 });
 
 // PUT route to update username, email, and phone number
-// router.put('/:id', (req, res, next) => {
-//   const userId = req.params.id; // Get user ID from URL parameter
-//   const { newUsername, newEmail, newPhoneNumber } = req.body; // Destructure updated fields from request body
+router.put('/:id', (req, res, next) => {
+  const userId = req.params.id; // Get user ID from URL parameter
+  console.log('here is the id',userId);
+  // const { , ,  } = req.body; // Destructure updated fields from request body
+  console.log("put route data", req.body);
+  console.log('username', req.body.username);
+  const username = req.body.username
+  const email = req.body.email
+  console.log('email', email);
+  const phone_number = req.body.phone_number
+  console.log('phone-number', phone_number);
+  const id = req.body.id
+  console.log('HERE is the id',id);
 
-//   const queryText = `
-//     UPDATE "user" 
-//     SET username = $1, email = $2, phone_number = $3 
-//     WHERE id = $4
-//   `;
-//   pool
-//     .query(queryText, [newUsername, newEmail, newPhoneNumber, userId])
-//     .then(() => res.sendStatus(200))
-//     .catch((err) => {
-//       console.error('Error updating user details:', err);
-//       res.sendStatus(500); // Server error
-//     });
-// });
+  const queryText = `
+    UPDATE "user" 
+    SET username = $1, email = $2, phone_number = $3 
+    WHERE id = $4
+  `;
+  pool
+    .query(queryText, [username, email, phone_number, id])
+    .then(() => res.sendStatus(200))
+    .catch((err) => {
+      console.error('Error updating user details:', err);
+      res.sendStatus(500); // Server error
+    });
+});
 
 // GET route to fetch user by ID
 router.get('/:id', (req, res, next) => {

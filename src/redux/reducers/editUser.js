@@ -1,17 +1,19 @@
-const editUserprofile = (state = {},action) => {
-    // holds the data dispatch from saga
-    if (action.type === 'SET-USER-TO-EDIT') {  
-          return action.payload
-          // holds the value of the change
-    } else if (action.type === "CHANGE-CURRENT USERNAME"){
-        return {...state, username: action.payload}
-    } else if (action.type === "CHANGE-CURRENT EMAIL"){
-        return {...state, username: action.payload}
-    } else if (action.type === "CHANGE-CURRENT PHONE-NUMBER"){
-        return {...state, username: action.payload}
+const editUserprofile = (state = {}, action) => {
+    //👇 holds data dispatched from the reducer for the user we are editing
+    switch (action.type) {
+      case 'SET-USER-TO-EDIT':
+     //👇 holds data that is editied by user
+        return action.payload;
+      case 'CHANGE-CURRENT USERNAME':
+        return { ...state, username: action.payload };
+      case 'CHANGE-CURRENT EMAIL':
+        return { ...state, email: action.payload }; // Corrected to update email
+      case 'CHANGE-CURRENT PHONE-NUMBER':
+        return { ...state, phone_number: action.payload }; // Corrected to update phone_number
+      default:
+        return state;
     }
-    return state;
-}
-
-
-export default editUserprofile;
+  };
+  
+  export default editUserprofile;
+  
