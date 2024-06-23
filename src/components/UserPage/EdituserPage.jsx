@@ -12,17 +12,46 @@ function EdituserPage() {
   const dispatch = useDispatch();
   console.log('this is the params',params);
   const id4userToedit = params.id
-  console.log('user to edit', id4ruserToedit);
+  console.log('user to edit', id4userToedit);
   // using this id to make a get request 
 
   //get data that's in the reducer editUser reducer
-
+const editUserprofile = useSelector((store) => store.editUserprofile);
+console.log('sent from reducer',editUserprofile);
+// disparch user id to saga, to get user data.
 useEffect (() => {
     dispatch ({
         type: "EDIT-USER-PROFILE",
         payload: id4userToedit
     })
 },[])
+
+const handleNamechange = (event) => {
+    dispatch ({
+        type: "CHANGE-CURRENT USERNAME",
+        payload: event.target.value
+    })
+}
+const handleEmailchange = (event) => {
+    dispatch ({
+        type: "CHANGE-CURRENT EMAIL",
+        payload: event.target.value
+    })
+}
+const handlePhonechange = (event) => {
+    dispatch ({
+        type: "CHANGE-CURRENT PHONE-NUMBER",
+        payload: event.target.value
+    })
+}
+
+const updateProfile = (event) => {
+    // Sends values reducer to saga to update user profile
+    dispatch ({
+        type: "CHANGE-ROFILE-VALUES",
+        payload: editUserprofile
+    })
+}
   return (
     <Grid
       container
@@ -31,17 +60,38 @@ useEffect (() => {
       spacing={2}
       padding={4}
     >
-      <Grid item>
+      <Grid item justifyContent="Center" >
         <Avatar
           sx={{ width: 100, height: 100 }}
           alt="Profile Picture"
           src="/path/to/profile-image.jpg"
+         
         />
+        <br></br>
+        Name
         <TextField
-          label="First Name"
           variant="outlined"
-          //  value={first_name}
-          //  onChange={(e) => setFirstName(e.target.value)}
+           value={editUserprofile.username || ''}
+           onChange={handleNamechange}
+          fullWidth
+          margin="normal"
+        />
+          <br></br>
+        Email
+          <TextField
+          variant="outlined"
+           value={editUserprofile.email || ''}
+           onChange={handleEmailchange}
+          fullWidth
+          margin="normal"
+        />
+        <br></br>
+        Phone Number
+             <TextField
+          variant="outlined"
+           value={editUserprofile.phone_number
+             || ''}
+           onChange={handlePhonechange}
           fullWidth
           margin="normal"
         />
