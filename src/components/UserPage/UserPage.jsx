@@ -2,14 +2,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Typography, Button, useTheme,Avatar,Grid } from '@mui/material';
 // import LogOutButton from '../LogOutButton/LogOutButton';
+import { useHistory } from "react-router-dom";
 
 
 function UserPage() {
   const theme = useTheme();
   const user = useSelector((store) => store.user);
+  const history = useHistory();
 
   const editUserinfo = () => {
     // route to the form where the user can edit their information
+    history.push("/profileEdit");
+    console.log('Edit the user with the id of',user.id)
 
   };
 
@@ -34,6 +38,9 @@ function UserPage() {
           <Grid item>
             <Typography variant="h2" sx={{ marginBottom: theme.spacing(1) }}>
               {user.username}
+              <br></br>
+              {user.id}
+
             </Typography>
             <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
               {user.email}
