@@ -11,10 +11,10 @@ function RegisterPage2() {
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Page 2: Upload Profile Picture
+        Step 3: Upload Profile Picture
       </Typography>
       <Box sx={{ '& > button': { m: 1 } }}>
-        <Button variant="contained" color="primary" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
+        <Button variant="outlined" color="primary" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
           Back
         </Button>
         <Button

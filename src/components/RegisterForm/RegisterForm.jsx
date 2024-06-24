@@ -38,7 +38,7 @@ function RegisterForm() {
           margin: "auto", // Center the box between left and right margins
           width: "fit-content", // Adjust the width of the box to fit its content
           border: "2px solid", // Add a border around the box
-          borderColor: "primary", // Use the theme's divider color for the border
+          borderColor: "#2a788b", // Use the theme's primary color for the border
           padding: 2, // Add some padding inside the box for spacing
           "& .MuiFormControl-root": {
             mt: 2, // Margin top for spacing between form controls

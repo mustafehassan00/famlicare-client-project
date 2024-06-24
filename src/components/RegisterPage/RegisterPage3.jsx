@@ -11,10 +11,10 @@ function RegisterPage3() {
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Page 3: Additional Information
+        Step 4: Additional Information
       </Typography>
       <Box sx={{ '& > button': { m: 1 } }}>
-        <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
+        <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
           Back
         </Button>
         <Button

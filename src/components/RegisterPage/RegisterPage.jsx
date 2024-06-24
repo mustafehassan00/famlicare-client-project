@@ -11,10 +11,10 @@ function RegisterPage() {
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Page 1: Email and Password
+        Step 1: Account setup: Email and Password
       </Typography>
       <Box sx={{ '& > button': { m: 1 } }}>
-        <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
+        <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
           Back
         </Button>
         <Button
