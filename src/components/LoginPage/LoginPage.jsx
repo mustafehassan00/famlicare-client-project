@@ -1,26 +1,27 @@
 import React from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
 
 function LoginPage() {
   const history = useHistory();
 
   return (
-    <div>
+    <Box sx={{ textAlign: 'center', mt: 4 }}>
       <LoginForm />
 
-      <center>
-        <button
-          type="button"
-          className="btn btn_asLink"
+      <Box sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => {
             history.push('/registration');
           }}
         >
           Register
-        </button>
-      </center>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 }
 

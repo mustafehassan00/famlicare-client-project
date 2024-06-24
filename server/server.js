@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 5001;
+const path = require('path');
 
 // Middleware Includes
 const sessionMiddleware = require('./modules/session-middleware');
@@ -29,10 +30,10 @@ app.use(passport.session());
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/care-team', careTeamRouter);
-app.use('api/care-vault', careVaultRouter);
-app.use('api/loved-one', lovedOneRouter);
+app.use('/api/care-vault', careVaultRouter);
+app.use('/api/loved-one', lovedOneRouter);
 app.use('/api/messages', messagesRouter);
-
+app.use('/fonts', express.static(path.join(__dirname, '../../public/fonts')));
 
 
 
