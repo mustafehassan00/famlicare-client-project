@@ -29,7 +29,7 @@ function CreateOrjoinCareTeam() {
       <Box sx={{ mb: 4 }}>
         <Button
           variant="contained"
-          color="primary"
+          color="tertiary"
           onClick={handleCreateLovedOne}
           fullWidth
         >
@@ -54,7 +54,7 @@ function CreateOrjoinCareTeam() {
           type="submit"
           variant="contained"
           fullWidth
-          classname={invitationCode ? "primary" : "primary off"}
+          className={invitationCode ? "primary" : "primary off"}
         >
           Join an Existing Care Team
         </Button>
