@@ -1,4 +1,3 @@
-
 const messages = (state = [], action) => {
   switch (action.type) {
     case 'SET_MESSAGES':
