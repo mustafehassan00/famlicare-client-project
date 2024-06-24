@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
+
 
 function RegisterForm3() {
   const [firstName, setfirstName] = useState("");
@@ -24,28 +26,28 @@ function RegisterForm3() {
   return (
     <>
       <div>
-        <label htmlFor="firstName">
-          First Name:
-          <input
+        <br></br>
+          <TextField
+            label="Enter First Name"
             type="text"
             name="firstName"
             value={firstName}
             required
             onChange={(event) => setfirstName(event.target.value)}
           />
-        </label>
-        <label htmlFor="lastName">
-          Last Name
-          <input
+          <br></br>
+          <br></br>
+          <TextField
+            label="Enter Last Name"
             type="text"
             name="lastName"
             value={lastName}
             required
             onChange={(event) => setlastName(event.target.value)}
           />
-        </label>
       </div>
-      <button onClick={Continue}>Continue</button>
+      <br></br>
+      <Button onClick={Continue} variant="contained" className="primary on">Continue</Button>
     </>
   );
 }

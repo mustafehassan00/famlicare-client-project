@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField } from '@mui/material';
+
 
 function RegisterForm1() {
   const [phoneNumber, setphoneNumber] = useState("");
@@ -25,9 +27,9 @@ function RegisterForm1() {
     <>
       <div>
         <label htmlFor="Phone Number">
-          Phone Number:
-          <input
+          <TextField
             type="phoneNumber"
+            label="Enter Phone Number"
             name="phoneNumber"
             value={phoneNumber}
             required
@@ -35,7 +37,8 @@ function RegisterForm1() {
           />
         </label>
       </div>
-      <button onClick={Continue}>Continue</button>
+      <br></br>
+      <Button onClick={Continue} variant="contained" className="primary on">Continue</Button>
     </>
   );
 }
