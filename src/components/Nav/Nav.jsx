@@ -51,7 +51,7 @@ function Nav() {
                 Home
               </Button>
               <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                User profile
+                User Profile
               </Button>
               <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 💬 Messages
@@ -60,7 +60,7 @@ function Nav() {
                 CareVault
               </Button>
               <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                Loved one Form
+                LovedOne Form
               </Button>
               <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 CareTeam Form
