@@ -35,30 +35,20 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
 
-router.post('/register', upload.single('photo'), (req, res, next) => {
-  console.log("Image FILE PATH Server!",req.body,registerReducer);
-
+router.post('/register', (req, res, next) => {
   const username = req.body.registerReducer.username;
   const firstName = req.body.registerReducer.firstName;
   const lastName = req.body.registerReducer.lastName;
   const phoneNumber = req.body.registerReducer.phoneNumber;
-  const image = req.body.image.selectedFile;
-  console.log("here is the image", image)
-
-  const profile_picture_url = req.file ? req.file.path : null; // Store file path or URL here
-  console.log("The image file in the Server!",req.file);
-  console.log("Image FILE PATH Server!",req.file.path );
-
-
+  const image = req.body.registerReducer.image;
+console.log("here is THE Registeration object:",req.body.registerReducer)
   const password = encryptLib.encryptPassword(req.body.registerReducer.password);
   const email = req.body.registerReducer.emailAddress;
   console.log("DATA in the Server!",req.body.registerReducer);
-
-
   const queryText = `INSERT INTO "user" (username, first_name, last_name, email, password, phone_number, profile_picture_url)
     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`;
   pool
-    .query(queryText, [username, firstName,lastName,email,password,phoneNumber,profile_picture_url])
+    .query(queryText, [username, firstName,lastName,email,password,phoneNumber,image])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('User registration failed: ', err);

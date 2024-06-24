@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 
 
-function chat() {
+function Chat() {
   
     
     
@@ -95,5 +95,5 @@ useEffect(() => {
     )
 }
 
-export default chat;
+export default Chat;
 

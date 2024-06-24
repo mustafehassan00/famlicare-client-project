@@ -26,7 +26,7 @@ import {
 
 // Component for creating a new "Loved One" record
 // Utilizes Redux for state management and Material UI for styling
-const CreateLovedOne = () => {
+const LovedOneForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [step, setStep] = useState(1); // Controls the step in the form process
@@ -168,4 +168,4 @@ const CreateLovedOne = () => {
   );
 };
 
-// export default CreateLovedOne;
+export default LovedOneForm;

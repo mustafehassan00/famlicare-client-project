@@ -53,7 +53,7 @@ function Nav() {
               <Button color="inherit" component={NavLink} to="/user" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 User Profile
               </Button>
-              <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+              <Button color="inherit" component={NavLink} to="/chat" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 💬 Messages
               </Button>
               <Button color="inherit" component={NavLink} to="/carevault" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
