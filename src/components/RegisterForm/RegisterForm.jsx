@@ -96,7 +96,7 @@ function RegisterForm() {
         />
       </Box>
     </Box>
-    <Button variant='contained' onClick={signUp}>Sign Up</Button>
+    <Button variant='contained' className = "primary" onClick={signUp}>Sign Up</Button>
     </>
   );
 }

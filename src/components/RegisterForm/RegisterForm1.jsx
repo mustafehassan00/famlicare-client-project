@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, useTheme } from "@mui/material";
 
 function RegisterForm1() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -9,6 +9,7 @@ function RegisterForm1() {
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
   const history = useHistory();
+  const theme = useTheme()
 
   const Continue = (event) => {
     event.preventDefault();
@@ -64,7 +65,7 @@ function RegisterForm1() {
           />
         </Box>
       </Box>
-      <Button variant="contained" onClick={Continue} sx={{ mt: 2 }}>Continue</Button>
+      <Button variant="contained" className="Primary" onClick={Continue} sx={{ mt: 2 }}>Continue</Button>
     </>
   );
 }
