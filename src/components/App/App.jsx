@@ -23,7 +23,7 @@ import LoginPage from "../LoginPage/LoginPage";
 //import components
 import HomePage from "../HomePage/HomePage";
 import Profile from "../Profile/Profile";
-import CareTeam from "../CareTeam/CareTeam";
+import CreateOrjoinCareTeam from '../CreateOrJoinCareTeam/CreateOrJoinCareTeam'
 import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
 import LovedOneForm from "../LovedOneForm/LovedOneForm";
@@ -108,9 +108,9 @@ function App() {
             <ProtectedRoute
               // logged in shows HomePage
               exact
-              path="/careteam"
+              path="/createorjointeam"
             >
-              <CareTeam />
+              <CreateOrjoinCareTeam />
             </ProtectedRoute>
 
             {/* CareVault component */}
