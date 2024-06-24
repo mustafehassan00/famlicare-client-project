@@ -22,10 +22,10 @@ const registerReducer = (state = initialState, action) => {
         ...state,
         phoneNumber: action.payload.phoneNumber,
       };
-    case "IMAGE":
+    case "IMAGE_SELECTED":
       return {
         ...state,
-        image: action.payload.image,
+        image: action.payload,
       };
     case "FIRST_LAST_NAME":
       return {
