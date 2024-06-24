@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 function RegisterForm3() {
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
@@ -19,33 +20,66 @@ function RegisterForm3() {
       },
     });
     history.push("/registerpage/registerpage4");
-  }; // end registerUser
+  };
 
   return (
     <>
-      <div>
-        <label htmlFor="firstName">
-          First Name:
-          <input
-            type="text"
-            name="firstName"
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "auto",
+          width: "fit-content",
+          border: "2px solid",
+          borderColor: "primary.main",
+          padding: 2,
+          "& .MuiFormControl-root": {
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Box className="MuiFormControl-root">
+          <Typography variant="h6" sx={{ mr: 2, minWidth: "120px" }}>
+            First Name
+          </Typography>
+          <TextField
+            required
+            id="firstName"
+            label="Enter your first name"
+            variant="outlined"
             value={firstName}
-            required
-            onChange={(event) => setfirstName(event.target.value)}
+            onChange={(event) => setFirstName(event.target.value)}
+            sx={{ flexGrow: 1 }}
           />
-        </label>
-        <label htmlFor="lastName">
-          Last Name
-          <input
-            type="text"
-            name="lastName"
+        </Box>
+        <Box className="MuiFormControl-root">
+          <Typography variant="h6" sx={{ mr: 2, minWidth: "120px" }}>
+            Last Name
+          </Typography>
+          <TextField
+            required
+            id="lastName"
+            label="Enter your last name"
+            variant="outlined"
             value={lastName}
-            required
-            onChange={(event) => setlastName(event.target.value)}
+            onChange={(event) => setLastName(event.target.value)}
+            sx={{ flexGrow: 1 }}
           />
-        </label>
-      </div>
-      <button onClick={Continue}>Continue</button>
+        </Box>
+        <Button variant="contained" onClick={Continue} sx={{ mt: 2 }}>
+          Continue
+        </Button>
+      </Box>
     </>
   );
 }
