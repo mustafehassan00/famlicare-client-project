@@ -1,54 +1,79 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react"; // Import useRef
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Box, Button, Typography, IconButton } from "@mui/material";
+import axios from "axios";
+import PhotoCamera from '@mui/icons-material/PhotoCamera'; // Import MUI icon for the button
 import FormData from "form-data"; // Import FormData from axios-form-data
 
 
 function RegisterForm2() {
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold selected file
-  const history = useHistory();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const fileInputRef = useRef(null); // Create a ref for the file input
 
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]); // Capture the selected file and save it to selectedFile variable
+  const handleFileSelect = (event) => {
+    setSelectedFile(event.target.files[0]);
   };
 
-  const continueRegistration = async () => {
-    //if a file is not selected alert to select a file.
-    if (!selectedFile) {
-      alert("Please select a file.");
-      return;
-    }
-
-// Append the file to FormData ie add selected photo to formData variable
-    const formData = new FormData();
-    formData.append("photo", selectedFile); 
-
-// dispatch the photo upload to store selected file in Redux state
-dispatch({
-  type: "IMAGE_SELECTED",
-  payload: {
-    selectedFile: formData
-  },
-});
-      // Dispatch action or handle state update if needed
-      history.push("/registerpage/registerpage3");
+  const uploadImageToS3 = async () => {
+//todo
   };
 
   return (
     <>
-      <div>
-        <h2>Registered User Profile picture</h2>
-        <div>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "auto",
+          width: "fit-content",
+          border: "2px solid",
+          borderColor: "primary.main",
+          padding: 2,
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Upload Profile Picture
+        </Typography>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          accept="image/*"
+          style={{ display: 'none' }} // Hide the input element
+        />
+        <Button
+          variant="contained"
+          component="label" // Make the button act as a label for the hidden input
+          sx={{ mt: 2 }}
+          startIcon={<PhotoCamera />} // Add an icon to the button
+          color="tertiary"
+        >
+          Upload Image
           <input
             type="file"
-            name="photo"
-            onChange={handleFileChange}
+            hidden // Hide this input but keep it for functionality
+            onChange={handleFileSelect}
+            accept="image/*"
           />
-        </div>
-      </div>
-      <button onClick={continueRegistration}>Continue</button>
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={uploadImageToS3} 
+          sx={{ mt: 2 }}
+          disabled={!selectedFile}
+          className={!selectedFile ? "primary off": "primary"}>
+          Submit Image
+        </Button>
+      </Box>
     </>
   );
 }

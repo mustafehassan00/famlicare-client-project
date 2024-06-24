@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, TextField, Typography, Button } from '@mui/material';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
@@ -22,44 +22,75 @@ function LoginForm() {
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
-  }; // end login
+  };
 
   return (
-    <form className="formPanel" onSubmit={login}>
-      <h2>Login</h2>
-      {errors.loginMessage && (
-        <h3 className="alert" role="alert">
-          {errors.loginMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
+    <>
+      <Box
+        component="form"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "auto",
+          width: "fit-content",
+          border: "2px solid",
+          borderColor: "primary.main",
+          padding: 2,
+          "& .MuiFormControl-root": {
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          },
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={login}
+      >
+        <Typography variant="h6">Login</Typography>
+        {errors.loginMessage && (
+          <Typography className="alert" role="alert" color="error">
+            {errors.loginMessage}
+          </Typography>
+        )}
+        <Box className="MuiFormControl-root">
+          <Typography variant="h6" sx={{ mr: 2, minWidth: "120px" }}>
+            Username
+          </Typography>
+          <TextField
             required
+            id="username"
+            label="Enter your username"
+            variant="outlined"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
+            sx={{ flexGrow: 1 }}
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
+        </Box>
+        <Box className="MuiFormControl-root">
+          <Typography variant="h6" sx={{ mr: 2, minWidth: "120px" }}>
+            Password
+          </Typography>
+          <TextField
             required
+            id="password"
+            label="Enter your password"
+            type="password"
+            variant="outlined"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            sx={{ flexGrow: 1 }}
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Log In" />
-      </div>
-    </form>
+        </Box>
+        <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+          Login
+        </Button>
+      </Box>
+    </>
   );
 }
 

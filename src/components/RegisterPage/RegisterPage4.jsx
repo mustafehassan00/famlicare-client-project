@@ -1,56 +1,59 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Box, Button, Typography, Paper, useTheme } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 
 function RegisterPage4() {
   const errors = useSelector((store) => store.errors);
   const registerReducer = useSelector((store) => store.registerReducer);
-console.log("What we received from the reducer",registerReducer);
-
   const dispatch = useDispatch();
   const history = useHistory();
+  const theme = useTheme();
 
   const registerUser = (event) => {
     event.preventDefault();
-
-
-
     dispatch({
       type: "REGISTER",
       payload: {
         registerReducer
       },
     });
-  }; // end registerUser
+  };
 
   return (
-    <>
-      <button onClick={() => history.goBack()}> ⬅️ </button>
-      <form className="formPanel" onSubmit={registerUser}>
-        <h2>Register User</h2>
+    <Box sx={{ textAlign: 'center', mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Page 4: Review and Submit
+      </Typography>
+      <Box sx={{ '& > button': { m: 1 } }}>
+        <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={() => history.goBack()}>
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={registerUser}
+          classname="primary"
+        >
+          Complete your registration
+        </Button>
+      </Box>
+      <Paper elevation={3} sx={{ p: 2, mt: 2, display: 'inline-block' }}>
         {errors.registrationMessage && (
-          <h3 className="alert" role="alert">
+          <Typography color="error" gutterBottom>
             {errors.registrationMessage}
-          </h3>
+          </Typography>
         )}
-{registerReducer.firstName}
-<br></br>
-{registerReducer.lastName}
-<br></br>
-{registerReducer.username}
-<br></br>
-{registerReducer.emailAddress}
-<br></br>
-{registerReducer.phoneNumber}
-<br></br>
-{/* {registerReducer.image} */}
-
-        <div>
-          <input className="btn" type="submit" name="submit" value="Register" />
-        </div>
-        {/* 👆 uncomment for the final component to log a user in. */}
-      </form>
-    </>
+        <Typography>{`First Name: ${registerReducer.firstName}`}</Typography>
+        <Typography>{`Last Name: ${registerReducer.lastName}`}</Typography>
+        <Typography>{`Username: ${registerReducer.username}`}</Typography>
+        <Typography>{`Email Address: ${registerReducer.emailAddress}`}</Typography>
+        <Typography>{`Phone Number: ${registerReducer.phoneNumber}`}</Typography>
+      </Paper>
+    </Box>
   );
 }
 

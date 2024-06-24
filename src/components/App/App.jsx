@@ -15,6 +15,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import AboutPage from "../AboutPage/AboutPage";
 import UserPage from "../UserPage/UserPage";
+import EdituserPage from "../UserPage/EdituserPage";
 import InfoPage from "../InfoPage/InfoPage";
 import LandingPage from "../LandingPage/LandingPage";
 import LoginPage from "../LoginPage/LoginPage";
@@ -22,14 +23,14 @@ import LoginPage from "../LoginPage/LoginPage";
 //import components
 import HomePage from "../HomePage/HomePage";
 import Profile from "../Profile/Profile";
-import CareTeam from "../CareTeam/CareTeam";
+import CreateOrjoinCareTeam from '../CreateOrJoinCareTeam/CreateOrJoinCareTeam'
 import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
 // import LovedOneForm from "../LovedOneForm/LovedOneForm";
 import Messages from "../Messages/Messages";
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
-import theme from "../Theme/FamiliCareTheme";
+import theme from "../Theme/FamliCareTheme";
 // Step components for registration process
 import RegisterPage from '../RegisterPage/RegisterPage';
 import RegisterPage1 from '../RegisterPage/RegisterPage1';
@@ -94,14 +95,22 @@ function App() {
             >
               <Profile />
             </ProtectedRoute>
+            
+            <ProtectedRoute
+              // logged in shows HomePage
+              exact
+              path="/update-user/:id"
+            >
+              <EdituserPage />
+            </ProtectedRoute>
 
             {/* CareTeam component */}
             <ProtectedRoute
               // logged in shows HomePage
               exact
-              path="/careteam"
+              path="/createorjointeam"
             >
-              <CareTeam />
+              <CreateOrjoinCareTeam />
             </ProtectedRoute>
 
             {/* CareVault component */}
@@ -168,7 +177,7 @@ function App() {
               {user.id ? (
                 // If the user is already logged in,
                 // redirect them to the /user page
-                <Redirect to="/user" />
+                <Redirect to="/homepage" />
               ) : (
                 // Otherwise, show the Landing page
                 <LandingPage />

@@ -3,9 +3,10 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import registerReducer from './register.reducer';
 // import careTeam from './careTeam.reducer';
-// import careVault from './careVault.reducer';
+import careVault from './careVault.reducer';
 import lovedOne from './lovedOne.reducer';
 // import messages from './messages.reducer';
+import editUserprofile from './editUser';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -18,9 +19,10 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   registerReducer,
   // careTeam,
-  // careVault,
+  careVault,
   lovedOne,
   // messages,
+  editUserprofile
 });
 
 export default rootReducer;
