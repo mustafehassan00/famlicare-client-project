@@ -40,6 +40,56 @@ router.post('/register', (req, res, next) => {
     });
 });
 
+// PUT route to update username, email, and phone number
+router.put('/:id', (req, res, next) => {
+  const userId = req.params.id; // Get user ID from URL parameter
+  console.log('here is the id',userId);
+  // const { , ,  } = req.body; // Destructure updated fields from request body
+  console.log("put route data", req.body);
+  console.log('username', req.body.username);
+  const username = req.body.username
+  const email = req.body.email
+  console.log('email', email);
+  const phone_number = req.body.phone_number
+  console.log('phone-number', phone_number);
+  const id = req.body.id
+  console.log('HERE is the id',id);
+
+  const queryText = `
+    UPDATE "user" 
+    SET username = $1, email = $2, phone_number = $3 
+    WHERE id = $4
+  `;
+  pool
+    .query(queryText, [username, email, phone_number, id])
+    .then(() => res.sendStatus(200))
+    .catch((err) => {
+      console.error('Error updating user details:', err);
+      res.sendStatus(500); // Server error
+    });
+});
+
+// GET route to fetch user by ID
+router.get('/:id', (req, res, next) => {
+  const userId = req.params.id; // Extract user ID from URL parameter
+console.log("server id HERE",userId);
+console.log(req.params);
+  const queryText = `SELECT * FROM "user" WHERE id = $1;`
+  pool
+    .query(queryText, [userId])
+    .then((dbres) => {
+      // send back an object of the id selected with propertoes of that id 
+      //[0] sends back a single user
+      res.send(dbres.rows[0])
+      console.log('DB HERE IS WHAT WE GOT,', dbres.rows)
+    })
+    .catch((err) => {
+      console.log('User data GET from db failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
+
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
 // this middleware will run our POST if successful

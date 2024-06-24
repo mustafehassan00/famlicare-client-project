@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Typography, TextField, Button, Box, useTheme } from "@mui/material";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Container, Typography, Button, useTheme,Avatar,Grid,TextField, Box, useTheme} from '@mui/material';
 
 function RegisterForm() {
   const [username, setUsername] = useState("");

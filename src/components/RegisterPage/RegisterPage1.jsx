@@ -1,7 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import RegisterForm1 from "../RegisterForm/RegisterForm1";
-import { Typography, Button, Box } from "@mui/material";
+import {Box,
+  Container,
+  Typography,
+  Button,
+  useTheme,
+  Avatar,
+  Grid,
+  TextField,
+} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 

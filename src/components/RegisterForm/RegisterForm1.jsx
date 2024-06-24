@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Box, TextField, Button, Typography, useTheme } from "@mui/material";
+import { Box, TextField, Button, Typography, useTheme, Avatar } from "@mui/material";
 
 function RegisterForm1() {
   const [phoneNumber, setPhoneNumber] = useState("");
