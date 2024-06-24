@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import LovedOne_name from "./LovedOne_Name.jsx";
-import LovedOne_details from "./LovedOne_Details.jsx";
-import LovedOne_address from "./LovedOne_Address.jsx";
+import LovedOne_Name from "./LovedOne_Name.jsx";
+import LovedOne_Details from "./LovedOne_Details.jsx";
+import LovedOne_Address from "./LovedOne_Address.jsx";
 import LovedOne_Review from "./LovedOne_Review.jsx";
 import {
   Box,
@@ -90,17 +90,17 @@ const CreateLovedOne = () => {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <LovedOne_name onSubmit={handleNextStep} />;
+        return <LovedOne_Name onSubmit={handleNextStep} />;
       case 2:
         return (
-          <LovedOne_details
+          <LovedOne_Details
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />
         );
       case 3:
         return (
-          <LovedOne_address
+          <LovedOne_Address
             onSubmit={handleNextStep}
             onPrevStep={handlePrevStep}
           />

@@ -56,9 +56,6 @@ function Nav() {
               <Button color="inherit" component={NavLink} to="/messages" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 💬 Messages
               </Button>
-              <Button color="inherit" component={NavLink} to="/info" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                Info Page
-              </Button>
               <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 Loved one Form
               </Button>

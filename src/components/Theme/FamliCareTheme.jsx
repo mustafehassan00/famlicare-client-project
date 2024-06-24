@@ -80,9 +80,9 @@ const theme = createTheme({
           textTransform: "none",
           fontFamily: libelSuitReg,
           fontWeight: 500,
+          borderRadius: 18
         },
         contained: {
-          borderRadius: 18,
           "&.primary": {
             backgroundColor: colors.orange.main,
             color: colors.white,
@@ -94,7 +94,6 @@ const theme = createTheme({
           },
           // Button size variants
           "&.small": {
-            borderRadius: 12,
             padding: "6px 16px",
             fontSize: "0.875rem",
             "&.on": {
