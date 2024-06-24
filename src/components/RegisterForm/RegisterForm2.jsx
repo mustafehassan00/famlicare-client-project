@@ -17,7 +17,7 @@ function RegisterForm2() {
   };
 
   const uploadImageToS3 = async () => {
-    // Upload logic remains the same
+//todo
   };
 
   return (
@@ -53,6 +53,7 @@ function RegisterForm2() {
           component="label" // Make the button act as a label for the hidden input
           sx={{ mt: 2 }}
           startIcon={<PhotoCamera />} // Add an icon to the button
+          color="tertiary"
         >
           Upload Image
           <input
@@ -62,7 +63,12 @@ function RegisterForm2() {
             accept="image/*"
           />
         </Button>
-        <Button variant="contained" onClick={uploadImageToS3} sx={{ mt: 2 }}>
+        <Button 
+          variant="contained" 
+          onClick={uploadImageToS3} 
+          sx={{ mt: 2 }}
+          disabled={!selectedFile}
+          className={!selectedFile ? "primary off": "primary"}>
           Submit Image
         </Button>
       </Box>

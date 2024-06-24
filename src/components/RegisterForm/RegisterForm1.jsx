@@ -9,7 +9,7 @@ function RegisterForm1() {
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
   const history = useHistory();
-  const theme = useTheme()
+  const theme = useTheme();
 
   const Continue = (event) => {
     event.preventDefault();
@@ -65,7 +65,14 @@ function RegisterForm1() {
           />
         </Box>
       </Box>
-      <Button variant="contained" className="Primary" onClick={Continue} sx={{ mt: 2 }}>Continue</Button>
+      <Button
+        variant="contained"
+        className={phoneNumber ? "primary" : "primary off"}
+        onClick={Continue}
+        sx={{ mt: 2 }}
+      >
+        Continue
+      </Button>
     </>
   );
 }

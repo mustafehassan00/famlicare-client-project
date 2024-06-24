@@ -76,7 +76,13 @@ function RegisterForm3() {
             sx={{ flexGrow: 1 }}
           />
         </Box>
-        <Button variant="contained" onClick={Continue} sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          onClick={Continue}
+          sx={{ mt: 2 }}
+          disabled={!(firstName && lastName)}
+          className={!(firstName && lastName) ? "primary off" : "primary"}
+        >
           Continue
         </Button>
       </Box>
