@@ -1,34 +1,56 @@
 import React, { useState } from 'react';
+import { io } from 'socket.io-client';
+import { useSelector } from "react-redux";
+import useSocketSetup from "./UseSocketSetup";
+import socket from "../../socket"
+import { useEffect } from "react";
 
 
-function chat({ socket, username, room }) {
-    console.log('Chat props:', socket, username, room);
+function chat() {
+  
+    useSocketSetup();
     
+// Use this to use as auto fill to fill in the user 
+const user = useSelector((store) => store.user);
+const firstName = user.first_name
+const lastName = user.last_name
+const usernameID = user.username
+const fullName = firstName + lastName;
+const [username, setUsername] = useState(fullName); // Initialize with fullName
 
-    const [currentMessage, setCurrentMessage] = useState("")
+
+const lovedOneID = user.loved_one_id;
+const [room, setRoom] = useState(lovedOneID);
+
+const [currentMessage, setCurrentMessage] = useState("")
+console.log("props is:", username, room)
+
+
 
     const sendMessage = async () => {
         if(currentMessage !== "") {
             const messageData = {
-                room: room,
-                username: username,
+                // room: room,
+                // username: username,
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
+                // time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
 
             }
-            await socket.emit("send_message", messageData)
+            console.log(messageData.message)
+            await socket.emit("new message", messageData)
         }
     }
 
+
     return (
         <div>
-            <div classname="chat-header">
+            <div >
                 <p>Live Chat</p>
             </div>
-            <div classname="chat-body">
+            <div >
 
             </div>
-            <div classname="chat-footer">
+            <div >
                 <input 
                 type="text"
                 placeholder="Type a message..."
