@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { Box, Button, Typography, IconButton } from "@mui/material";
 import axios from "axios";
 import PhotoCamera from '@mui/icons-material/PhotoCamera'; // Import MUI icon for the button
+import FormData from "form-data"; // Import FormData from axios-form-data
+
 
 function RegisterForm2() {
   const [selectedFile, setSelectedFile] = useState(null);
