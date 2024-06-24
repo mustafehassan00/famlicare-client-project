@@ -183,9 +183,9 @@ io.on('connection', (socket) => {
   // console.log(socket.request)
 
   // Joins the User into a room
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User ${socket.id} Joined Room: ${data}`);
+  socket.on("join_room", (room) => {
+    socket.join(room);
+    console.log(`User ${socket.id} Joined Room: ${room}`);
   });
 
   // Socket event listener for receiving a new message
@@ -193,7 +193,6 @@ io.on('connection', (socket) => {
   socket.on('new message', (messageData) => {
     console.log('new message recieved!')
     const message = messageData.message
-    
     const userId = socket.request.user.id
     const lovedOneId = socket.request.user.loved_one_id
     const sqlText = `INSERT INTO messages
@@ -203,9 +202,20 @@ io.on('connection', (socket) => {
     pool.query(sqlText, sqlValues)
       .then((result) => {
         console.log('send successful')})
-
-        socket.to(message.room).emit('new message', message);
+        socket.to(messageData.room).emit('new_message', message);
   })
+  socket.on('fetch messages', (room) => {
+    const sqlText = `SELECT * FROM messages WHERE loved_one_id = $1 `
+    const sqlValues = [room]
+    pool.query(sqlText, sqlValues)
+     .then((result) => {
+        const messages = result.rows;
+        socket.emit('messages', messages);
+      })
+     .catch((error) => {
+        console.error('Error fetching messages:', error);
+      });
+    });
 });
 
 // Listen Server & Port

@@ -6,9 +6,10 @@ import socket from "../../socket"
 import { useEffect } from "react";
 
 
+
 function chat() {
   
-    useSocketSetup();
+    
     
 // Use this to use as auto fill to fill in the user 
 const user = useSelector((store) => store.user);
@@ -24,7 +25,34 @@ const [room, setRoom] = useState(lovedOneID);
 
 const [currentMessage, setCurrentMessage] = useState("")
 console.log("props is:", username, room)
+const [messages, setMessages] = useState([]);
 
+useSocketSetup();
+useEffect(() => {
+    socket.emit('join_room', room);
+    socket.on('new_message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+    socket.emit('fetch messages', room);
+    socket.on('messages', (messages) => {
+      setMessages(messages);
+    });
+  }, [room, socket]);
+
+// useEffect(() => {
+//     socket.emit('join_room', room);
+//     socket.on('new_message', (message) => {
+//       setMessages((prevMessages) => [...prevMessages, message]);
+//     });
+//   }, [room]);
+
+// useEffect(() => {
+//     socket.emit('fetch messages', room);
+//   }, [room]);
+
+//   socket.on('messages', (messages) => {
+//     setMessages(messages);
+//   });
 
 
     const sendMessage = async () => {
@@ -33,11 +61,13 @@ console.log("props is:", username, room)
                 // room: room,
                 // username: username,
                 message: currentMessage,
+                room: room
                 // time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
 
             }
             console.log(messageData.message)
             await socket.emit("new message", messageData)
+           
         }
     }
 
@@ -48,7 +78,9 @@ console.log("props is:", username, room)
                 <p>Live Chat</p>
             </div>
             <div >
-
+            {messages?.map((message, index) => (
+  <p key={index}>{message.message_text}</p>
+))}
             </div>
             <div >
                 <input 
