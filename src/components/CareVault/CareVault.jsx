@@ -1,13 +1,13 @@
 /**
  * CareVault Component
- * 
+ *
  * This component renders the CareVault interface and handles user interactions.
- * 
+ *
  * Troubleshooting:
  * - Check Redux state and action dispatches using Redux DevTools.
  * - Verify that admin permissions are correctly set in the user state.
  * - Ensure all required props are passed to child components.
- * 
+ *
  * Maintenance:
  * - Regularly review and update the list of allowed file types.
  * - Consider implementing file type icons for better visual representation.
@@ -40,6 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
+import { ErrorOutline } from "@mui/icons-material";
 
 // Custom styled input component for file upload
 const Input = styled("input")(({ theme }) => ({
@@ -62,115 +63,133 @@ function CareVault() {
   const lovedOneId = useSelector((state) => state.user.loved_one_id);
 
   // useEffect hook to fetch files on component mount
-useEffect(() => {
-  dispatch({ type: "FETCH_FILES" }); // Dispatches action to fetch files from the backend
-}, [dispatch]); // Dependency array with dispatch to avoid unnecessary re-renders
+  useEffect(() => {
+    dispatch({ type: "FETCH_FILES" }); // Dispatches action to fetch files from the backend
+  }, [dispatch]); // Dependency array with dispatch to avoid unnecessary re-renders
 
-// Handles file selection change
-const handleFileChange = (e) => {
-  const selectedFile = e.target.files[0]; // Access the file selected by the user
-  if (selectedFile) {
-    // Check if the selected file is an audio or video file
-    if (
-      selectedFile.type.startsWith("audio/") ||
-      selectedFile.type.startsWith("video/")
-    ) {
-      setFileError("Audio and video files are not allowed."); // Set error for unsupported file types
-      setFile(null); // Reset file state
-      setFilename(""); // Reset filename state
-    } else {
-      setFile(selectedFile); // Set selected file to state
-      setFilename(selectedFile.name); // Set filename to state
+  // Handles file selection change
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0]; // Access the file selected by the user
+    if (selectedFile) {
+      // Check if the selected file is an audio or video file
+      if (
+        selectedFile.type.startsWith("audio/") ||
+        selectedFile.type.startsWith("video/")
+      ) {
+        setFileError("Audio and video files are not allowed."); // Set error for unsupported file types
+        setFile(null); // Reset file state
+        setFilename(""); // Reset filename state
+      } else {
+        setFile(selectedFile); // Set selected file to state
+        setFilename(selectedFile.name); // Set filename to state
+        setFileError(""); // Clear any existing errors
+      }
+    }
+  };
+
+  // Handles the upload button click
+  const handleUpload = () => {
+    if (file) {
+      dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId } }); // Dispatch action to upload file
+      setFile(null); // Reset file state after upload
+      setFilename(""); // Reset filename state after upload
       setFileError(""); // Clear any existing errors
     }
-  }
-};
+  };
 
-// Handles the upload button click
-const handleUpload = () => {
-  if (file) {
-    dispatch({ type: "UPLOAD_FILES", payload: { file, lovedOneId } }); // Dispatch action to upload file
-    setFile(null); // Reset file state after upload
-    setFilename(""); // Reset filename state after upload
-    setFileError(""); // Clear any existing errors
-  }
-};
+  // Handles viewing a file
+  const handleViewFile = (fileId) => {
+    dispatch({ type: "GET_FILE_URL", payload: { id: fileId } }); // Dispatch action to get file URL
+    setViewingFile(files.find((f) => f.id === fileId)); // Set the viewing file state to the selected file
+  };
 
-// Handles viewing a file
-const handleViewFile = (fileId) => {
-  dispatch({ type: "GET_FILE_URL", payload: { id: fileId } }); // Dispatch action to get file URL
-  setViewingFile(files.find((f) => f.id === fileId)); // Set the viewing file state to the selected file
-};
+  // Handles closing the file viewer modal
+  const handleCloseViewer = () => {
+    setViewingFile(null); // Reset viewing file state to close the modal
+  };
 
-// Handles closing the file viewer modal
-const handleCloseViewer = () => {
-  setViewingFile(null); // Reset viewing file state to close the modal
-};
-
-// Handles file deletion
-const handleDeleteFile = (fileId) => {
-  if (is_admin) { // Check if the user is an admin
-    if (window.confirm("Are you sure you want to delete this file?")) { // Confirm deletion with the user
-      dispatch({ type: "DELETE_FILES", payload: { id: fileId } }); // Dispatch action to delete file
+  // Handles file deletion
+  const handleDeleteFile = (fileId) => {
+    if (is_admin) {
+      // Check if the user is an admin
+      if (window.confirm("Are you sure you want to delete this file?")) {
+        // Confirm deletion with the user
+        dispatch({ type: "DELETE_FILES", payload: { id: fileId } }); // Dispatch action to delete file
+      }
+    } else {
+      alert("Only admins can delete files."); // Alert if the user is not an admin
     }
-  } else {
-    alert("Only admins can delete files."); // Alert if the user is not an admin
-  }
-};
+  };
 
-// Handles file download
-const handleDownload = async (id, fileName) => {
-  if (is_admin) { // Ensure the user is an admin
-    try {
-      const response = await dispatch({ type: "GET_FILE_URL", payload: { id, fileName } });
-      // Assuming the action returns the file URL in the response
-      const fileUrl = response.payload.url; // Adjust according to your state management
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.setAttribute('download', fileName); // Set the filename for the download
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading file:", error);
-      alert("Failed to download file.");
-    }
-  } else {
-    alert("Only admins can download files."); // Alert if the user is not an admin
-  }
-};
-
-// Handles file sharing
-// Corrected handleShare function using the Web Share API to trigger built-in browser sharing functionality.
-const handleShare = async (fileId) => {
-  if (is_admin) { // Check if the user is an admin
-    try {
-      // Assuming dispatch returns the file URL to be shared
-      const response = await dispatch({ type: "SHARE_FILES", payload: { id: fileId } });
-      const fileUrl = response.payload.url; // Adjust according to your state management
-
-      if (navigator.share) {
-        // Use the Web Share API
-        navigator.share({
-          title: 'Share File', // Optional: Title of the file to share
-          url: fileUrl, // URL of the file to share
-        }).then(() => {
-          alert('File shared successfully');
-        }).catch((error) => {
-          console.error('Error sharing file:', error);
+  // Handles file download
+  const handleDownload = async (id, fileName) => {
+    if (is_admin) {
+      // Ensure the user is an admin
+      try {
+        const response = await dispatch({
+          type: "GET_FILE_URL",
+          payload: { id, fileName },
         });
+        // Assuming the action returns the file URL in the response
+        const fileUrl = response.payload.url; // Adjust according to your state management
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.setAttribute("download", fileName); // Set the filename for the download
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      } catch (error) {
+        console.error("Error downloading file:", error);
+        alert("Failed to download file.");
+      }
+    } else {
+      alert("Only admins can download files."); // Alert if the user is not an admin
+    }
+  };
+
+  // Handles file sharing
+  // Corrected handleShare function using the Web Share API to trigger built-in browser sharing functionality.
+  const handleShare = async (fileId) => {
+    if (is_admin) {
+      // Check if the user is an admin
+      try {
+        dispatch({
+          type: "GET_FILE_URL",
+          payload: { id: fileId },
+        });
+      } catch (error) {
+        console.log("Error getting file share:", error);
+        alert("Failed to get file sharing.");
+      }
+    } else {
+      alert("Only admins can share files."); // Alert if the user is not an admin
+    }
+  };
+
+  useEffect(() => {
+    if (currentFileUrl) {
+      // Use the Web Share API
+      if (navigator.share) {
+        navigator
+          .share({
+            title: "Share File", // Optional: Title of the file to share
+            url: currentFileUrl, // URL of the file to share
+          })
+          .then(() => {
+            alert("File shared successfully");
+          })
+          .catch((error) => {
+            console.log("Error sharing file:", error);
+          });
       } else {
         // Fallback or inform the user
-        alert("Your browser does not support direct sharing. Please copy the link: " + fileUrl);
+        alert(
+          "Your browser does not support direct sharing. Please copy the link: " +
+            currentFileUrl
+        );
       }
-    } catch (error) {
-      console.error("Error sharing file:", error);
-      alert("Failed to share file."); // Inform the user of failure
     }
-  } else {
-    alert("Only admins can share files."); // Alert if the user is not an admin
-  }
-};
+  }, [currentFileUrl]);
 
   return (
     <Container>
@@ -258,7 +277,9 @@ const handleShare = async (fileId) => {
                     <>
                       <Button
                         startIcon={<DownloadIcon />}
-                        onClick={() => handleDownload(file.id, file.document_name)}
+                        onClick={() =>
+                          handleDownload(file.id, file.document_name)
+                        }
                         color="secondary"
                         variant="contained"
                         size="small"
