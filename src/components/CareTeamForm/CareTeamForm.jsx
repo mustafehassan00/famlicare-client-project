@@ -9,6 +9,13 @@ import {
   Typography,
   Box,
   Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  useTheme
 } from "@mui/material";
 
 /**
@@ -22,8 +29,11 @@ function CareTeamForm() {
   const dispatch = useDispatch();
   // Accessing the current user and care team members from the Redux store
   const user = useSelector((state) => state.user);
-  const teamMembers = useSelector((state) => state.careTeamReducer?.members || []);
-
+  const teamMembers = useSelector(
+    (state) => state.careTeamReducer?.members || []
+  );
+  //use existing MUI theme
+  const theme = useTheme();
   /**
    * Fetches care team members when the component mounts.
    * This effect runs once due to an empty dependency array.
@@ -63,16 +73,29 @@ function CareTeamForm() {
         <Typography variant="h6" gutterBottom>
           Team Members
         </Typography>
-        <List>
-          {teamMembers.map((member, index) => (
-            <ListItem key={index}>
-              <ListItemText
-                primary={`${member.first_name} ${member.last_name}`}
-                secondary={member.email}
-              />
-            </ListItem>
-          ))}
-        </List>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="team members table">
+            <TableBody>
+              {teamMembers.map((member, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:nth-of-type(odd)": { backgroundColor: theme.palette.primary.light, color: "white" },
+                  }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{ justifyContent: "flex-start", color: "inherit" }}
+                  >
+                    {`${member.first_name} ${member.last_name}`}
+                  </TableCell>
+                  <TableCell align="right" sx={{color:"inherit"}}>{member.email}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         {/* Invitation form visible only to admin users */}
         {user.is_admin && (
