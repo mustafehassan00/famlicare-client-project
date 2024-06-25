@@ -13,7 +13,7 @@ function CareTeamForm() {
     const dispatch = useDispatch();
     // Accessing the current user and care team members from the Redux store
     const user = useSelector(state => state.user);
-    const teamMembers = useSelector(state => state.careTeam.members);
+    const teamMembers = useSelector(state => state.careTeam?.members || []);
 
     /**
      * Fetches care team members when the component mounts.
