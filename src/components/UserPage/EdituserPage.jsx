@@ -61,7 +61,7 @@ function EdituserPage() {
     });
     // Ensure the CHANGE-PROFILE-VALUES action correctly updates the user's profile in the database
     // Navigate back to UserPage with a state flag indicating a successful edit
-    history.push('/user', { fromEdit: true });
+    history.push('/user');
   };
 
   return (

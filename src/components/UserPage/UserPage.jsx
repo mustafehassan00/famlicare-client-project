@@ -18,11 +18,11 @@ function UserPage() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  // useEffect hook to fetch user data on component mount
-  useEffect(() => {
-    dispatch({ type: "FETCH_USER" });
-    // Ensure the 'FETCH_USER' action is defined in your Redux setup to fetch user data
-  }, [dispatch]);
+  // // useEffect hook to fetch user data on component mount
+  // useEffect(() => {
+  //   dispatch({ type: "FETCH_USER" });
+  //   // Ensure the 'FETCH_USER' action is defined in your Redux setup to fetch user data
+  // }, []);
 
   const editUserinfo = () => {
     // Redirects to the user update page, ensure the route is correctly defined in your router setup
