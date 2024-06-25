@@ -4,11 +4,11 @@ const userReducer = (state = {}, action) => {
       return action.payload;
     case 'UNSET_USER':
       return {};
+    case 'UPDATE_USER_FIELD':
+      return { ...state, [action.payload.field]: action.payload.value };
     default:
       return state;
   }
 };
 
-// user will be on the redux state at:
-// state.user
 export default userReducer;

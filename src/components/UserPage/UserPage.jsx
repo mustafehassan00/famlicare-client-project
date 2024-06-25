@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
@@ -7,56 +7,27 @@ import {
   useTheme,
   Avatar,
   Grid,
-  TextField,
+  TextField
 } from "@mui/material";
-import { useHistory, useLocation } from "react-router-dom";
-
-// Custom hook to track previous location
-// Useful for actions that depend on navigation history, such as refetching data after navigation
-function usePreviousLocation() {
-  const location = useLocation();
-  const [prevLocation, setPrevLocation] = useState();
-
-  useEffect(() => {
-    // Update previous location whenever the current location changes
-    setPrevLocation(location);
-  }, [location]);
-
-  return prevLocation;
-}
+import { useHistory } from "react-router-dom";
 
 function UserPage() {
   const theme = useTheme();
-  const user = useSelector((store) => store.user); // Accessing user data from Redux store
+  // useSelector hook to access the current user state from the Redux store
+  const user = useSelector((store) => store.user);
   const history = useHistory();
   const dispatch = useDispatch();
-  const prevLocation = usePreviousLocation();
 
-  const editUserinfo = () => {
-    // Route to the form where the user can edit their information
-    // Ensure the route matches your routing setup
-    history.push(`/update-user/${user.id}`);
-    console.log("Edit the user with the id of", user.id); // Debugging: Log user ID on edit attempt
-  };
-
+  // useEffect hook to fetch user data on component mount
   useEffect(() => {
-    // Fetch user data on component mount
-    // Make sure the action type "FETCH_USER" is handled in your Redux saga or reducer
     dispatch({ type: "FETCH_USER" });
+    // Ensure the 'FETCH_USER' action is defined in your Redux setup to fetch user data
   }, [dispatch]);
 
-  // Refetch user data when navigating back to the UserPage after an update
-  // This relies on changes in the history object to trigger a refetch
-  useEffect(() => {
-    // Check if the user navigated from `/update-user/${user.id}` to `/user`
-    // Adjust the paths as necessary if routing structure changes
-    if (
-      prevLocation?.pathname === `/update-user/${user.id}` &&
-      location.pathname === "/user"
-    ) {
-      dispatch({ type: "FETCH_USER" }); // Refetch user data
-    }
-  }, [dispatch, location, prevLocation, user.id]);
+  const editUserinfo = () => {
+    // Redirects to the user update page, ensure the route is correctly defined in your router setup
+    history.push(`/update-user/${user.id}`);
+  };
 
   return (
     <>
@@ -74,24 +45,24 @@ function UserPage() {
             <Avatar
               sx={{ width: 100, height: 100 }}
               alt="Profile Picture"
-              src="/path/to/profile-image.jpg" // Ensure the path is correct for profile images
+              src="/path/to/profile-image.jpg" // Ensure the path is correct for profile images. Incorrect paths will result in broken image links.
             />
           </Grid>
           <Grid item>
             <Typography variant="h2" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.username} {/* Display the username */}
-              <br></br>
-              {user.id} {/* Display the user ID */}
+              {user.username} {/* Display the username, ensure username is always fetched and updated in the global state */}
+              <br />
+              {user.id} {/* Display the user ID, useful for debugging and verification */}
             </Typography>
             <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.email} {/* Display the user email */}
+              {user.email} {/* Display the user email, ensure email is correctly fetched and updated */}
             </Typography>
             <Button
               variant="contained"
               className="primary on"
               onClick={editUserinfo}
             >
-              Edit Profile {/* Button to trigger user info edit */}
+              Edit Profile {/* Button to trigger user info edit, ensure onClick handler is correctly implemented */}
             </Button>
           </Grid>
         </Grid>
@@ -99,18 +70,18 @@ function UserPage() {
       <TextField
         variant="outlined"
         placeholder="Privacy Policy {coming soon}"
-        disabled // Placeholder for future features
+        disabled // Placeholder for future features, ensure to implement or remove before production
         fullWidth
         margin="normal"
       />
       <TextField
         variant="outlined"
         placeholder="Change Password {coming soon}"
-        disabled // Placeholder for future features
+        disabled // Placeholder for future features, ensure to implement or remove before production
         fullWidth
         margin="normal"
       />
-      </>
+    </>
   );
 }
 
