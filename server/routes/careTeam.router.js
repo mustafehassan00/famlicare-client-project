@@ -9,16 +9,25 @@ const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 /**
- * GET route template
- * This route can be used as a template for future GET requests.
- * Currently, it does not perform any operations.
+ * GET route to fetch care team members by loved one's ID
+ * This route retrieves a list of care team members associated with a specific loved one.
  */
-router.get("/", (req, res) => {
-  // Placeholder for GET route code
+router.get('/members/:lovedOneId', (req, res) => {
+  const lovedOneId = req.params.lovedOneId;
+  const sqlText = `SELECT first_name, last_name, email FROM "user" WHERE loved_one_id = $1`;
+  
+  pool.query(sqlText, [lovedOneId])
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(error => {
+      console.log('Error fetching care team members:', error);
+      res.sendStatus(500);
+    });
 });
 
 /**
- * POST route to invite a new user
+ * POST route to invite a new user to the care team
  * This route handles the creation of an invitation for a new user to join a care team.
  * It inserts the invitation into the database and sends an email with the invitation code.
  */
@@ -66,9 +75,9 @@ router.post("/", (req, res) => {
 });
 
 /**
- * POST route to validate invitation codes
- * This route verifies an invitation code and updates the user's record accordingly.
- * It also deletes the used invitation code from the database.
+ * POST route to validate and apply an invitation code
+ * This route verifies an invitation code and updates the user's record to reflect their membership in the care team.
+ * It also deletes the used invitation code from the database to prevent reuse.
  */
 router.post('/verify-invitation', async (req, res) => {
   const { invitationCode } = req.body; // Invitation code to verify
