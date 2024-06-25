@@ -1,81 +1,71 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
 import { useSelector } from "react-redux";
-import { useState } from "react";
-
-import { io } from "socket.io-client";
-import Chat from "./Chat";
 import socket from "../../socket";
 
 function Messages() {
   const history = useHistory();
-
-  // Use this to use as auto fill to fill in the user
   const user = useSelector((store) => store.user);
-  const firstName = user.first_name;
-  const lastName = user.last_name;
-  const usernameID = user.username;
-  const fullName = firstName + lastName;
+  const fullName = `${user.first_name} ${user.last_name}`;
+  const [username, setUsername] = useState(fullName);
+  const [room, setRoom] = useState(user.loved_one_id);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
 
-  const [username, setUsername] = useState(fullName); // Initialize with fullName
+  useEffect(() => {
+    if (room) {
+      socket.emit("join_room", room);
+      console.log(`Joined Room: ${room}`);
+    }
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  
+    socket.on('new_message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    
+    socket.emit('fetch messages', room);
+    socket.on('messages', (fetchedMessages) => {
+      setMessages(fetchedMessages);
+    });
+
+    
+    return () => {
+      socket.off('new_message');
+      socket.off('messages');
+    };
+  }, [room]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newMessage.trim()) {
+      socket.emit('new message', { message: newMessage, room });
+      setNewMessage('');
+    }
   };
 
-
-
-function Messages() {
-
-
-    // Loved One data ID will be used to auto populate for the roomID
-    const lovedOneID = user.loved_one_id;
-    const [room, setRoom] = useState(lovedOneID);
-
-    const handleRoomIDChange = (e) => {
-      setRoom(e.target.value);
-    };
-
-    const [hasJoinedRoom, setHasJoinedRoom] = useState(false);
-    // Joining a room
-    const joinRoom = () => {
-      console.log("Joining room...");
-      if (username !== "" && room !== "") {
-        socket.emit("join_room", room);
-        console.log("Joined Room Succesfully !");
-        setHasJoinedRoom(true); // Set hasJoinedRoom to true
-      }
-      history.push("/Chat");
-    };
-
-    // console.log("username is:", username)
-    // console.log("Socket is:", socket)
-    // console.log("Room ID is:", room)
-    return (
+  return (
+    <div>
+      <h1>Messages</h1>
       <div>
-        <h4>Enter Loved One's Name</h4>
-        <input
-          id="Username"
-          type="text"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-
-        <input
-          id="RoomId"
-          type="text"
-          value={room}
-          onChange={handleRoomIDChange}
-        />
-        <button onClick={joinRoom}>Join Room</button>
-        {hasJoinedRoom && (
-          <Chat username={{ username: usernameID }} room={room} />
-        )}
+        {messages.map((msg, index) => (
+          <div key={index}>
+            <strong>{msg.user_id === user.id ? 'You' : 'Other'}: </strong>
+            {msg.message_text}
+          </div>
+        ))}
       </div>
-    );
-
-            }}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  );
+}
 
 export default Messages;

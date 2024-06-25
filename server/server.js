@@ -191,18 +191,24 @@ io.on('connection', (socket) => {
   // Socket event listener for receiving a new message
 
   socket.on('new message', (messageData) => {
-    console.log('new message recieved!')
+    console.log('new message received!')
     const message = messageData.message
     const userId = socket.request.user.id
     const lovedOneId = socket.request.user.loved_one_id
     const sqlText = `INSERT INTO messages
                       ("loved_one_id", "user_id", "message_text")
-                      VALUES ($1, $2, $3);`
+                      VALUES ($1, $2, $3)
+                      `
     const sqlValues = [lovedOneId, userId, message]
     pool.query(sqlText, sqlValues)
       .then((result) => {
-        console.log('send successful')})
-        socket.to(messageData.room).emit('new_message', message);
+        console.log('send successful')
+        const newMessage = result.rows[0];
+        io.to(messageData.room).emit('new_message', newMessage);
+      })
+      .catch((error) => {
+        console.error('Error inserting message:', error);
+      });
   })
   socket.on('fetch messages', (room) => {
     const sqlText = `SELECT * FROM messages WHERE loved_one_id = $1 `
