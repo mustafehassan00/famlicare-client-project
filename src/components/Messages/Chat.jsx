@@ -8,15 +8,9 @@ import { useEffect } from "react";
 function Chat() {
   // Use this to use as auto fill to fill in the user
   const user = useSelector((store) => store.user);
-  const firstName = user.first_name;
-  const lastName = user.last_name;
-  const usernameID = user.username;
-  const fullName = firstName + lastName;
-  const [username, setUsername] = useState(fullName); // Initialize with fullName
   const lovedOneID = user.loved_one_id;
   const [room, setRoom] = useState(lovedOneID);
   const [currentMessage, setCurrentMessage] = useState("");
-  console.log("props is:", username, room);
   const [messages, setMessages] = useState([]);
 
   useSocketSetup();
@@ -29,21 +23,12 @@ function Chat() {
       setMessages(messages);
     });
   }, [room, socket]);
-  socket.on("new_message", (message) => {
-    socket.emit("fetch messages", room);
-    //setMessages((prevMessages) => [...prevMessages, message]);
-  });
+
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
-        // room: room,
-        // username: username,
         message: currentMessage,
         room: room,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
       };
       console.log("Message User data:", messages);
       console.log(messageData.message);
@@ -57,7 +42,6 @@ function Chat() {
       <div>
         <p>Live Chat</p>
       </div>
-      <p>{firstName + "" + lastName}</p>
       <div>
         {messages.map((message, index) => (
           <div key={index}>
