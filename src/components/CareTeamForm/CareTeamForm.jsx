@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, TextField, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Button, TextField, List, ListItem, ListItemText, Typography, Box, Container } from "@mui/material";
 
 /**
- * Component for displaying and managing a care team.
+ * Component for managing a care team.
  * Allows admin users to invite new members via email and displays a list of current team members.
  */
 function CareTeamForm() {
-    // State to store the input value for the email to invite a new team member
+    // State for storing the email input for inviting a new team member
     const [invitedUserEmailInput, setInvitedUserEmailInput] = useState('');
     // Hook to dispatch actions to the Redux store
     const dispatch = useDispatch();
@@ -15,14 +15,17 @@ function CareTeamForm() {
     const user = useSelector(state => state.user);
     const teamMembers = useSelector(state => state.careTeam.members);
 
-    // Effect to fetch care team members on component mount
+    /**
+     * Fetches care team members when the component mounts.
+     * This effect runs once due to an empty dependency array.
+     */
     useEffect(() => {
         dispatch({ type: 'FETCH_CARE_TEAM_MEMBERS' });
     }, [dispatch]);
 
     /**
      * Handles sending an email invitation to a new team member.
-     * Dispatches an action with the email input and resets the input field.
+     * Dispatches an action with the email input and resets the input field afterwards.
      */
     const sendEmail = () => {
         dispatch({
@@ -31,39 +34,59 @@ function CareTeamForm() {
                 email: invitedUserEmailInput,
             }
         });
-        // Reset the email input field after sending the invitation
+        // Reset the email input field to clear it after sending the invitation
         setInvitedUserEmailInput('');
     };
 
     return (
-        <div>
-            <h1>Care Team</h1>
-            
-            {/* Displaying the list of team members */}
-            <Typography variant="h6">Team Members</Typography>
-            <List>
-                {teamMembers.map((member, index) => (
-                    <ListItem key={index}>
-                        <ListItemText primary={member.name} secondary={member.email} />
-                    </ListItem>
-                ))}
-            </List>
+        <Container maxWidth="sm">
+            <Box sx={{ my: 4 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Care Team
+                </Typography>
+                
+                {/* List of current team members */}
+                <Typography variant="h6" gutterBottom>
+                    Team Members
+                </Typography>
+                <List>
+                    {teamMembers.map((member, index) => (
+                        <ListItem key={index}>
+                            <ListItemText 
+                                primary={`${member.first_name} ${member.last_name}`} 
+                                secondary={member.email} 
+                            />
+                        </ListItem>
+                    ))}
+                </List>
 
-            {/* Conditionally rendering the invitation section for admin users */}
-            {user.is_admin && (
-                <div>
-                    <Typography variant="h6">Invite New Member</Typography>
-                    <TextField
-                        value={invitedUserEmailInput} 
-                        onChange={(e) => setInvitedUserEmailInput(e.target.value)}
-                        label='Email'
-                        placeholder='Member Email' 
-                        variant="outlined"
-                    />
-                    <Button onClick={sendEmail}>Send Invitation</Button>
-                </div>
-            )}
-        </div>
+                {/* Invitation form visible only to admin users */}
+                {user.is_admin && (
+                    <Box sx={{ mt: 4 }}>
+                        <Typography variant="h6" gutterBottom>
+                            Invite New Member
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            value={invitedUserEmailInput} 
+                            onChange={(e) => setInvitedUserEmailInput(e.target.value)}
+                            label='Email'
+                            placeholder='Member Email' 
+                            variant="outlined"
+                            sx={{ mb: 2 }}
+                        />
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={sendEmail}
+                            fullWidth
+                        >
+                            Send Invitation
+                        </Button>
+                    </Box>
+                )}
+            </Box>
+        </Container>
     );
 }
 
