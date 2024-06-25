@@ -22,10 +22,9 @@ function* fetchUser() {
 }
 
 // Root saga for user-related actions
-// Listens for "FETCH_USER" and "UPDATE_USER" actions and calls the appropriate saga
+// Listens for "FETCH_USER" actions and calls the appropriate saga
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
-  // yield takeLatest('UPDATE_USER', updateUser);
 }
 
 export default userSaga;
