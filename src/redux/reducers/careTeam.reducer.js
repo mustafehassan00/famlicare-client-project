@@ -1,8 +1,8 @@
-
 const initialState = {
   lovedOne: null,
   error: null,
-  invitationSent: false
+  invitationSent: false,
+  verificationSuccessful: false
 };
 
 const careTeamReducer = (state = initialState, action) => {
@@ -27,6 +27,11 @@ const careTeamReducer = (state = initialState, action) => {
       return {
         ...state,
         invitationSent: true
+      };
+    case 'VERIFICATION_SUCCESSFUL':
+      return {
+        ...state,
+        verificationSuccessful: true
       };
     default:
       return state;
