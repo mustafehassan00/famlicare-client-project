@@ -15,7 +15,9 @@ function CreateOrJoinCareTeam() {
   const dispatch = useDispatch(); // Hook to dispatch actions to the Redux store
   
   // Accessing the careTeam state slice to get error and verification status
-  const { error, verificationSuccessful } = useSelector(state => state.careTeam);
+  const careTeamState= useSelector(state => state.careTeam);
+  const error = careTeamState?.error || "";
+  const verificationSuccessful = careTeamState?.verificationSuccessful|| false;
 
   /**
    * Handles navigation to the form for adding a new loved one.
