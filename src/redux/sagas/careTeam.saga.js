@@ -68,6 +68,7 @@ function* fetchCareTeamMembers() {
     try {
         const user = yield select(state => state.user);
         const response = yield call(axios.get, `/api/care-team/members/${user.loved_one_id}`);
+        console.log("Fetched Team Members:", response.data );
         yield put({ type: 'SET_CARE_TEAM_MEMBERS', payload: response.data });
     } catch (error) {
         console.log('Error fetching care team members:', error);
