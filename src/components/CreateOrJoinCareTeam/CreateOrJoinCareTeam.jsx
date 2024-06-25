@@ -2,33 +2,51 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField, Box, Typography } from "@mui/material";
-import { verifyInvitationCode, clearError } from '../redux/actions/careTeamActions'; // Import action creators
+import { verifyInvitationCode, clearError } from '../../redux/reducers/actions/careTeam.actions.js'; // Import action creators
 
+/**
+ * Component for creating or joining a care team.
+ * Allows users to either navigate to a form to add a new loved one or
+ * join an existing care team using an invitation code.
+ */
 function CreateOrJoinCareTeam() {
-  const [invitationCode, setInvitationCode] = useState("");
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const [invitationCode, setInvitationCode] = useState(""); // State to hold the invitation code input
+  const history = useHistory(); // Hook to programmatically navigate between routes
+  const dispatch = useDispatch(); // Hook to dispatch actions to the Redux store
   
-  // Use useSelector to access relevant parts of the state
+  // Accessing the careTeam state slice to get error and verification status
   const { error, verificationSuccessful } = useSelector(state => state.careTeam);
 
+  /**
+   * Handles navigation to the form for adding a new loved one.
+   */
   const handleCreateLovedOne = () => {
     history.push("/lovedoneform");
   };
 
+  /**
+   * Handles the submission of the invitation code.
+   * Dispatches the verifyInvitationCode action with the input code.
+   * @param {Object} e - The event object.
+   */
   const handleSubmitInvitationCode = (e) => {
     e.preventDefault();
-    dispatch(verifyInvitationCode(invitationCode)); // Use action creator
+    dispatch(verifyInvitationCode(invitationCode)); // Dispatch action to verify code
   };
 
-  // Effect to handle navigation after successful verification
+  /**
+   * useEffect hook to navigate to the care team dashboard upon successful verification.
+   */
   useEffect(() => {
     if (verificationSuccessful) {
       history.push('/care-team-dashboard');
     }
   }, [verificationSuccessful, history]);
 
-  // Clear any errors when component unmounts
+  /**
+   * useEffect hook to clear any error messages when the component unmounts.
+   * This is a cleanup effect to ensure stale errors do not persist across component instances.
+   */
   useEffect(() => {
     return () => dispatch(clearError());
   }, [dispatch]);
