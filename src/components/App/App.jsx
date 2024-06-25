@@ -143,6 +143,10 @@ function App() {
               <InfoPage />
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/createorjointeam">
+              <CreateOrjoinCareTeam/>
+            </ProtectedRoute>
+
             <ProtectedRoute exact path="/careteamform">
               <CareTeamForm />
             </ProtectedRoute>
