@@ -36,7 +36,7 @@ function RegisterPage4() {
           variant="contained"
           endIcon={<ArrowForwardIcon />}
           onClick={registerUser}
-          classname="primary"
+          className="primary"
         >
           Complete your registration
         </Button>

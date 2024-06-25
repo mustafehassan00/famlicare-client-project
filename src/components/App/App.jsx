@@ -4,7 +4,7 @@ import {
   Redirect,
   Route,
   Switch,
-} from 'react-router-dom';
+} from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,23 +23,21 @@ import LoginPage from "../LoginPage/LoginPage";
 //import components
 import HomePage from "../HomePage/HomePage";
 import Profile from "../Profile/Profile";
-import CreateOrjoinCareTeam from '../CreateOrJoinCareTeam/CreateOrJoinCareTeam'
+import CreateOrjoinCareTeam from "../CreateOrJoinCareTeam/CreateOrJoinCareTeam";
 import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
-// import LovedOneForm from "../LovedOneForm/LovedOneForm";
+import LovedOneForm from "../LovedOneForm/LovedOneForm";
 import Messages from "../Messages/Messages";
 import Chat from "../Messages/chat"
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
 import theme from "../Theme/FamliCareTheme";
 // Step components for registration process
-import RegisterPage from '../RegisterPage/RegisterPage';
-import RegisterPage1 from '../RegisterPage/RegisterPage1';
-import RegisterPage2 from '../RegisterPage/RegisterPage2';
-import RegisterPage3 from '../RegisterPage/RegisterPage3';
-import RegisterPage4 from '../RegisterPage/RegisterPage4';
-
-
+import RegisterPage from "../RegisterPage/RegisterPage";
+import RegisterPage1 from "../RegisterPage/RegisterPage1";
+import RegisterPage2 from "../RegisterPage/RegisterPage2";
+import RegisterPage3 from "../RegisterPage/RegisterPage3";
+import RegisterPage4 from "../RegisterPage/RegisterPage4";
 
 import "./App.css";
 
@@ -97,7 +95,7 @@ function App() {
             >
               <Profile />
             </ProtectedRoute>
-            
+
             <ProtectedRoute
               // logged in shows HomePage
               exact
@@ -133,11 +131,7 @@ function App() {
               <Messages />
             </ProtectedRoute>
 
-            <ProtectedRoute
-              
-              exact
-              path="/Chat"
-            >
+            <ProtectedRoute exact path="/chat">
               <Chat />
             </ProtectedRoute>
 
@@ -195,37 +189,32 @@ function App() {
               )}
             </Route>
 
+            {/* New registration steps */}
 
-             {/* New registration steps */}
+            <Route exact path="/registerpage/registerpage1">
+              <RegisterPage1 />
+            </Route>
 
+            <Route exact path="/registerpage/registerpage2">
+              <RegisterPage2 />
+            </Route>
 
-             <Route exact path="/registerpage/registerpage1">
-            <RegisterPage1 />
-          </Route>
+            <Route exact path="/registerpage/registerpage3">
+              <RegisterPage3 />
+            </Route>
 
-          <Route exact path="/registerpage/registerpage2">
-            <RegisterPage2 />
-          </Route>
+            <Route exact path="/registerpage/registerpage4">
+              <RegisterPage4 />
+            </Route>
 
-          <Route exact path="/registerpage/registerpage3">
-            <RegisterPage3 />
-          </Route>
-
-          <Route exact path="/registerpage/registerpage4">
-            <RegisterPage4 />
-          </Route>
-
-        
-          
-
-          {/* If none of the other routes matched, we will show a 404. */}
-          <Route>
-            <h1>404</h1>
-          </Route>
-        </Switch>
-        <Footer />
-      </div>
-    </Router>
+            {/* If none of the other routes matched, we will show a 404. */}
+            <Route>
+              <h1>404</h1>
+            </Route>
+          </Switch>
+          <Footer />
+        </div>
+      </Router>
     </ThemeProvider>
   );
 }
