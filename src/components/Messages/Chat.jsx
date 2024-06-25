@@ -43,7 +43,7 @@ function Chat() {
   return (
     <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
       <Typography variant="h5" gutterBottom>
-        Live Chat
+        CareTeam Chat
       </Typography>
       <Grid container spacing={2}>
         {messages.map((message, index) => (
