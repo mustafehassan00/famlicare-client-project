@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
   // GET route code here
 });
 
-
+//POST route to invite a new user
 router.post('/', (req, res) => {
 
 const userEmail = req.body.email
