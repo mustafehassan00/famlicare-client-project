@@ -52,7 +52,7 @@ function Chat() {
               sx={{
                 padding: 1,
                 borderRadius: 1,
-                backgroundColor: message.user_id === user.id? theme.palette.primary.light : theme.palette.tertiary.light,
+                backgroundColor: message.user_id === user.id? theme.palette.primary.main : theme.palette.tertiary.light,
                 maxWidth: "80%",
                 marginLeft: message.user_id === user.id? "auto" : 0,
                 marginRight: message.user_id === user.id? 0 : "auto",
