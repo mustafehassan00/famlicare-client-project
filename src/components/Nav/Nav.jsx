@@ -54,7 +54,7 @@ function Nav() {
                 User Profile
               </Button>
               <Button color="inherit" component={NavLink} to="/chat" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                💬 Messages
+                Messages
               </Button>
               <Button color="inherit" component={NavLink} to="/carevault" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 CareVault
@@ -66,7 +66,7 @@ function Nav() {
                 LovedOne Form
               </Button>
               <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
-                CareTeam Form
+                CareTeam
               </Button>
               <LogOutButton color="secondary" className="primary"/>
               {/* LogOutButton component handles user logout. Ensure it's correctly implemented in its file. */}
