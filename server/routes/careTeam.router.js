@@ -3,37 +3,43 @@ const pool = require("../modules/pool");
 const router = express.Router();
 require("dotenv").config();
 
+// Setup for SendGrid to send emails
 const sgMail = require("@sendgrid/mail");
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 /**
  * GET route template
+ * This route can be used as a template for future GET requests.
+ * Currently, it does not perform any operations.
  */
 router.get("/", (req, res) => {
-  // GET route code here
+  // Placeholder for GET route code
 });
 
-//POST route to invite a new user
+/**
+ * POST route to invite a new user
+ * This route handles the creation of an invitation for a new user to join a care team.
+ * It inserts the invitation into the database and sends an email with the invitation code.
+ */
 router.post("/", (req, res) => {
-  const userEmail = req.body.email;
-  const lovedOneId = req.user.loved_one_id;
+  const userEmail = req.body.email; // Email of the user to invite
+  const lovedOneId = req.user.loved_one_id; // ID of the loved one associated with the care team
 
+  // SQL query to insert the new invitation into the database
   const sqlText = `INSERT INTO invitations("email", "loved_one_id")
-	                    VALUES
-		                    ($1, $2)
+                        VALUES
+                            ($1, $2)
                         RETURNING invitation_code;`;
-
   const sqlValues = [userEmail, lovedOneId];
 
   pool
     .query(sqlText, sqlValues)
     .then((dbRes) => {
-      //send the email!
+      // Send the email with the invitation code
       const invitationCode = dbRes.rows[0].invitation_code;
       const email = {
-        to: `${userEmail}`,
+        to: userEmail,
         from: {
           name: "FamliCare App",
           email: "famlicareappclientproject@gmail.com",
@@ -49,28 +55,31 @@ router.post("/", (req, res) => {
 
       sgMail
         .send(email)
-        .then((response) => console.log("Email Sent Successfully!"))
-        .catch((error) => console.log(error.email));
-      res.sendStatus(201);
+        .then(() => console.log("Email Sent Successfully!"))
+        .catch((error) => console.log("Error sending email:", error.message)); // Improved error logging for email sending
+      res.sendStatus(201); // Success response
     })
     .catch((error) => {
-      console.log("POST add invited user error:", error);
-      res.sendStatus(500);
+      console.log("POST add invited user error:", error); // Log error for troubleshooting
+      res.sendStatus(500); // Internal server error response
     });
 });
 
-//POST route to validate invitation codes
-
+/**
+ * POST route to validate invitation codes
+ * This route verifies an invitation code and updates the user's record accordingly.
+ * It also deletes the used invitation code from the database.
+ */
 router.post('/verify-invitation', async (req, res) => {
-  const { invitationCode } = req.body;
-  const userId = req.user.id;
+  const { invitationCode } = req.body; // Invitation code to verify
+  const userId = req.user.id; // ID of the user who is verifying the code
 
   const client = await pool.connect();
 
   try {
-    await client.query('BEGIN');
+    await client.query('BEGIN'); // Start transaction
 
-    // Check if the invitation code is valid and get the associated loved_one_id
+    // Check if the invitation code is valid
     const checkInvitationSql = `
       SELECT loved_one_id 
       FROM invitations 
@@ -79,12 +88,12 @@ router.post('/verify-invitation', async (req, res) => {
     const invitationResult = await client.query(checkInvitationSql, [invitationCode]);
 
     if (invitationResult.rows.length === 0) {
-      throw new Error('Invalid invitation code');
+      throw new Error('Invalid invitation code'); // Error if code is not found
     }
 
     const { loved_one_id } = invitationResult.rows[0];
 
-    // Update the user's record with the loved_one_id and set is_admin to false
+    // Update the user's record with the loved_one_id
     const updateUserSql = `
       UPDATE "user"
       SET loved_one_id = $1, 
@@ -101,15 +110,15 @@ router.post('/verify-invitation', async (req, res) => {
     `;
     await client.query(deleteInvitationSql, [invitationCode]);
 
-    await client.query('COMMIT');
+    await client.query('COMMIT'); // Commit transaction
 
-    res.status(200).json(updateResult.rows[0]);
+    res.status(200).json(updateResult.rows[0]); // Return updated user info
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.log('Error verifying invitation code:', error);
-    res.status(400).json({ message: error.message });
+    await client.query('ROLLBACK'); // Rollback transaction in case of error
+    console.log('Error verifying invitation code:', error); // Log error for troubleshooting
+    res.status(400).json({ message: error.message }); // Return error message
   } finally {
-    client.release();
+    client.release(); // Release client back to the pool
   }
 });
 
