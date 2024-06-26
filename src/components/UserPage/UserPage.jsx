@@ -7,7 +7,7 @@ import {
   useTheme,
   Avatar,
   Grid,
-  TextField
+  TextField,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
@@ -50,19 +50,26 @@ function UserPage() {
           </Grid>
           <Grid item>
             <Typography variant="h2" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.username} {/* Display the username, ensure username is always fetched and updated in the global state */}
+              {user.username}{" "}
+              {/* Display the username, ensure username is always fetched and updated in the global state */}
               <br />
-              {user.id} {/* Display the user ID, useful for debugging and verification */}
+              {user.id}{" "}
+              {/* Display the user ID, useful for debugging and verification */}
             </Typography>
             <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.email} {/* Display the user email, ensure email is correctly fetched and updated */}
+              {user.email}{" "}
+              {/* Display the user email, ensure email is correctly fetched and updated */}
+            </Typography>
+            <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
+              {user.first_name} {user.last_name}
             </Typography>
             <Button
               variant="contained"
               className="primary on"
               onClick={editUserinfo}
             >
-              Edit Profile {/* Button to trigger user info edit, ensure onClick handler is correctly implemented */}
+              Edit Profile{" "}
+              {/* Button to trigger user info edit, ensure onClick handler is correctly implemented */}
             </Button>
           </Grid>
         </Grid>
