@@ -78,7 +78,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: "none",
-          fontFamily: libelSuitReg,
+          fontFamily: acuminProCondensed,
           fontWeight: 500,
           borderRadius: 18
         },

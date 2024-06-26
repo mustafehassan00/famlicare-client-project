@@ -33,7 +33,7 @@ function* changeProfilevalues(action) {
         data: updatedProfiledata
     })
 
-
+    yield put({ type: 'FETCH_USER' });
 
 
   } catch (error) {
