@@ -34,21 +34,12 @@ function CreateOrJoinCareTeam() {
   const handleSubmitInvitationCode = (e) => {
     e.preventDefault();
     dispatch(verifyInvitationCode(invitationCode)); // Dispatch action to verify code
+    if (verificationSuccessful) {
+          history.push('/careteamform');
+        }
+        else{alert('Error! Unable to add to CareTeam')}
   };
 
-  /**
-   * useEffect hook to navigate to the care team dashboard upon successful verification.
-   */
-  useEffect(() => {
-    if (verificationSuccessful) {
-      history.push('/care-team-dashboard');
-    }
-  }, [verificationSuccessful, history]);
-
-  /**
-   * useEffect hook to clear any error messages when the component unmounts.
-   * This is a cleanup effect to ensure stale errors do not persist across component instances.
-   */
   useEffect(() => {
     return () => dispatch(clearError());
   }, [dispatch]);
