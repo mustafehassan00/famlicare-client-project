@@ -78,7 +78,6 @@ io.on("connection", (socket) => {
     const message = messageData.message;
     const userId = socket.request.user.id;
     const lovedOneId = socket.request.user.loved_one_id;
-    const msgTimestamp = socket.request.user.msg_sent_timestamp;
     const sqlText = `INSERT INTO messages
                       ("loved_one_id", "user_id", "message_text")
                       VALUES ($1, $2, $3)
@@ -87,14 +86,13 @@ io.on("connection", (socket) => {
     pool
       .query(sqlText, sqlValues)
       .then((result) => {
-        console.log("send successful");
-        const newMessage = result.rows[0];
-        io.to(messageData.room).emit("new_message", newMessage);
+        console.log("send successful")
       })
       .catch((error) => {
         console.error("Error inserting message:", error);
       });
   });
+
   socket.on("fetch messages", (room) => {
     const sqlText = `SELECT
                       "user".id AS "user_id",
