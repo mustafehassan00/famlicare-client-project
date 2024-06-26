@@ -27,8 +27,7 @@ import CreateOrjoinCareTeam from "../CreateOrJoinCareTeam/CreateOrJoinCareTeam";
 import CareTeamForm from "../CareTeamForm/CareTeamForm";
 import CareVault from "../CareVault/CareVault";
 import LovedOneForm from "../LovedOneForm/LovedOneForm";
-import Messages from "../Messages/Messages";
-import Chat from "../Messages/Chat";
+import Chat from "../Messages/Chat"
 import NewUserForm from "../NewUserForm/NewUserForm";
 import { ThemeProvider } from "@mui/material";
 import theme from "../Theme/FamliCareTheme";
@@ -122,15 +121,6 @@ function App() {
               <CareVault />
             </ProtectedRoute>
 
-            {/* messages component */}
-            <ProtectedRoute
-              // logged in shows HomePage
-              exact
-              path="/messages"
-            >
-              <Messages />
-            </ProtectedRoute>
-
             <ProtectedRoute exact path="/chat">
               <Chat />
             </ProtectedRoute>
@@ -149,7 +139,7 @@ function App() {
 
             <ProtectedRoute exact path="/lovedoneform">
               <LovedOneForm />
-            </ProtectedRoute>
+            </ProtectedRoute> 
 
             <ProtectedRoute exact path="/newuserform">
               <NewUserForm />

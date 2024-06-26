@@ -72,13 +72,8 @@ function Nav() {
               >
                 User Profile
               </Button>
-              <Button
-                color="inherit"
-                component={NavLink}
-                to="/chat"
-                sx={{ typography: "h2", margin: theme.spacing(1) }}
-              >
-                💬 Messages
+              <Button color="inherit" component={NavLink} to="/chat" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                Messages
               </Button>
               <Button
                 color="inherit"
@@ -88,21 +83,14 @@ function Nav() {
               >
                 CareVault
               </Button>
-              <Button
-                color="inherit"
-                component={NavLink}
-                to="/lovedoneform"
-                sx={{ typography: "h2", margin: theme.spacing(1) }}
-              >
+              <Button color = "inherit" component={NavLink} to="/createorjointeam" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+              Create or Join a Team
+              </Button>
+              <Button color="inherit" component={NavLink} to="/lovedoneform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
                 LovedOne Form
               </Button>
-              <Button
-                color="inherit"
-                component={NavLink}
-                to="/careteamform"
-                sx={{ typography: "h2", margin: theme.spacing(1) }}
-              >
-                CareTeam Form
+              <Button color="inherit" component={NavLink} to="/careteamform" sx={{ typography: 'h2', margin: theme.spacing(1)}}>
+                CareTeam
               </Button>
               <LogOutButton
                 sx={{

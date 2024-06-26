@@ -1,99 +1,91 @@
-import React, { useState } from 'react';
-import { io } from 'socket.io-client';
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import useSocketSetup from "./UseSocketSetup";
-import socket from "../../socket"
+import socket from "../../socket";
 import { useEffect } from "react";
-
+import { Box, Typography, TextField, Button, Grid, useTheme } from "@mui/material";
 
 
 function Chat() {
-  
-    
-    
-// Use this to use as auto fill to fill in the user 
-const user = useSelector((store) => store.user);
-const firstName = user.first_name
-const lastName = user.last_name
-const usernameID = user.username
-const fullName = firstName + lastName;
-const [username, setUsername] = useState(fullName); // Initialize with fullName
 
+  const theme = useTheme();
+  // Use this to use as auto fill to fill in the user
+  const user = useSelector((store) => store.user);
+  const lovedOneID = user.loved_one_id;
+  const [room, setRoom] = useState(lovedOneID);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
-const lovedOneID = user.loved_one_id;
-const [room, setRoom] = useState(lovedOneID);
+  useSocketSetup();
 
-const [currentMessage, setCurrentMessage] = useState("")
-console.log("props is:", username, room)
-const [messages, setMessages] = useState([]);
-
-useSocketSetup();
-useEffect(() => {
-    socket.emit('join_room', room);
-    socket.on('new_message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-    socket.emit('fetch messages', room);
-    socket.on('messages', (messages) => {
+  useEffect(() => {
+    socket.emit("join_room", room);
+    socket.emit("fetch messages", room);
+    socket.on("Have messages", (messages) => {
+      console.log("Received messages:", messages);
       setMessages(messages);
     });
   }, [room, socket]);
 
-// useEffect(() => {
-//     socket.emit('join_room', room);
-//     socket.on('new_message', (message) => {
-//       setMessages((prevMessages) => [...prevMessages, message]);
-//     });
-//   }, [room]);
-
-// useEffect(() => {
-//     socket.emit('fetch messages', room);
-//   }, [room]);
-
-//   socket.on('messages', (messages) => {
-//     setMessages(messages);
-//   });
-
-
-    const sendMessage = async () => {
-        if(currentMessage !== "") {
-            const messageData = {
-                // room: room,
-                // username: username,
-                message: currentMessage,
-                room: room
-                // time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
-
-            }
-            console.log(messageData.message)
-            await socket.emit("new message", messageData)
-           
-        }
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        message: currentMessage,
+        room: room,
+      };
+      console.log("Message User data:", messages);
+      console.log(messageData.message);
+      await socket.emit("new message", messageData);
+      await socket.emit("fetch messages", room);
+      setCurrentMessage("");
     }
-
-
-    return (
-        <div>
-            <div >
-                <p>Live Chat</p>
-            </div>
-            <div >
-            {messages?.map((message, index) => (
-  <p key={index}>{message.message_text}</p>
-))}
-            </div>
-            <div >
-                <input 
-                type="text"
-                placeholder="Type a message..."
-                onChange={(e) => {setCurrentMessage(e.target.value)}}
-                />
-                <button onClick={sendMessage}>&#9658;</button>
-
-            </div>
-        </div>
-    )
+  };
+  return (
+    <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
+      <Typography variant="h5" gutterBottom>
+        CareTeam Chat
+      </Typography>
+      <Grid container spacing={2}>
+        {messages.map((message, index) => (
+          <Grid item key={index} xs={12}>
+            <Box
+              sx={{
+                padding: 1,
+                borderRadius: 1,
+                backgroundColor: message.user_id === user.id? theme.palette.primary.main : theme.palette.tertiary.light,
+                maxWidth: "80%",
+                marginLeft: message.user_id === user.id? "auto" : 0,
+                marginRight: message.user_id === user.id? 0 : "auto",
+              }}
+            >
+              <Typography variant="body1">
+                {user.id && (
+                  <strong>
+                    {message.user_id === user.id? "You" : message.username}
+                  </strong>
+                )}
+                : {message.message_text}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                {message.msg_sent_timestamp}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+      <Box sx={{ padding: 2, display: "flex", justifyContent: "space-between" }}>
+        <TextField
+          value={currentMessage}
+          onChange={(e) => setCurrentMessage(e.target.value)}
+          placeholder="Type a message..."
+          variant="outlined"
+          fullWidth
+        />
+        <Button variant="contained" color="primary" onClick={sendMessage}>
+          Send
+        </Button>
+      </Box>
+    </Box>
+  );
 }
-
 export default Chat;
-

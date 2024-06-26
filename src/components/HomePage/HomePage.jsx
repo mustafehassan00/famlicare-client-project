@@ -77,7 +77,7 @@ function Homepage() {
         <Grid item xs={6} sm={3}>
           <Button
             component={RouterLink}
-            to="/messages"
+            to="/chat"
             variant="contained"
             fullWidth
             sx={{
@@ -89,9 +89,22 @@ function Homepage() {
           </Button>
         </Grid>
         <Grid item xs={6} sm={3}>
+          <Button 
+            component = {RouterLink}
+            to="/createorjointeam"
+            variant="contained"
+            fullWidth
+            sx={{
+              ...tileButtonStyle,
+              backgroundColor: theme.palette.secondary.main,
+            }}>
+              Join a Care Team
+            </Button>
+        </Grid>
+        <Grid item xs={6} sm={3}>
           <Button
             component={RouterLink}
-            to="/careteam"
+            to="/careteamform"
             variant="contained"
             fullWidth
             sx={tileButtonStyle}
