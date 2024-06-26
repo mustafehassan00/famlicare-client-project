@@ -10,6 +10,10 @@ const editUserprofile = (state = {}, action) => {
         return { ...state, email: action.payload }; // Corrected to update email
       case 'CHANGE-CURRENT PHONE-NUMBER':
         return { ...state, phone_number: action.payload }; // Corrected to update phone_number
+      case 'CHANGE-CURRENT FIRST-NAME':
+        return {...state, first_name: action.payload};
+      case 'CHANGE-CURRENT LAST-NAME':
+        return {...state, last_name: action.payload};
       default:
         return state;
     }
