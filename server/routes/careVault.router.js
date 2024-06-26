@@ -1,3 +1,5 @@
+require("dotenv").config(); // Loads environment variables from a .env file into process.env. 
+//! require dotenv must be at the top 
 const express = require("express");
 const router = express.Router();
 const multer = require("multer"); // Used for handling multipart/form-data, primarily used for uploading files.
@@ -5,7 +7,6 @@ const pool = require("../modules/pool"); // Pooling client connections to Postgr
 const AWS = require("aws-sdk"); // AWS SDK to interact with Amazon Web Services like S3.
 const { isAdmin } = require("../modules/isAdmin"); // Custom middleware to check if the user is an admin.
 const passport = require("passport"); // Authentication middleware for Node.js.
-require("dotenv").config(); // Loads environment variables from a .env file into process.env.
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware"); // Middleware to reject unauthenticated requests.
