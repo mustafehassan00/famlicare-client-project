@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import useSocketSetup from "./UseSocketSetup";
 import socket from "../../socket";
 import { useEffect } from "react";
+import { Box, Typography, TextField, Button, Grid, useTheme } from "@mui/material";
+
 
 function Chat() {
+
+  const theme = useTheme();
   // Use this to use as auto fill to fill in the user
   const user = useSelector((store) => store.user);
   const lovedOneID = user.loved_one_id;
@@ -38,40 +41,51 @@ function Chat() {
     }
   };
   return (
-    <div>
-      <div>
-        <p>Live Chat</p>
-      </div>
-      <div>
+    <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
+      <Typography variant="h5" gutterBottom>
+        CareTeam Chat
+      </Typography>
+      <Grid container spacing={2}>
         {messages.map((message, index) => (
-          <div key={index}>
-            {user.id && (
-              <strong>
-                {message?.user_id === user.id ? (
-                  "You"
-                ) : (
-                  <strong>{message.username}</strong>
+          <Grid item key={index} xs={12}>
+            <Box
+              sx={{
+                padding: 1,
+                borderRadius: 1,
+                backgroundColor: message.user_id === user.id? theme.palette.primary.main : theme.palette.tertiary.light,
+                maxWidth: "80%",
+                marginLeft: message.user_id === user.id? "auto" : 0,
+                marginRight: message.user_id === user.id? 0 : "auto",
+              }}
+            >
+              <Typography variant="body1">
+                {user.id && (
+                  <strong>
+                    {message.user_id === user.id? "You" : message.username}
+                  </strong>
                 )}
-                :{" "}
-              </strong>
-            )}
-            {message?.message_text}
-            <h5>{message?.msg_sent_timestamp}</h5>
-          </div>
+                : {message.message_text}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                {message.msg_sent_timestamp}
+              </Typography>
+            </Box>
+          </Grid>
         ))}
-      </div>
-      <div>
-        <input
-          type="text"
+      </Grid>
+      <Box sx={{ padding: 2, display: "flex", justifyContent: "space-between" }}>
+        <TextField
           value={currentMessage}
+          onChange={(e) => setCurrentMessage(e.target.value)}
           placeholder="Type a message..."
-          onChange={(e) => {
-            setCurrentMessage(e.target.value);
-          }}
+          variant="outlined"
+          fullWidth
         />
-        <button onClick={sendMessage}>&#9658;</button>
-      </div>
-    </div>
+        <Button variant="contained" color="primary" onClick={sendMessage}>
+          Send
+        </Button>
+      </Box>
+    </Box>
   );
 }
 export default Chat;
