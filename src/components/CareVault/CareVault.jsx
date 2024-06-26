@@ -225,9 +225,6 @@ function CareVault() {
         <Typography variant="h2">Upload</Typography>
       </Button>
 
-      {/* Display loading state */}
-      {isLoading && <Typography>Loading...</Typography>}
-
       {/* Display error messages */}
       {error && <Typography color="error">{error}</Typography>}
 
