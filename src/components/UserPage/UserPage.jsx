@@ -8,6 +8,7 @@ import {
   Avatar,
   Grid,
   TextField,
+  Paper,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
@@ -18,77 +19,60 @@ function UserPage() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  // // useEffect hook to fetch user data on component mount
-  // useEffect(() => {
-  //   dispatch({ type: "FETCH_USER" });
-  //   // Ensure the 'FETCH_USER' action is defined in your Redux setup to fetch user data
-  // }, []);
-
   const editUserinfo = () => {
     // Redirects to the user update page, ensure the route is correctly defined in your router setup
     history.push(`/update-user/${user.id}`);
   };
 
+  const profileFields = [
+    { label: "Username", value: user.username },
+    { label: "Email", value: user.email },
+    { label: "Name", value: user.first_name + " " + user.last_name },
+    { label: "Phone Number", value: user.phone_number },
+    { label: "User ID", value: user.id },
+  ];
+
   return (
-    <>
-      <Container
-        sx={{
-          marginTop: theme.spacing(4),
-          border: "2px solid",
-          borderColor: theme.palette.primary.light,
-          padding: theme.spacing(2),
-          backgroundColor: theme.palette.primary.main,
-        }}
-      >
-        <Grid container alignItems="center" justifyContent="left" spacing={2}>
+    <Container maxWidth="md" sx={{ mt: 4, p: 3, bgcolor: 'primary.light', color: theme.palette.common.white}}>
+      <Paper elevation={3} sx={{ p: 3}}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item>
             <Avatar
               sx={{ width: 100, height: 100 }}
               alt="Profile Picture"
-              src="/path/to/profile-image.jpg" // Ensure the path is correct for profile images. Incorrect paths will result in broken image links.
+              src="/path/to/profile-image.jpg"
             />
           </Grid>
+          <Grid item xs>
+            <Typography variant="h4" gutterBottom>
+              User Profile
+            </Typography>
+          </Grid>
           <Grid item>
-            <Typography variant="h2" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.username}{" "}
-              {/* Display the username, ensure username is always fetched and updated in the global state */}
-              <br />
-              {user.id}{" "}
-              {/* Display the user ID, useful for debugging and verification */}
-            </Typography>
-            <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.email}{" "}
-              {/* Display the user email, ensure email is correctly fetched and updated */}
-            </Typography>
-            <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
-              {user.first_name} {user.last_name}
-            </Typography>
-            <Button
-              variant="contained"
-              className="primary on"
-              onClick={editUserinfo}
-            >
-              Edit Profile{" "}
-              {/* Button to trigger user info edit, ensure onClick handler is correctly implemented */}
+            <Button variant="contained" className="primary" onClick={editUserinfo}>
+              Edit Profile
             </Button>
           </Grid>
         </Grid>
-      </Container>
-      <TextField
-        variant="outlined"
-        placeholder="Privacy Policy {coming soon}"
-        disabled // Placeholder for future features, ensure to implement or remove before production
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        variant="outlined"
-        placeholder="Change Password {coming soon}"
-        disabled // Placeholder for future features, ensure to implement or remove before production
-        fullWidth
-        margin="normal"
-      />
-    </>
+
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          {profileFields.map((field) => (
+            <React.Fragment key={field.label}>
+              <Grid item xs={12} sm={3}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {field.label}:
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={9}>
+                <Typography variant="body1">
+                  {field.value || "Not set"}
+                </Typography>
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>
+      </Paper>
+    </Container>
   );
 }
 
