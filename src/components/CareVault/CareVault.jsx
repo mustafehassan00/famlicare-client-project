@@ -205,9 +205,17 @@ function CareVault() {
           variant="contained"
           component="span"
           startIcon={<UploadFileIcon />}
-          style={{ backgroundColor: theme.palette.primary.main }}
+          style={{
+            backgroundColor: theme.palette.primary.main,
+            fontFamily: theme.typography.button.fontFamily,
+          }}
         >
-          <Typography variant="h6">Choose File...</Typography>
+          <Typography
+            variant="h6"
+            style={{ fontFamily: theme.typography.button.fontFamily }}
+          >
+            Choose File...
+          </Typography>
         </Button>
       </label>
       {/* Display file selection error */}
@@ -224,9 +232,17 @@ function CareVault() {
         color="primary"
         disabled={!file}
         onClick={handleUpload}
-        style={{ marginTop: theme.spacing(2) }}
+        style={{
+          marginTop: theme.spacing(2),
+          fontFamily: theme.typography.button.fontFamily,
+        }}
       >
-        <Typography variant="h2">Upload</Typography>
+        <Typography
+          variant="h2"
+          style={{ fontFamily: theme.typography.button.fontFamily }}
+        >
+          Upload
+        </Typography>
       </Button>
 
       {/* Display loading state */}
@@ -270,6 +286,7 @@ function CareVault() {
                     color="primary"
                     variant="contained"
                     size="small"
+                    style={{ fontFamily: theme.typography.button.fontFamily }}
                   >
                     View
                   </Button>
@@ -283,6 +300,9 @@ function CareVault() {
                         color="secondary"
                         variant="contained"
                         size="small"
+                        style={{
+                          fontFamily: theme.typography.button.fontFamily,
+                        }}
                       >
                         Download
                       </Button>
@@ -292,6 +312,9 @@ function CareVault() {
                         color="tertiary"
                         variant="contained"
                         size="small"
+                        style={{
+                          fontFamily: theme.typography.button.fontFamily,
+                        }}
                       >
                         Share
                       </Button>
@@ -301,6 +324,9 @@ function CareVault() {
                         color="primary"
                         variant="contained"
                         size="small"
+                        style={{
+                          fontFamily: theme.typography.button.fontFamily,
+                        }}
                       >
                         Delete
                       </Button>
