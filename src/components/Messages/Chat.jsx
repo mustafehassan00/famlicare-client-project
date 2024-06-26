@@ -21,11 +21,14 @@ function Chat() {
   useEffect(() => {
     socket.emit("join_room", room);
     socket.emit("fetch messages", room);
+  }, [room, socket]);
+
+useEffect(() => {
     socket.on("Have messages", (messages) => {
       console.log("Received messages:", messages);
       setMessages(messages);
     });
-  }, [room, socket]);
+  }, [socket]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -35,8 +38,8 @@ function Chat() {
       };
       console.log("Message User data:", messages);
       console.log(messageData.message);
-      await socket.emit("new message", messageData);
-      await socket.emit("fetch messages", room);
+      socket.emit("new message", messageData);
+      await socket.emit("fetch messages", room)
       setCurrentMessage("");
     }
   };
