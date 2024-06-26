@@ -23,7 +23,6 @@ const colors = {
   light_text: generateColorVariants("#98A9AE"),
   text: generateColorVariants("#889BA1"),
   title_text: generateColorVariants("#69878E"),
-  white: "#fff", // No variants needed for white
 };
 
 // Main theme configuration
@@ -47,7 +46,7 @@ const theme = createTheme({
     light_text: colors.light_text,
     text: colors.text,
     title_text: colors.title_text,
-    white: colors.white,
+    white: colors.text,
   },
   typography: {
     // Global font family setup
@@ -85,11 +84,11 @@ const theme = createTheme({
         contained: {
           "&.primary": {
             backgroundColor: colors.orange.main,
-            color: colors.white,
+            color: colors.text,
             "&:hover": { backgroundColor: colors.orange.dark },
             "&.off": {
               backgroundColor: colors.orange.light,
-              color: colors.white,
+              color: colors.text,
             },
           },
           // Button size variants
@@ -98,7 +97,7 @@ const theme = createTheme({
             fontSize: "0.875rem",
             "&.on": {
               backgroundColor: colors.orange.main,
-              color: colors.white,
+              color: colors.text,
               "&:hover": { backgroundColor: colors.orange.dark },
             },
             "&.off": {
@@ -125,7 +124,7 @@ const theme = createTheme({
             fontSize: "0.9375rem",
             "&.on": {
               backgroundColor: colors.orange.main,
-              color: colors.white,
+              color: colors.text,
               "&:hover": { backgroundColor: colors.orange.dark },
             },
             "&.off": {
@@ -162,7 +161,7 @@ const theme = createTheme({
           lineHeight: 1.6,
           fontFamily: acuminProCondensed,
           borderRadius: 4,
-          backgroundColor: colors.white,
+          backgroundColor: colors.text,
           border: "1px solid #ced4da",
           fontSize: 16,
           padding: "10px 12px",
@@ -194,7 +193,7 @@ const theme = createTheme({
           lineHeight: 1.6,
           fontFamily: acuminProCondensed,
           borderRadius: 4,
-          backgroundColor: colors.white,
+          backgroundColor: colors.text,
           border: "1px solid #ced4da",
           fontSize: 16,
           padding: "10px 12px",
