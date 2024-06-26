@@ -21,6 +21,7 @@ function RegisterPage4() {
         registerReducer
       },
     });
+    history.push('/createorjointeam')
   };
 
   return (

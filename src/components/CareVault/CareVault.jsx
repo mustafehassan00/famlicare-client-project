@@ -150,46 +150,42 @@ function CareVault() {
   // Handles file sharing
   // Corrected handleShare function using the Web Share API to trigger built-in browser sharing functionality.
   const handleShare = async (fileId) => {
-    if (is_admin) {
-      // Check if the user is an admin
-      try {
-        dispatch({
-          type: "GET_FILE_URL",
-          payload: { id: fileId },
-        });
-      } catch (error) {
-        console.log("Error getting file share:", error);
-        alert("Failed to get file sharing.");
-      }
-    } else {
-      alert("Only admins can share files."); // Alert if the user is not an admin
+      if (is_admin) {
+        // Check if the user is an admin
+        try {
+        //send dispatch to get the file url 
+          dispatch({
+            type: "GET_FILE_URL",
+            payload: { id: fileId },
+          });
+          if (navigator.share) {
+                  navigator
+                    .share({
+                      title: "Share File", // Optional: Title of the file to share
+                      url: currentFileUrl, // URL of the file to share
+                    })
+                    .then(() => {
+                      alert("File shared successfully");
+                    })
+                    .catch((error) => {
+                      console.log("Error sharing file:", error);
+                    });
+                } else {
+                  // Fallback or inform the user
+                  alert(
+                    "Your browser does not support direct sharing. Please copy the link: " +
+                    currentFileUrl
+                  );
+                }
+        } catch (error) {
+          console.log("Error getting file share:", error);
+          alert("Failed to get file sharing.");
+        }
+      } else {
+        alert("Only admins can share files."); // Alert if the user is not an admin
     }
   };
 
-  useEffect(() => {
-    if (currentFileUrl) {
-      // Use the Web Share API
-      if (navigator.share) {
-        navigator
-          .share({
-            title: "Share File", // Optional: Title of the file to share
-            url: currentFileUrl, // URL of the file to share
-          })
-          .then(() => {
-            alert("File shared successfully");
-          })
-          .catch((error) => {
-            console.log("Error sharing file:", error);
-          });
-      } else {
-        // Fallback or inform the user
-        alert(
-          "Your browser does not support direct sharing. Please copy the link: " +
-            currentFileUrl
-        );
-      }
-    }
-  }, [currentFileUrl]);
 
   return (
     <>
