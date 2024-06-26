@@ -2,7 +2,7 @@ CREATE TABLE vault (
     id SERIAL PRIMARY KEY,
     loved_one_id INTEGER NOT NULL REFERENCES loved_ones(id),
     document_name VARCHAR(255) NOT NULL,
-    document_type VARCHAR(50) NOT NULL,
+    document_type VARCHAR(255) NOT NULL,
     uploaded_timestamp TIMESTAMP DEFAULT NOW(),
     file_size INTEGER CHECK (file_size > 0),
     attachment_URL VARCHAR(2048) NOT NULL, 
