@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 //link should be the location of the server! (5001 in development)
 //Production NODE_ENV may have to point to env for hosting ??
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5001/'
+const URL = process.env.NODE_ENV === 'production' ? 'http://localhost:5001' : 'https://famlicare-0348fad2c799.herokuapp.com/';
 
 
 const socket = new io(URL, {
