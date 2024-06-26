@@ -34,7 +34,7 @@ app.use("/fonts", express.static(path.join(__dirname, "../../public/fonts")));
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:5173", // specify the allowed origin
+    origin: "https://famlicare-0348fad2c799.herokuapp.com/", // specify the allowed origin
     credentials: true,
   })
 );
@@ -43,7 +43,7 @@ const httpServer = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://famlicare-0348fad2c799.herokuapp.com/",
     methods: ["GET", "POST"],
     credentials: true,
   },
