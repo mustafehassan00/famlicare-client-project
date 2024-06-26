@@ -60,7 +60,7 @@ function CareTeamForm() {
    */
   useEffect(() => {
     dispatch({ type: "FETCH_CARE_TEAM_MEMBERS" });
-  }, [dispatch]);
+  }, []);
 
   /**
    * Fetches loved one info based on the loved_one_id.
@@ -70,7 +70,7 @@ function CareTeamForm() {
     if (loved_one_id) {
       dispatch({ type: GET_LOVED_ONE_REQUEST, payload: loved_one_id });
     }
-  }, [dispatch, loved_one_id]);
+  }, [ loved_one_id]);
 
   /**
    * Store the lovedOne's name for quick reference.
