@@ -23,23 +23,27 @@ function Chat() {
     socket.emit("fetch messages", room);
 
     socket.on("message recieved", message => {
-        if(message.user_id !== user.id)
-       {setMessages(prevMessages => [...prevMessages, message])
-        console.log('message is:', message)}
-      })
+      if (message.user_id !== user.id) {
 
-  
+        setMessages(prevMessages => [...prevMessages, message])
+        console.log('message is:', message)
+
+      }
+    })
+
+
     return () => {
       socket.off("connect_error")
       socket.off("connected")
       socket.off("messages")
+      socket.off("message recieved")
     }
 
 
   }, [setMessages]);
 
 
-  
+
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const message = {
@@ -50,8 +54,12 @@ function Chat() {
       await socket.emit("new message", message);
       setMessages(prevMsgs => [...prevMsgs, message])
       setCurrentMessage("");
-      console.log('messages is:', messages) }
+      // console.log('messages is:', messages) 
+    }
   };
+
+  console.log('messages is:', messages)
+
   return (
     <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
       <Typography variant="h5" gutterBottom>
@@ -64,16 +72,16 @@ function Chat() {
               sx={{
                 padding: 1,
                 borderRadius: 1,
-                backgroundColor: message.user_id === user.id? theme.palette.primary.main : theme.palette.tertiary.light,
+                backgroundColor: message.user_id === user.id ? theme.palette.primary.main : theme.palette.tertiary.light,
                 maxWidth: "80%",
-                marginLeft: message.user_id === user.id? "auto" : 0,
-                marginRight: message.user_id === user.id? 0 : "auto",
+                marginLeft: message.user_id === user.id ? "auto" : 0,
+                marginRight: message.user_id === user.id ? 0 : "auto",
               }}
             >
               <Typography variant="body1">
                 {user.id && (
                   <strong>
-                    {message.user_id === user.id? "You" : 'other'}
+                    {message.user_id === user.id ? "You" : 'other'}
                   </strong>
                 )}
                 : {message.message_text}

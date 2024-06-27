@@ -16,6 +16,7 @@ import {
   TableRow,
   Paper,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { GET_LOVED_ONE_REQUEST } from "../../redux/reducers/actions/lovedOne.actions";
 
@@ -54,13 +55,16 @@ function CareTeamForm() {
   // Use existing MUI theme for styling consistency
   const theme = useTheme();
 
+  //check display size
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   /**
    * Fetches care team members when the component mounts.
    * Ensure the backend endpoint is correctly set up to handle this request.
    */
   useEffect(() => {
     dispatch({ type: "FETCH_CARE_TEAM_MEMBERS" });
-  }, [dispatch]);
+  }, []);
 
   /**
    * Fetches loved one info based on the loved_one_id.
@@ -70,7 +74,7 @@ function CareTeamForm() {
     if (loved_one_id) {
       dispatch({ type: GET_LOVED_ONE_REQUEST, payload: loved_one_id });
     }
-  }, [dispatch, loved_one_id]);
+  }, [ loved_one_id]);
 
   /**
    * Store the lovedOne's name for quick reference.
@@ -108,36 +112,50 @@ function CareTeamForm() {
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          {lovedOneName ?
-            `${lovedOneName}'s Care Team`: "Care Team"}
+          {lovedOneName ? `${lovedOneName}'s Care Team` : "Care Team"}
         </Typography>
 
-        {/* List of current team members */}
         <Typography variant="h6" gutterBottom>
           Team Members
         </Typography>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 500 }} aria-label="team members table">
+        <TableContainer 
+          component={Paper} 
+          sx={{ 
+            maxHeight: isSmallScreen ? 300 : 'none',
+            overflowY: isSmallScreen ? 'auto' : 'visible'
+          }}
+        >
+          <Table stickyHeader aria-label="team members table">
             <TableBody>
               {teamMembers.map((member, index) => (
                 <TableRow
                   key={index}
                   sx={{
-                    "&:nth-of-type(odd)": {
-                      backgroundColor: theme.palette.primary.light,
-                      color: "white",
-                    },
+                    backgroundColor: index % 2 === 0 ? theme.palette.primary.light : 'white',
+                    '&:last-child td, &:last-child th': { border: 0 },
                   }}
                 >
                   <TableCell
                     component="th"
                     scope="row"
-                    sx={{ justifyContent: "flex-start", color: "inherit" }}
+                    sx={{ 
+                      color: index % 2 === 0 ? theme.palette.primary.contrastText : 'inherit',
+                      padding: theme.spacing(2),
+                    }}
                   >
-                    {`${member.first_name} ${member.last_name}`}
-                  </TableCell>
-                  <TableCell align="right" sx={{ color: "inherit" }}>
-                    {member.email}
+                    <Box sx={{
+                      display: 'flex',
+                      flexDirection: isSmallScreen ? 'column' : 'row',
+                      justifyContent: 'space-between',
+                      alignItems: isSmallScreen ? 'flex-start' : 'center',
+                    }}>
+                      <Typography variant="body1">
+                        {`${member.first_name} ${member.last_name}`}
+                      </Typography>
+                      <Typography variant="body2" sx={{ opacity: 0.7, mt: isSmallScreen ? 1 : 0 }}>
+                        {member.email}
+                      </Typography>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}

@@ -1,9 +1,16 @@
 // Import necessary libraries and components
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Container, Typography, Button, Avatar, Grid, TextField } from '@mui/material';
-import { useParams, useHistory } from 'react-router-dom';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Container,
+  Typography,
+  Button,
+  Avatar,
+  Grid,
+  TextField,
+} from "@mui/material";
+import { useParams, useHistory } from "react-router-dom";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 
 function EdituserPage() {
   // Hooks for navigation and accessing Redux store
@@ -22,7 +29,7 @@ function EdituserPage() {
   useEffect(() => {
     dispatch({
       type: "EDIT-USER-PROFILE",
-      payload: id4userToedit
+      payload: id4userToedit,
     });
     // Ensure the EDIT-USER-PROFILE action is correctly handled in your reducer
     // This action should fetch and populate the form with the user's current information
@@ -32,7 +39,7 @@ function EdituserPage() {
   const handleNamechange = (event) => {
     dispatch({
       type: "CHANGE-CURRENT USERNAME",
-      payload: event.target.value
+      payload: event.target.value,
     });
     // Ensure the CHANGE-CURRENT USERNAME action updates the username in the local state
   };
@@ -40,7 +47,7 @@ function EdituserPage() {
   const handleEmailchange = (event) => {
     dispatch({
       type: "CHANGE-CURRENT EMAIL",
-      payload: event.target.value
+      payload: event.target.value,
     });
     // Ensure the CHANGE-CURRENT EMAIL action updates the email in the local state
   };
@@ -48,20 +55,37 @@ function EdituserPage() {
   const handlePhonechange = (event) => {
     dispatch({
       type: "CHANGE-CURRENT PHONE-NUMBER",
-      payload: event.target.value
+      payload: event.target.value,
     });
     // Ensure the CHANGE-CURRENT PHONE-NUMBER action updates the phone number in the local state
   };
+
+  const handleFirstNameChange = (event) => {
+    dispatch({
+      type: "CHANGE-CURRENT FIRST-NAME",
+      payload: event.target.value,
+    });
+    // Ensure the CHANGE-CURRENT PHONE-NUMBER action updates the phone number in the local state
+  };
+
+  const handleLastNameChange = (event) => {
+    dispatch({
+      type: "CHANGE-CURRENT LAST-NAME",
+      payload: event.target.value,
+    });
+    // Ensure the CHANGE-CURRENT PHONE-NUMBER action updates the phone number in the local state
+  };
+
 
   const updateProfile = (event) => {
     event.preventDefault();
     dispatch({
       type: "CHANGE-PROFILE-VALUES",
-      payload: editUserprofile
+      payload: editUserprofile,
     });
     // Ensure the CHANGE-PROFILE-VALUES action correctly updates the user's profile in the database
     // Navigate back to UserPage with a state flag indicating a successful edit
-    history.push('/user');
+    history.push("/user");
   };
 
   return (
@@ -72,9 +96,14 @@ function EdituserPage() {
       spacing={2}
       sx={{ p: 4 }}
     >
-      <Button variant="outlined" color="primary" startIcon={<ArrowBack/>} onClick={() => history.goBack()}>
-      {/** Back button to previous page */}
-        Back 
+      <Button
+        variant="outlined"
+        color="primary"
+        startIcon={<ArrowBack />}
+        onClick={() => history.goBack()}
+      >
+        {/** Back button to previous page */}
+        Back
       </Button>
 
       <Grid item justifyContent="center">
@@ -88,7 +117,7 @@ function EdituserPage() {
         </Typography>
         <TextField
           variant="outlined"
-          value={editUserprofile.username || ''}
+          value={editUserprofile.username || ""}
           onChange={handleNamechange}
           fullWidth
           margin="normal"
@@ -98,7 +127,7 @@ function EdituserPage() {
         </Typography>
         <TextField
           variant="outlined"
-          value={editUserprofile.email || ''}
+          value={editUserprofile.email || ""}
           onChange={handleEmailchange}
           fullWidth
           margin="normal"
@@ -108,13 +137,33 @@ function EdituserPage() {
         </Typography>
         <TextField
           variant="outlined"
-          value={editUserprofile.phone_number || ''}
+          value={editUserprofile.phone_number || ""}
           onChange={handlePhonechange}
           fullWidth
           margin="normal"
         />
+        <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+          First Name
+        </Typography>
+        <TextField
+          variant="outlined"
+          value={editUserprofile.first_name || ""}
+          onChange={handleFirstNameChange}
+          fullWidth
+          margin="normal"
+        />
+        <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+          Last Name
+        </Typography>
+        <TextField
+          variant="outlined"
+          value={editUserprofile.last_name|| ""}
+          onChange={handleLastNameChange}
+          fullWidth
+          margin="normal"
+        />
         <Button variant="contained" sx={{ mt: 2 }} onClick={updateProfile}>
-          Save 
+          Save
           {/** Button to save changes and update the user's profile */}
         </Button>
       </Grid>

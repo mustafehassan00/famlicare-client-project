@@ -32,18 +32,20 @@ app.use("/api/messages", messagesRouter);
 app.use("/fonts", express.static(path.join(__dirname, "../../public/fonts")));
 // Add CORS middleware
 const cors = require("cors");
-app.use(
-  cors({
-    origin: "http://localhost:5173", // specify the allowed origin
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN_HOST, // specify the allowed origin
+//     credentials: true,
+//   })
+// );
+
+//console.log(process.env.CORS_ORIGIN_HOST)
 // Socket.IO setup
 const httpServer = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN_HOST,
     methods: ["GET", "POST"],
     credentials: true,
   },

@@ -73,6 +73,7 @@ function* fetchFiles() {
  */
 function* getFileUrl(action) {
   try {
+    console.log('action.payload is:', action.payload)
     const response = yield call(axios.get, `${API_BASE_URL}/file/${action.payload.id}?useType=${action.payload.useType || 'view'}`);
     yield put({ type: "SET_FILE_URL", payload: response.data });
   } catch (error) {

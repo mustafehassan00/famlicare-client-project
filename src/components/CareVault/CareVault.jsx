@@ -17,6 +17,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  Box,
   Button,
   Container,
   Typography,
@@ -30,7 +31,6 @@ import {
   IconButton,
   useTheme,
   Modal,
-  Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -150,214 +150,278 @@ function CareVault() {
   // Handles file sharing
   // Corrected handleShare function using the Web Share API to trigger built-in browser sharing functionality.
   const handleShare = async (fileId) => {
-    if (is_admin) {
-      // Check if the user is an admin
-      try {
-        dispatch({
-          type: "GET_FILE_URL",
-          payload: { id: fileId },
-        });
-      } catch (error) {
-        console.log("Error getting file share:", error);
-        alert("Failed to get file sharing.");
-      }
-    } else {
-      alert("Only admins can share files."); // Alert if the user is not an admin
+      if (is_admin) {
+        // Check if the user is an admin
+        try {
+        //send dispatch to get the file url 
+          dispatch({
+            type: "GET_FILE_URL",
+            payload: { id: fileId },
+          });
+          if (navigator.share) {
+                  navigator
+                    .share({
+                      title: "Share File", // Optional: Title of the file to share
+                      url: currentFileUrl, // URL of the file to share
+                    })
+                    .then(() => {
+                      alert("File shared successfully");
+                    })
+                    .catch((error) => {
+                      console.log("Error sharing file:", error);
+                    });
+                } else {
+                  // Fallback or inform the user
+                  alert(
+                    "Your browser does not support direct sharing. Please copy the link: " +
+                    currentFileUrl
+                  );
+                }
+        } catch (error) {
+          console.log("Error getting file share:", error);
+          alert("Failed to get file sharing.");
+        }
+      } else {
+        alert("Only admins can share files."); // Alert if the user is not an admin
     }
   };
 
-  useEffect(() => {
-    if (currentFileUrl) {
-      // Use the Web Share API
-      if (navigator.share) {
-        navigator
-          .share({
-            title: "Share File", // Optional: Title of the file to share
-            url: currentFileUrl, // URL of the file to share
-          })
-          .then(() => {
-            alert("File shared successfully");
-          })
-          .catch((error) => {
-            console.log("Error sharing file:", error);
-          });
-      } else {
-        // Fallback or inform the user
-        alert(
-          "Your browser does not support direct sharing. Please copy the link: " +
-            currentFileUrl
-        );
-      }
-    }
-  }, [currentFileUrl]);
 
   return (
-    <Container>
-      {/* File upload button */}
-      <label htmlFor="contained-button-file">
-        <Input
-          id="contained-button-file"
-          multiple
-          type="file"
-          onChange={handleFileChange}
-        />
+    <>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Typography variant="h1">Care Vault</Typography>
+      </Box>
+      <Container>
+        {/* File upload button */}
+        <label htmlFor="contained-button-file">
+          <Input
+            id="contained-button-file"
+            multiple
+            type="file"
+            onChange={handleFileChange}
+          />
+          <Button
+            variant="contained"
+            component="span"
+            startIcon={<UploadFileIcon />}
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              "& .MuiButton-label": {
+                // Target the label inside the button for correct fontFamily application
+                fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+              },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ fontFamily: "inherit" }} // Use inherit or directly specify the theme's fontFamily
+            >
+              Choose File...
+            </Typography>
+          </Button>
+        </label>
+        {/* Display file selection error */}
+        {fileError && <Typography color="error">{fileError}</Typography>}
+        {/* Display selected file name */}
+        {filename && (
+          <Typography
+            variant="subtitle1"
+            style={{ marginTop: theme.spacing(2) }}
+          >
+            {filename}
+          </Typography>
+        )}
+        {/* Upload button */}
         <Button
           variant="contained"
-          component="span"
-          startIcon={<UploadFileIcon />}
-          style={{ backgroundColor: theme.palette.primary.main }}
-        >
-          <Typography variant="h6">Choose File...</Typography>
-        </Button>
-      </label>
-      {/* Display file selection error */}
-      {fileError && <Typography color="error">{fileError}</Typography>}
-      {/* Display selected file name */}
-      {filename && (
-        <Typography variant="subtitle1" style={{ marginTop: theme.spacing(2) }}>
-          {filename}
-        </Typography>
-      )}
-      {/* Upload button */}
-      <Button
-        variant="contained"
-        color="primary"
-        disabled={!file}
-        onClick={handleUpload}
-        style={{ marginTop: theme.spacing(2) }}
-      >
-        <Typography variant="h2">Upload</Typography>
-      </Button>
-
-      {/* Display loading state */}
-      {isLoading && <Typography>Loading...</Typography>}
-
-      {/* Display error messages */}
-      {error && <Typography color="error">{error}</Typography>}
-
-      {/* Table to display files */}
-      <TableContainer component={Paper} style={{ marginTop: theme.spacing(2) }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ border: "1px solid black" }}>
-                File Name
-              </TableCell>
-              <TableCell align="right" style={{ border: "1px solid black" }}>
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {files.map((file) => (
-              <TableRow key={file.id}>
-                <TableCell
-                  component="td"
-                  scope="row"
-                  style={{
-                    width: "40%",
-                    maxWidth: "200px",
-                    border: "1px solid black",
-                  }}
-                >
-                  {file.document_name}
-                </TableCell>
-                <TableCell align="right" style={{ border: "1px solid black" }}>
-                  {/* Action buttons for each file */}
-                  <Button
-                    startIcon={<VisibilityIcon />}
-                    onClick={() => handleViewFile(file.id)}
-                    color="primary"
-                    variant="contained"
-                    size="small"
-                  >
-                    View
-                  </Button>
-                  {is_admin && (
-                    <>
-                      <Button
-                        startIcon={<DownloadIcon />}
-                        onClick={() =>
-                          handleDownload(file.id, file.document_name)
-                        }
-                        color="secondary"
-                        variant="contained"
-                        size="small"
-                      >
-                        Download
-                      </Button>
-                      <Button
-                        startIcon={<ShareIcon />}
-                        onClick={() => handleShare(file.id)}
-                        color="tertiary"
-                        variant="contained"
-                        size="small"
-                      >
-                        Share
-                      </Button>
-                      <Button
-                        startIcon={<DeleteIcon />}
-                        onClick={() => handleDeleteFile(file.id)}
-                        color="primary"
-                        variant="contained"
-                        size="small"
-                      >
-                        Delete
-                      </Button>
-                    </>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      {/* Modal for viewing a file */}
-      <Modal
-        open={viewingFile !== null}
-        onClose={handleCloseViewer}
-        aria-labelledby="document-viewer"
-        aria-describedby="view-document"
-      >
-        <Box
+          color="primary"
+          disabled={!file}
+          onClick={handleUpload}
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "90%",
-            height: "90%",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
+            backgroundColor: theme.palette.primary.main,
+            "& .MuiButton-label": {
+              // Target the label inside the button for correct fontFamily application
+              fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+            },
           }}
         >
-          <IconButton
-            onClick={handleCloseViewer}
-            style={{ position: "absolute", top: 10, right: 10 }}
+          <Typography
+            variant="h6"
+            sx={{ fontFamily: "inherit" }} // Use inherit or directly specify the theme's fontFamily
           >
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" component="h2" mb={2}>
-            {viewingFile?.document_name}
+            Upload
           </Typography>
-          {currentFileUrl ? (
-            <iframe
-              src={currentFileUrl}
-              style={{
-                width: "100%",
-                height: "calc(100% - 50px)",
-                border: "none",
-              }}
-              title="Document Viewer"
-            />
-          ) : (
-            <Typography>Loading document...</Typography>
-          )}
-        </Box>
-      </Modal>
-    </Container>
+        </Button>
+
+        {/* Display loading state */}
+        {isLoading && <Typography>Loading...</Typography>}
+
+        {/* Display error messages */}
+        {error && <Typography color="error">{error}</Typography>}
+
+        {/* Table to display files */}
+        <TableContainer
+          component={Paper}
+          style={{ marginTop: theme.spacing(2) }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow
+                style={{ backgroundColor: theme.palette.primary.light }}
+              >
+                <TableCell style={{ border: "1px solid black" }}>
+                  <Typography variant="h2">File Name</Typography>
+                </TableCell>
+                <TableCell align="right" style={{ border: "1px solid black" }}>
+                  <Typography variant="h2">Actions</Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {files.map((file) => (
+                <TableRow key={file.id}>
+                  <TableCell
+                    component="td"
+                    scope="row"
+                    style={{
+                      width: "40%",
+                      maxWidth: "200px",
+                      border: "1px solid black",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      {file.document_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    style={{ border: "1px solid black" }}
+                  >
+                    {/* Action buttons for each file */}
+                    <Button
+                      startIcon={<VisibilityIcon />}
+                      onClick={() => handleViewFile(file.id)}
+                      color="primary"
+                      variant="contained"
+                      size="small"
+                      sx={{
+                        backgroundColor: theme.palette.primary.main,
+                        "& .MuiButton-label": {
+                          // Target the label inside the button for correct fontFamily application
+                          fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+                        },
+                      }}
+                    >
+                      View
+                    </Button>
+                    {is_admin && (
+                      <>
+                        <Button
+                          startIcon={<DownloadIcon />}
+                          onClick={() =>
+                            handleDownload(file.id, file.document_name)
+                          }
+                          color="secondary"
+                          variant="contained"
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            "& .MuiButton-label": {
+                              // Target the label inside the button for correct fontFamily application
+                              fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+                            },
+                          }}
+                        >
+                          Download
+                        </Button>
+                        <Button
+                          startIcon={<ShareIcon />}
+                          onClick={() => handleShare(file.id)}
+                          color="tertiary"
+                          variant="contained"
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.tertiary.main,
+                            "& .MuiButton-label": {
+                              // Target the label inside the button for correct fontFamily application
+                              fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+                            },
+                          }}
+                        >
+                          Share
+                        </Button>
+                        <Button
+                          startIcon={<DeleteIcon />}
+                          onClick={() => handleDeleteFile(file.id)}
+                          color="primary"
+                          variant="contained"
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.primary.main,
+                            "& .MuiButton-label": {
+                              // Target the label inside the button for correct fontFamily application
+                              fontFamily: "inherit", // Use inherit to ensure it picks up the fontFamily from the theme
+                            },
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {/* Modal for viewing a file */}
+        <Modal
+          open={viewingFile !== null}
+          onClose={handleCloseViewer}
+          aria-labelledby="document-viewer"
+          aria-describedby="view-document"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "90%",
+              height: "90%",
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <IconButton
+              onClick={handleCloseViewer}
+              style={{ position: "absolute", top: 10, right: 10 }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" component="h2" mb={2}>
+              {viewingFile?.document_name}
+            </Typography>
+            {currentFileUrl ? (
+              <iframe
+                src={currentFileUrl}
+                style={{
+                  width: "100%",
+                  height: "calc(100% - 50px)",
+                  border: "none",
+                }}
+                title="Document Viewer"
+              />
+            ) : (
+              <Typography>Loading document...</Typography>
+            )}
+          </Box>
+        </Modal>
+      </Container>
+    </>
   );
 }
 

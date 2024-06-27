@@ -25,19 +25,23 @@ function* editUserprofile(action) {
 function* changeProfilevalues(action) {
   try {
     const updatedProfiledata = action.payload;
-    const idofUser = action.payload;
-    console.log("we have a change in Saga", updatedProfiledata);
-    yield axios({
+    const idofUser = updatedProfiledata.id;
+    console.log("Sending update to server:", updatedProfiledata);
+    
+    const response = yield axios({
         method: "PUT",
         url: `/api/user/${idofUser}`,
         data: updatedProfiledata
-    })
+    });
+    
+    console.log("Server response:", response.data);
 
-    yield put({ type: 'FETCH_USER' });
-
+    // Update the user in the Redux store with the response data
+    yield put({ type: 'SET_USER', payload: response.data });
 
   } catch (error) {
-    console.log("Error with user profiles edits update!:", error);
+    console.log("Error with user profiles edits update:", error);
+    // Handle error (e.g., show an error message to the user)
   }
 }
 
