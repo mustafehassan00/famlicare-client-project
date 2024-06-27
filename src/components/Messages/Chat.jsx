@@ -23,11 +23,10 @@ function Chat() {
     socket.emit("fetch messages", room);
 
     socket.on("message recieved", message => {
-      setMessages(prevMsg => [message, ...prevMsg])
-      console.log('message is:', message)
-      console.log('messages is:', messages)
-    })
-
+      if(message.user_id !== user.id)
+    {setMessages(prevMessages => [...prevMessages, message])
+    console.log('message is:', message)}
+  })
     return () => {
       socket.off("connect_error")
       socket.off("connected")
@@ -35,16 +34,22 @@ function Chat() {
     }
 
 
-  }, [room]);
+  }, []);
+
+
+
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const message = {
         message_text: currentMessage,
+        user_id: user.id,
+        loved_one_id: lovedOneID
       };
       await socket.emit("new message", message);
-      setMessages(prevMsgs => [message, ... prevMsgs])
+      setMessages(prevMsgs => [...prevMsgs, message])
       setCurrentMessage("");
+      console.log('messages is:', messages)
     }
   };
   return (
@@ -68,7 +73,7 @@ function Chat() {
               <Typography variant="body1">
                 {user.id && (
                   <strong>
-                    {message.user_id === user.id? "You" : message.username}
+                    {message.user_id === user.id? "You" : 'other'}
                   </strong>
                 )}
                 : {message.message_text}

@@ -92,7 +92,7 @@ io.on("connection", (socket) => {
       .then((result) => {
         console.log("send successful");
         console.log(result.rows[0])
-        io.to(lovedOneId).emit("message recieved", result.rows[0]);
+        socket.broadcast.to(lovedOneId).emit("message recieved", result.rows[0]);
       })
       .catch((error) => {
         console.error("Error inserting message:", error);
