@@ -23,10 +23,12 @@ function Chat() {
     socket.emit("fetch messages", room);
 
     socket.on("message recieved", message => {
-      if(message.user_id !== user.id)
-    {setMessages(prevMessages => [...prevMessages, message])
-    console.log('message is:', message)}
-  })
+        if(message.user_id !== user.id)
+       {setMessages(prevMessages => [...prevMessages, message])
+        console.log('message is:', message)}
+      })
+
+  
     return () => {
       socket.off("connect_error")
       socket.off("connected")
@@ -34,11 +36,10 @@ function Chat() {
     }
 
 
-  }, []);
+  }, [setMessages]);
 
 
-
-
+  
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const message = {
@@ -49,8 +50,7 @@ function Chat() {
       await socket.emit("new message", message);
       setMessages(prevMsgs => [...prevMsgs, message])
       setCurrentMessage("");
-      console.log('messages is:', messages)
-    }
+      console.log('messages is:', messages) }
   };
   return (
     <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
