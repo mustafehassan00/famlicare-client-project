@@ -39,10 +39,17 @@ function Chat() {
       socket.off("message recieved")
     }
 
-
   }, [setMessages]);
 
+  useEffect(() => {
+    socket.on("Have messages", (messages) => {
+      console.log("Received messages:", messages);
+      setMessages(messages);
+    });
 
+    return() => 
+      socket.off("Have messages")
+  }, [setMessages]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -54,7 +61,6 @@ function Chat() {
       await socket.emit("new message", message);
       setMessages(prevMsgs => [...prevMsgs, message])
       setCurrentMessage("");
-      // console.log('messages is:', messages) 
     }
   };
 
