@@ -21,22 +21,31 @@ function Chat() {
   useEffect(() => {
     socket.emit("join_room", room);
     socket.emit("fetch messages", room);
-    socket.on("Have messages", (messages) => {
+    socket.on("messages", (messages) => {
       console.log("Received messages:", messages);
       setMessages(messages);
     });
-  }, [room, socket]);
+
+    socket.on("new message", message => {
+      setMessages(prevMsg => [message, ...prevMsg])
+      console.log('message is:', message)
+      console.log('messages is:', messages)
+    })
+
+    return () => {
+      socket.off("connect_error")
+      socket.off("connected")
+      socket.off("messages")
+    }
+
+
+  }, [room, setMessages]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
-      const messageData = {
-        message: currentMessage,
-        room: room,
-      };
-      console.log("Message User data:", messages);
-      console.log(messageData.message);
-      await socket.emit("new message", messageData);
-      await socket.emit("fetch messages", room);
+      const message = currentMessage;
+      await socket.emit("new message", message);
+      setMessages(prevMsgs => [message, ... prevMsgs])
       setCurrentMessage("");
     }
   };
