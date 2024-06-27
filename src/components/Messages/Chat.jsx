@@ -21,28 +21,51 @@ function Chat() {
   useEffect(() => {
     socket.emit("join_room", room);
     socket.emit("fetch messages", room);
-  }, [room, socket]);
 
-useEffect(() => {
+    socket.on("message recieved", message => {
+      if (message.user_id !== user.id) {
+
+        setMessages(prevMessages => [...prevMessages, message])
+        console.log('message is:', message)
+
+      }
+    })
+
+
+    return () => {
+      socket.off("connect_error")
+      socket.off("connected")
+      socket.off("messages")
+      socket.off("message recieved")
+    }
+
+  }, [setMessages]);
+
+  useEffect(() => {
     socket.on("Have messages", (messages) => {
       console.log("Received messages:", messages);
       setMessages(messages);
     });
-  }, [socket]);
+
+    return() => 
+      socket.off("Have messages")
+  }, [setMessages]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
-      const messageData = {
-        message: currentMessage,
-        room: room,
+      const message = {
+        message_text: currentMessage,
+        user_id: user.id,
+        loved_one_id: lovedOneID
       };
-      console.log("Message User data:", messages);
-      console.log(messageData.message);
-      socket.emit("new message", messageData);
-      await socket.emit("fetch messages", room)
+      await socket.emit("new message", message);
+      setMessages(prevMsgs => [...prevMsgs, message])
       setCurrentMessage("");
     }
   };
+
+  console.log('messages is:', messages)
+
   return (
     <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
       <Typography variant="h5" gutterBottom>
@@ -55,16 +78,16 @@ useEffect(() => {
               sx={{
                 padding: 1,
                 borderRadius: 1,
-                backgroundColor: message.user_id === user.id? theme.palette.primary.main : theme.palette.tertiary.light,
+                backgroundColor: message.user_id === user.id ? theme.palette.primary.main : theme.palette.tertiary.light,
                 maxWidth: "80%",
-                marginLeft: message.user_id === user.id? "auto" : 0,
-                marginRight: message.user_id === user.id? 0 : "auto",
+                marginLeft: message.user_id === user.id ? "auto" : 0,
+                marginRight: message.user_id === user.id ? 0 : "auto",
               }}
             >
               <Typography variant="body1">
                 {user.id && (
                   <strong>
-                    {message.user_id === user.id? "You" : message.username}
+                    {message.user_id === user.id ? "You" : 'other'}
                   </strong>
                 )}
                 : {message.message_text}

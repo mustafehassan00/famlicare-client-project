@@ -32,18 +32,20 @@ app.use("/api/messages", messagesRouter);
 app.use("/fonts", express.static(path.join(__dirname, "../../public/fonts")));
 // Add CORS middleware
 const cors = require("cors");
-app.use(
-  cors({
-    origin: "https://famlicare-0348fad2c799.herokuapp.com/", // specify the allowed origin
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN_HOST, // specify the allowed origin
+//     credentials: true,
+//   })
+// );
+
+//console.log(process.env.CORS_ORIGIN_HOST)
 // Socket.IO setup
 const httpServer = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://famlicare-0348fad2c799.herokuapp.com/",
+    origin: process.env.CORS_ORIGIN_HOST,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -72,26 +74,33 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log(`User${socket.id} Joined Room: ${room}`);
   });
+
+
+
   // Socket event listener for receiving a new message
-  socket.on("new message", (messageData) => {
+  socket.on("new message", (message) => {
     console.log("new message received!");
-    const message = messageData.message;
+    const newMessage = message.message_text
     const userId = socket.request.user.id;
     const lovedOneId = socket.request.user.loved_one_id;
     const sqlText = `INSERT INTO messages
                       ("loved_one_id", "user_id", "message_text")
                       VALUES ($1, $2, $3)
+                      returning *;
                       `;
-    const sqlValues = [lovedOneId, userId, message];
+    const sqlValues = [lovedOneId, userId, newMessage];
     pool
       .query(sqlText, sqlValues)
       .then((result) => {
-        console.log("send successful")
+        console.log("send successful");
+        console.log(result.rows[0])
+        socket.broadcast.to(lovedOneId).emit("message recieved", result.rows[0]);
       })
       .catch((error) => {
         console.error("Error inserting message:", error);
       });
   });
+
 
   socket.on("fetch messages", (room) => {
     const sqlText = `SELECT
