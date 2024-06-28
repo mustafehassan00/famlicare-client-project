@@ -9,7 +9,6 @@ function LoginPage() {
   return (
     <Box sx={{ textAlign: 'center', mt: 4 }}>
       <LoginForm />
-
       <Box sx={{ mt: 2 }}>
         <Button
           variant="contained"
