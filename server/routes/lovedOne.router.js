@@ -58,7 +58,7 @@ router.post(
     }
 
     const { first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code } = req.body;
-    const userId = req.user.id;
+    const userId = req.user.id; // Assuming req.user is populated from the authentication middleware
 
     const client = await pool.connect();
 
@@ -67,16 +67,21 @@ router.post(
 
       const insertSQLText = `
         INSERT INTO loved_ones(first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;`;
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id;`;
       const insertResult = await client.query(insertSQLText, [first_name, last_name, age, main_condition, street_address, street_address2, city, state_province, country, postal_code]);
-      const lovedOne = insertResult.rows[0];
+      const lovedOneId = insertResult.rows[0].id;
+
+      const updateUserSQLText = `
+        UPDATE "user"
+        SET loved_one_id = $1, is_admin = TRUE
+        WHERE id = $2;`;
+      await client.query(updateUserSQLText, [lovedOneId, userId]);
 
       await client.query("COMMIT");
-      res.status(200).json(lovedOne);
-      console.log(lovedOne); // Log the entire loved one object
+      res.status(200).json({ message: "Loved one added successfully", lovedOneId: lovedOneId });
     } catch (error) {
       await client.query("ROLLBACK");
-      console.error("Error in transaction inserting loved one: ", error);
+      console.error("Error in transaction inserting loved one and updating user: ", error);
       res.sendStatus(500);
     } finally {
       client.release();
