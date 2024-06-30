@@ -23,12 +23,8 @@ function Chat() {
     socket.emit("fetch messages", room);
 
     socket.on("message recieved", message => {
-      if (message.user_id !== user.id) {
-
         setMessages(prevMessages => [...prevMessages, message])
         console.log('message is:', message)
-
-      }
     })
 
 
@@ -56,7 +52,8 @@ function Chat() {
       const message = {
         message_text: currentMessage,
         user_id: user.id,
-        loved_one_id: lovedOneID
+        loved_one_id: lovedOneID,
+        timestamp: Date.now()
       };
       await socket.emit("new message", message);
       setMessages(prevMsgs => [...prevMsgs, message])
@@ -87,13 +84,13 @@ function Chat() {
               <Typography variant="body1">
                 {user.id && (
                   <strong>
-                    {message.user_id === user.id ? "You" : 'other'}
+                    {message.user_id === user.id ? "You" : `${message.first_name} ${message.last_name}`}
                   </strong>
                 )}
                 : {message.message_text}
               </Typography>
               <Typography variant="caption" color="textSecondary">
-                {message.msg_sent_timestamp}
+                {message.msg_sent_timestamp ? message.msg_sent_timestamp : new Date(message.timestamp).toLocaleTimeString()}
               </Typography>
             </Box>
           </Grid>
