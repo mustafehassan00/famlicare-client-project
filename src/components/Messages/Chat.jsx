@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useSocketSetup from "./UseSocketSetup";
 import socket from "../../socket";
-import { useEffect } from "react";
 import { Box, Typography, TextField, Button, Grid, useTheme } from "@mui/material";
 
-
 function Chat() {
-
   const theme = useTheme();
-  // Use this to use as auto fill to fill in the user
   const user = useSelector((store) => store.user);
   const lovedOneID = user.loved_one_id;
   const [room, setRoom] = useState(lovedOneID);
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const messagesContainerRef = useRef(null); // Create a reference to the messages container
 
   useSocketSetup();
 
@@ -22,23 +19,17 @@ function Chat() {
     socket.emit("join_room", room);
     socket.emit("fetch messages", room);
 
-    socket.on("message recieved", message => {
-      if (message.user_id !== user.id) {
-
-        setMessages(prevMessages => [...prevMessages, message])
-        console.log('message is:', message)
-
-      }
-    })
-
+    socket.on("message recieved", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+      console.log("message is:", message);
+    });
 
     return () => {
-      socket.off("connect_error")
-      socket.off("connected")
-      socket.off("messages")
-      socket.off("message recieved")
-    }
-
+      socket.off("connect_error");
+      socket.off("connected");
+      socket.off("messages");
+      socket.off("message recieved");
+    };
   }, [setMessages]);
 
   useEffect(() => {
@@ -47,8 +38,7 @@ function Chat() {
       setMessages(messages);
     });
 
-    return() => 
-      socket.off("Have messages")
+    return () => socket.off("Have messages");
   }, [setMessages]);
 
   const sendMessage = async () => {
@@ -56,18 +46,24 @@ function Chat() {
       const message = {
         message_text: currentMessage,
         user_id: user.id,
-        loved_one_id: lovedOneID
+        loved_one_id: lovedOneID,
+        timestamp: Date.now(),
       };
       await socket.emit("new message", message);
-      setMessages(prevMsgs => [...prevMsgs, message])
+      setMessages((prevMsgs) => [...prevMsgs, message]);
       setCurrentMessage("");
     }
   };
 
-  console.log('messages is:', messages)
+  useEffect(() => {
+    // Auto-scroll to the last message
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
-    <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }}>
+    <Box sx={{ padding: 2, height: "100vh", overflowY: "auto" }} ref={messagesContainerRef}>
       <Typography variant="h5" gutterBottom>
         CareTeam Chat
       </Typography>
@@ -87,13 +83,13 @@ function Chat() {
               <Typography variant="body1">
                 {user.id && (
                   <strong>
-                    {message.user_id === user.id ? "You" : 'other'}
+                    {message.user_id === user.id ? "You" : `${message.first_name} ${message.last_name}`}
                   </strong>
                 )}
                 : {message.message_text}
               </Typography>
               <Typography variant="caption" color="textSecondary">
-                {message.msg_sent_timestamp}
+                {message.msg_sent_timestamp ? message.msg_sent_timestamp : new Date(message.timestamp).toLocaleTimeString()}
               </Typography>
             </Box>
           </Grid>
@@ -114,4 +110,5 @@ function Chat() {
     </Box>
   );
 }
+
 export default Chat;

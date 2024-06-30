@@ -83,10 +83,14 @@ io.on("connection", (socket) => {
     const newMessage = message.message_text
     const userId = socket.request.user.id;
     const lovedOneId = socket.request.user.loved_one_id;
-    const sqlText = `INSERT INTO messages
-                      ("loved_one_id", "user_id", "message_text")
+    const sqlText = `WITH new_message AS (
+                      INSERT INTO messages ("loved_one_id", "user_id", "message_text")
                       VALUES ($1, $2, $3)
-                      returning *;
+                      RETURNING *
+                    )
+                    SELECT nm.*, u.username, u.first_name, u.last_name
+                    FROM new_message nm
+                    INNER JOIN "user" u ON nm.user_id = u.id;
                       `;
     const sqlValues = [lovedOneId, userId, newMessage];
     pool
