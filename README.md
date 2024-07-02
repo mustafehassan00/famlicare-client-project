@@ -102,7 +102,7 @@ The application is deployed on Heroku. To deploy your own instance:
 - **Mustafe** - messaging
 - **Jason** - theme styling, create a loved one flow
 - **Alex** - care vault
-- **Zeyini** - registration flow
+- **Zeyini** - registration flow, profile component
 
 ## License
 
